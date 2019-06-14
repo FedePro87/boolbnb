@@ -86,6 +86,8 @@
 
                 <h1>Hello World!</h1>
 
+                <h2>Ciao belli de casa!</h2>
+
                 <div class="links">
                     <a href="https://laravel.com/docs">Docs</a>
                     <a href="https://laracasts.com">Laracasts</a>
