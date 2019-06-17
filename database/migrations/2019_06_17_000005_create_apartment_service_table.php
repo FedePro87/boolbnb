@@ -15,8 +15,8 @@ class CreateApartmentServiceTable extends Migration
     {
         Schema::create('apartment_service', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('apartment_id')->unsigned()->index();
             $table->bigInteger('service_id')->unsigned()->index();
+            $table->bigInteger('apartment_id')->unsigned()->index();
             $table->timestamps();
         });
     }

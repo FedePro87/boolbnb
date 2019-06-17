@@ -17,6 +17,7 @@ class CreateApartmentsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->text('description');
+            $table->float('price')->unsigned();
             $table->integer('number_of_rooms')->unsigned();
             $table->integer('bathrooms')->unsigned();
             $table->integer('bedrooms')->unsigned();
