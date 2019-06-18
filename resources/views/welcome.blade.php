@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Laravel</title>
-
+        
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
@@ -78,19 +78,13 @@
                     @endauth
                 </div>
             @endif
-
+                    
             <div class="content">
                 <div class="title m-b-md">
                     Laravel
                 </div>
 
                 <h1>Hello World!</h1>
-
-                <h2>belli de casa</h2>
-
-                <h3>???????????''</h3>
-
-                <h1>RRRRAARRRAAAA</h1>
                 
                 <div class="links">
                     <a href="https://laravel.com/docs">Docs</a>

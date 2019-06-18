@@ -18,5 +18,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-// CIAOOOoooo
+Route::get('/show/{id}', 'ApartmentController@show')->name('show');
+Route::get('/homesponsor', 'ApartmentController@showSponsored')->name('show.sponsored');
