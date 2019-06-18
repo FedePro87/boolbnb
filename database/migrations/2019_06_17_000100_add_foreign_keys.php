@@ -16,10 +16,6 @@ class AddForeignKeys extends Migration
 
 
         Schema::table('apartments', function(Blueprint $table) {
-
-            $table->foreign('sponsorship_id', 'sponsorship')
-                  ->references('id')
-                  ->on('sponsorships');
                 
 
             $table->foreign('user_id', 'user')
@@ -49,6 +45,19 @@ class AddForeignKeys extends Migration
             ->on('apartments');
           });
 
+          Schema::table('apartment_sponsorship', function(Blueprint $table){
+              
+              $table->foreign('apartment_id','apartment3')
+              ->references('id')
+              ->on('apartments');
+
+              $table->foreign('sponsorship_id','sponsorship')
+              ->references('id')
+              ->on('sponsorships');
+    
+        
+            });
+
      
     }
 
@@ -71,6 +80,11 @@ class AddForeignKeys extends Migration
             $table->dropForeign('sponsorship');
             $table->dropForeign('user');
 
+        });
+
+        Schema::table('apartment_sponsorship', function(Blueprint $table){
+            $table->dropForeign('sponsorship');
+            $table->dropForeign('apartment3');
         });
     }
 }

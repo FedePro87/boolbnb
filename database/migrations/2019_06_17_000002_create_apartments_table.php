@@ -15,17 +15,16 @@ class CreateApartmentsTable extends Migration
     {
         Schema::create('apartments', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('user_id')->unsigned()->index();
             $table->string('title');
             $table->text('description');
             $table->float('price')->unsigned();
             $table->integer('number_of_rooms')->unsigned();
             $table->integer('bathrooms')->unsigned();
             $table->integer('bedrooms')->unsigned();
-            $table->float('square_meters')->unsigned();
+            $table->integer('square_meters')->unsigned();
             $table->string('address');
             $table->string('image');
-            $table->bigInteger('sponsorship_id')->unsigned()->index();
-            $table->bigInteger('user_id')->unsigned()->index();
 
             $table->timestamps();
         });

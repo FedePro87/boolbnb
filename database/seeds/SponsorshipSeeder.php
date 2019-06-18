@@ -16,6 +16,17 @@ class SponsorshipSeeder extends Seeder
      */
     public function run()
     {
-        factory(Sponsorship::class, 3)->create();
+            
+        Sponsorship::insert([
+            'type' => '24 ore',
+        ]);
+        Sponsorship::insert([
+            'type' => '72 ore',
+        ]);
+        Sponsorship::insert([
+            'type' => '144 ore',
+        ]);
     }
 }
+
+

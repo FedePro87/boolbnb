@@ -17,19 +17,27 @@ class ApartmentSeeder extends Seeder
     public function run()
     {
         factory(Apartment::class, 50)->make()->each(function($apartment) {
-            
+
             $user = User::inRandomOrder()->first();
             $apartment->user()->associate($user);
 
-            $sponsorship = Sponsorship::inRandomOrder()->first();
-            $apartment->sponsorship()->associate($sponsorship);
+           
             $apartment->save();
-
+            
             $services = Service::inRandomOrder()->take(rand(1,6))->get();
             $apartment->services()->attach($services);
-  
-            
+
+            $randomizer=rand(0,1);
+
+            if($randomizer){
+              $sponsorship=Sponsorship::inRandomOrder()->first();
+              $apartment->sponsorships()->attach($sponsorship);
+            }
+
         });
+
+
+        
     }
 }
 

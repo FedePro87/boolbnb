@@ -12,3 +12,5 @@ $factory->define(App\Sponsorship::class, function (Faker $faker) {
         'type'=>$faker->word(1)
     ];
 });
+
+
