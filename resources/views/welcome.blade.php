@@ -62,6 +62,9 @@
                 margin-bottom: 30px;
             }
         </style>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
     </head>
     <body>
         <div class="flex-center position-ref full-height">
