@@ -28,23 +28,25 @@ class ApartmentController extends Controller
   public function search(Request $request){
 
    $title = $request -> title;
-   $description = $request -> description;
    $service = $request-> service;
    $query = Apartment::query();
 
+   if ($service) {
+     $query = Service::findOrFail($service)->apartments();
+
+   }
    if ($title) {
-      $query = $query ->where('title', 'LIKE', '%' . $title . '%');
+    $query = $query ->where('title', 'LIKE', '%' . $title . '%');
     }
-    if ($description) {
-      $query = $query ->where('description', 'LIKE', '%' . $description . '%');
-    }
+
+
 
 
     $apartments = $query ->get();
 
     $services = Service::all();
 
-    return view('page.search', compact( 'apartments','services'));
+    return view('page.search', compact( 'services','apartments'));
 
   }
 }
