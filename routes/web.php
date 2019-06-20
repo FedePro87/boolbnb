@@ -20,3 +20,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/show/{id}', 'ApartmentController@show')->name('show');
 Route::get('/homesponsor', 'ApartmentController@showSponsored')->name('show.sponsored');
+Route::get('/search', 'ApartmentController@search')->name('search');
