@@ -62,6 +62,9 @@
                 margin-bottom: 30px;
             }
         </style>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -85,7 +88,7 @@
                 </div>
 
                 <h1>Hello World!</h1>
-                <h1>Caaaaaaaaaa</h1>
+                <h1>Caaaaaaaaaafaefaefaeffaedwaaefaeae</h1>
                 <h2>ciao ciao</h2>
                 <div class="links">
                     <a href="https://laravel.com/docs">Docs</a>
