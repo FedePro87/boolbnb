@@ -1,32 +1,29 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 require('./bootstrap');
 
-window.Vue = require('vue');
+function addMap() {
+  // Qui viene impostata una variabile che rappresenta un array. Rispettivamente ci sono la latitudine e la longitudine. Questi dati possono essere recuperati passando nell'url della show la query o in alternativa nascondendo i dati che ci servono da qualche parte e recuperandoli con jquery.
+  var myCoordinates = [41.988270,12.655388];
+  // Questo non è obbligatorio.
+  tomtom.setProductInfo('boolbnb', '1.0');
+  // Instanzio la variabile map che corrisponde alla mappa che verrà visualizzata. Da notare la chiave center a cui viene dato il valore che corrisponde alle nostre coordinate.
+  var map= tomtom.L.map('map', {
+    key: 'xrIKVZTiqc6NhEvGHRbxYYpsyoLoR2wD',
+    source: 'vector',
+    basePath: '/tomtom-sdk',
+    center: myCoordinates,
+    zoom: 16,
+    language: "it-IT"
+  });
+  // Qui inserisco anche un marker che viene posizionato esattamente sull'abitazione.
+  var marker = tomtom.L.marker(myCoordinates).addTo(map);
+  marker.bindPopup('Appartamento').openPopup();
+}
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+function init() {
+  // Check se esiste il div che contiene la mappa, altrimenti da errori
+  if ($('#map').length){
+    addMap();
+  }
+}
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-const app = new Vue({
-    el: '#app',
-});
+$(document).ready(init);

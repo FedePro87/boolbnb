@@ -6,24 +6,25 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{-- ADD MY STYLE --}}
-     {{-- <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     {{-- ADD MY JS --}}
-    {{-- <script src="{{ mix('js/app.js') }}" charset="utf-8"></script> --}}
-    
+    <script src="{{ mix('js/app.js') }}" charset="utf-8"></script>
+
     <title>BoolBnB</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
-
+    <script src="{{ asset('tomtom-sdk/tomtom.min.js')}}" type="text/javascript"></script>
+    <link rel="stylesheet" href="{{ asset('tomtom-sdk/map.css') }}">
   </head>
   <body>
     <header>
 
       <h1>Header</h1>
         <h2> INSERIRE RICERCA</h2>
-    
-    
+
+
     </header>
 
 
@@ -51,7 +52,7 @@
     {{-- END ERROR CONTROL --}}
 
 
-    
+
     @yield('content')
 
 
@@ -60,7 +61,6 @@
     <footer>
     <h5>It's like Airbnb but made with much more love</h5>
     </footer>
-
 
 
 
