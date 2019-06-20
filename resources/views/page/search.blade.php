@@ -28,9 +28,7 @@
 
 
 <div class="show">
-
-
-  @foreach ($apartments as $apartment)
+    @foreach ($apartments as $apartment)
 
     <div class="apartment-box">
       <img src="{{$apartment->image}}" alt="">
@@ -49,6 +47,11 @@
      </div>
     </div>
   @endforeach
+
+  @if (!isset($apartments[0]))
+    
+    <h1>Non ci sono risultati!</h1>
+  @endif
 </div>
 
 
