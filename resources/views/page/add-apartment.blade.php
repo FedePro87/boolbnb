@@ -1,15 +1,15 @@
 @extends('layouts.home')
 @section('content')
-    
+
 
 <form class="" action="{{route('save')}}" method="post">
     @csrf
-   
+
     <label for="title"><h2>Title</h2></label>
     <br>
     <input type="text" name="title" value="">
     <br>
-    
+
     <div>
         <label for="image"><h2>Add Image</h2></label>
         <br>
@@ -21,14 +21,19 @@
     <br>
     <textarea name="description" rows="8" cols="80"></textarea>
     <br>
-    
+
     <label for="price"><h2>Price</h2></label>
     <input type="text" name="price">
     <br>
-    
+
     <label for="number_of_rooms"><h2>Rooms</h2></label>
+
+
+
     <select>
-        @for ($i=10; $i>=1; $i--)
+      <option value="$i">1</option>
+
+        @for ($i=2; $i<=10; $i++)
             {
               <option value="$i">{{$i}}</option>
             }
@@ -37,7 +42,9 @@
 
     <label for="bathrooms"><h2>Bathrooms</h2></label>
     <select>
-        @for ($i=10; $i>=1; $i--)
+      <option value="$i">1</option>
+
+        @for ($i=2; $i<=10; $i++)
             {
               <option value="$i">{{$i}}</option>
             }
@@ -46,7 +53,8 @@
 
     <label for="bedrooms"><h2>Bedrooms</h2></label>
     <select>
-        @for ($i=10; $i>=1; $i--)
+        <option value="$i">1</option>
+        @for ($i=2; $i<=10; $i++)
             {
               <option value="$i">{{$i}}</option>
             }
