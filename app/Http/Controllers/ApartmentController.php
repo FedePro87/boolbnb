@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\NewApartmentRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests;
 use App\Apartment;
 use App\Sponsorship;
 use App\Service;
-use DB;
+use App\User;
 
 class ApartmentController extends Controller
 {
@@ -51,8 +53,6 @@ class ApartmentController extends Controller
 
   $services = Service::all();
   
-  // dd($apartments);
-
   return view('page.search', compact( 'services','apartments'));
   }
 
@@ -64,22 +64,37 @@ class ApartmentController extends Controller
         $services = Service::all();
         
         return view('page.add-apartment' , compact('apartment','services'));
-
     }
 
 
-    function saveNewApartment(Request $request){
-
-      $apartment = new Apartment();
-
-      $apartment->title = $request->input('title');
-      $apartment->description = $request->textarea('description');
-      $apartment->price = $request->input('price');
-      $apartment->square_meters = $request->input('square_meters');
-      $apartment->address = $request->input('address');
-
+    function saveNewApartment(NewApartmentRequest $request){
+      if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $name = time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path('/images');
+        $image->move($destinationPath, $name);
+        $this->save();
+      }
       
+      
+      $validateData = $request -> validated();
+
+      $apartment = Apartment::make($validateData);
+      $inputAuthor= Auth::user()->firstname;
+      $user= User::where('firstname','=',$inputAuthor)->first();
+      $apartment->user()->associate($user);
+      $apartment->save();
+
+      if ($request->input('services')!==null) {
+        $selectedServices = $request->input('services');
+        $services = Service::findOrFail($selectedServices);
+  
+        foreach ($services as $service) {
+          $apartment->services()->attach($service);
+        }
+      }
 
 
+      return redirect('/');
     }
 }

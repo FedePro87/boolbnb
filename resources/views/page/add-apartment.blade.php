@@ -28,35 +28,29 @@
 
     <label for="number_of_rooms"><h2>Rooms</h2></label>
 
+    <select name="number_of_rooms">
 
-
-    <select>
-      <option value="$i">1</option>
-
-        @for ($i=2; $i<=10; $i++)
+        @for ($i=1; $i<=10; $i++)
             {
-              <option value="$i">{{$i}}</option>
+              <option value="{{$i}}">{{$i}}</option>
             }
         @endfor
     </select><br>
 
     <label for="bathrooms"><h2>Bathrooms</h2></label>
-    <select>
-      <option value="$i">1</option>
-
-        @for ($i=2; $i<=10; $i++)
+    <select name="bathrooms">
+        @for ($i=1; $i<=10; $i++)
             {
-              <option value="$i">{{$i}}</option>
+              <option value="{{$i}}">{{$i}}</option>
             }
         @endfor
     </select><br>
 
     <label for="bedrooms"><h2>Bedrooms</h2></label>
-    <select>
-        <option value="$i">1</option>
-        @for ($i=2; $i<=10; $i++)
+    <select name="bedrooms">
+        @for ($i=1; $i<=10; $i++)
             {
-              <option value="$i">{{$i}}</option>
+              <option value="{{$i}}">{{$i}}</option>
             }
         @endfor
     </select><br>
