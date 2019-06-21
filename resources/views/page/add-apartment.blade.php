@@ -84,4 +84,4 @@
   </form>
 
 
-@stop
+@endsection

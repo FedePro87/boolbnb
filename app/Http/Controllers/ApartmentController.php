@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewApartmentRequest;
 use Illuminate\Http\Request;
 use App\Apartment;
 use App\Sponsorship;
 use App\Service;
+
 use DB;
 
 class ApartmentController extends Controller
@@ -74,18 +76,56 @@ class ApartmentController extends Controller
     }
 
 
-    function saveNewApartment(Request $request){
-
-      $apartment = new Apartment();
-
-      $apartment->title = $request->input('title');
-      $apartment->description = $request->textarea('description');
-      $apartment->price = $request->input('price');
-      $apartment->square_meters = $request->input('square_meters');
-      $apartment->address = $request->input('address');
-
+    function saveNewApartment(NewApartmentRequest $request){
+      if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $name = time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path('/images');
+        $image->move($destinationPath, $name);
+        $this->save();
+      }
       
+      
+      $validateData = $request -> validated();
+
+      $apartment = Apartment::make($validateData);
+      $inputAuthor= Auth::user()->firstname;
+      $user= User::where('firstname','=',$inputAuthor)->first();
+      $apartment->user()->associate($user);
+      $apartment->save();
+      
+      // $apartment = Apartment::create($validateData);
+      $apartment->services()->attach($services);
+
+
+      return redirect('/');
 
 
     }
 }
+
+
+// public function fileUpload(Request $request) {
+//   $this->validate($request, [
+//       'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+//   ]);
+
+
+//       return back()->with('success','Image Upload successfully');
+//   }
+// }
+
+// function saveNewPost(NewPostRequest $request){
+
+//   $validateData = $request -> validated();
+
+//   $categoriesId = $validateData['categories'];
+//   $categories = Category::find($categoriesId);
+//   // dd($validateData);
+
+//   $post = Post::create($validateData);
+//   $post->categories()->attach($categories);
+
+//   return redirect('/');
+
+// }
