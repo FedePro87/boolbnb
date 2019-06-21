@@ -10,6 +10,8 @@ use App\Sponsorship;
 use App\Service;
 use App\User;
 use Vendor\autoload;
+use DB;
+use Carbon\Carbon;
 
 class ApartmentController extends Controller
 {
@@ -21,10 +23,39 @@ class ApartmentController extends Controller
   }
 
   public function showSponsored(){
-    $sponsoreds = Sponsorship::all();
-      return view('page.sponsored-apartment', compact('sponsoreds'));
+    // Qui deve uscire un array con solo appartamenti sponsorizzati oppure tutti.
+    // Ogni appartamento ha diverse sponsorizzazioni con diversi tempi.
+    // - Tempi di tutte le sponsorizzazioni.
 
+    // - Prendere le sponsorizzazioni dell'appartamento.'
 
+    $apartments= Apartment::all();
+    $sponsoreds=[];
+
+    foreach ($apartments as $apartment){
+      $apartmentSponsorships = $apartment->sponsorships()->get();
+      foreach ($apartmentSponsorships as $apartmentSponsorship){
+        $expiringMins=$apartmentSponsorship->type;
+        $date = $apartmentSponsorship->pivot->created_at;
+        $datework = Carbon::parse($date);
+        $now = Carbon::now();
+        $diff = $date->diffInMinutes($now);
+        
+        if($diff<$expiringMins){
+          $sponsoreds[]=$apartment;
+        }
+      }
+    }
+
+    $try24 =DB::table('apartment_sponsorship')->where('sponsorship_id',1)->where('created_at', '>', Carbon::now()->subDays(1))->get();
+    $try72 =DB::table('apartment_sponsorship')->where('sponsorship_id',2)->where('created_at', '>', Carbon::now()->subDays(3))->get();
+    $try144 =DB::table('apartment_sponsorship')->where('sponsorship_id',3)->where('created_at', '>', Carbon::now()->subDays(6))->get();
+
+    // $sponsorships = DB::table('apartment_sponsorship')->where('created_at', '<', tottempofa)->get();
+    // $sponsoreds = Sponsorship::all();
+
+    // dd($sponsoreds);
+    return view('page.sponsored-apartment', compact('sponsoreds'));
   }
 
   public function search(Request $request){
