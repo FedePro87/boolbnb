@@ -15,9 +15,23 @@
                             <label for="firstname" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="firstname" type="text" class="form-control @error('firstname') is-invalid @enderror" firstname="firstname" value="{{ old('firstname') }}" required autocomplete="firstname" autofocus>
+                                <input id="firstname" type="text" class="form-control @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" required autocomplete="firstname" autofocus>
 
                                 @error('firstname')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="lastname" class="col-md-4 col-form-label text-md-right">{{ __('Lastname') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required autocomplete="lastname" autofocus>
+
+                                @error('lastname')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -58,6 +72,20 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="birthdate" class="col-md-4 col-form-label text-md-right">{{ __('Birthdate') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="birthdate" type="date" class="form-control @error('birthdate') is-invalid @enderror" name="birthdate">
+
+                                @error('birthdate')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
 

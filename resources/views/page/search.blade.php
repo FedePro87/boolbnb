@@ -13,7 +13,7 @@
       <label for="service">Services</label><br>
 
         @foreach ($services as $service)
-        <input type="checkbox" name="{{$service->name}}" value="{{$service->id}}"><label>{{$service->name}}  </label><br>
+             <input type="checkbox" name="services[]" value="{{$service->id}}"><label>{{$service->name}}  </label><br>
         @endforeach
 
     </div>
@@ -28,9 +28,7 @@
 
 
 <div class="show">
-
-
-  @foreach ($apartments as $apartment)
+    @foreach ($apartments as $apartment)
 
     <div class="apartment-box">
       <img src="{{$apartment->image}}" alt="">
@@ -49,6 +47,11 @@
      </div>
     </div>
   @endforeach
+
+  @if (!isset($apartments[0]))
+    
+    <h1>Non ci sono risultati!</h1>
+  @endif
 </div>
 
 
