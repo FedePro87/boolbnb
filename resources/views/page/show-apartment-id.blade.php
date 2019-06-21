@@ -6,7 +6,7 @@
   <h1>{{$apartment->title}}</h1>
   <h5>Costo per notte: {{$apartment->price}}€</h5>
 
-  <img src="{{$apartment->image}}" alt="">
+  <img src="{{asset('images/' . $apartment->image)}}" alt="">
 
   <p>{{$apartment->description}}</p>
 

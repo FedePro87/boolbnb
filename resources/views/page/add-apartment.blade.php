@@ -2,7 +2,7 @@
 @section('content')
 
 
-<form class="" action="{{route('save')}}" method="post">
+<form enctype="multipart/form-data" class="" action="{{route('save')}}" method="post">
     @csrf
 
     <label for="title"><h2>Title</h2></label>
@@ -28,35 +28,29 @@
 
     <label for="number_of_rooms"><h2>Rooms</h2></label>
 
+    <select name="number_of_rooms">
 
-
-    <select>
-      <option value="$i">1</option>
-
-        @for ($i=2; $i<=10; $i++)
+        @for ($i=1; $i<=10; $i++)
             {
-              <option value="$i">{{$i}}</option>
+              <option value="{{$i}}">{{$i}}</option>
             }
         @endfor
     </select><br>
 
     <label for="bathrooms"><h2>Bathrooms</h2></label>
-    <select>
-      <option value="$i">1</option>
-
-        @for ($i=2; $i<=10; $i++)
+    <select name="bathrooms">
+        @for ($i=1; $i<=10; $i++)
             {
-              <option value="$i">{{$i}}</option>
+              <option value="{{$i}}">{{$i}}</option>
             }
         @endfor
     </select><br>
 
     <label for="bedrooms"><h2>Bedrooms</h2></label>
-    <select>
-        <option value="$i">1</option>
-        @for ($i=2; $i<=10; $i++)
+    <select name="bedrooms">
+        @for ($i=1; $i<=10; $i++)
             {
-              <option value="$i">{{$i}}</option>
+              <option value="{{$i}}">{{$i}}</option>
             }
         @endfor
     </select><br>
@@ -73,7 +67,7 @@
       <label for="services"><h2>services</h2></label>
       <br>
       @foreach ($services as $service)
-        <input type="checkbox" name="{{$service->name}}" value="{{$service->id}}">{{$service->name}}
+        <input type="checkbox" name="services[]" value="{{$service->id}}">{{$service->name}}
         <br>
       @endforeach
     </div>
