@@ -2,7 +2,7 @@
 @section('content')
 
 
-<form class="" action="{{route('save')}}" method="post">
+<form enctype="multipart/form-data" class="" action="{{route('save')}}" method="post">
     @csrf
 
     <label for="title"><h2>Title</h2></label>

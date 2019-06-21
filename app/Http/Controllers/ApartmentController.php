@@ -68,21 +68,22 @@ class ApartmentController extends Controller
 
 
     function saveNewApartment(NewApartmentRequest $request){
-      if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $name = time().'.'.$image->getClientOriginalExtension();
-        $destinationPath = public_path('/images');
-        $image->move($destinationPath, $name);
-        $this->save();
-      }
-      
-      
       $validateData = $request -> validated();
 
       $apartment = Apartment::make($validateData);
       $inputAuthor= Auth::user()->firstname;
       $user= User::where('firstname','=',$inputAuthor)->first();
       $apartment->user()->associate($user);
+
+      if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $name = time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path('/images');
+        $image->move($destinationPath, $name);
+        $apartment->image=$name;
+        // $apartment->save();
+      }
+
       $apartment->save();
 
       if ($request->input('services')!==null) {
