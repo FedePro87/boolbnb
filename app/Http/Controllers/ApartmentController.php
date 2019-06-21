@@ -12,6 +12,8 @@ use App\User;
 use Vendor\autoload;
 use DB;
 use Carbon\Carbon;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class ApartmentController extends Controller
 {
@@ -23,12 +25,6 @@ class ApartmentController extends Controller
   }
 
   public function showSponsored(){
-    // Qui deve uscire un array con solo appartamenti sponsorizzati oppure tutti.
-    // Ogni appartamento ha diverse sponsorizzazioni con diversi tempi.
-    // - Tempi di tutte le sponsorizzazioni.
-
-    // - Prendere le sponsorizzazioni dell'appartamento.'
-
     $apartments= Apartment::all();
     $sponsoreds=[];
 
@@ -47,14 +43,6 @@ class ApartmentController extends Controller
       }
     }
 
-    $try24 =DB::table('apartment_sponsorship')->where('sponsorship_id',1)->where('created_at', '>', Carbon::now()->subDays(1))->get();
-    $try72 =DB::table('apartment_sponsorship')->where('sponsorship_id',2)->where('created_at', '>', Carbon::now()->subDays(3))->get();
-    $try144 =DB::table('apartment_sponsorship')->where('sponsorship_id',3)->where('created_at', '>', Carbon::now()->subDays(6))->get();
-
-    // $sponsorships = DB::table('apartment_sponsorship')->where('created_at', '<', tottempofa)->get();
-    // $sponsoreds = Sponsorship::all();
-
-    // dd($sponsoreds);
     return view('page.sponsored-apartment', compact('sponsoreds'));
   }
 
@@ -72,9 +60,7 @@ class ApartmentController extends Controller
   if(isset($data['services'])){
     foreach($data['services'] as $service){
       $apartments = $apartments->whereHas('services', function($q)use($service){
-  
         $q->where('service_id', $service); //this refers id field from services table
-  
       });
     }
   }
@@ -114,15 +100,18 @@ class ApartmentController extends Controller
       }
 
       $inputAddress=$request->input('address');
-      $geocoder = new \OpenCage\Geocoder\Geocoder('7a5d76fa6dcf4bc8ad7ad4dce1115b50');
-      $result = $geocoder->geocode($inputAddress);
-      $lat=$result['results'][0]['geometry']['lat'];
-      $lng=$result['results'][0]['geometry']['lng'];
+      // $geocoder = new \OpenCage\Geocoder\Geocoder('7a5d76fa6dcf4bc8ad7ad4dce1115b50');
+      // $result = $geocoder->geocode($inputAddress);
+      // $lat=$result['results'][0]['geometry']['lat'];
+      // $lng=$result['results'][0]['geometry']['lng'];
+      // $apartment->lat=$lat;
+      // $apartment->lng=$lng;
+
+      $positionData = $this->callTomTomApi('https://api.tomtom.com/search/2/geocode/' . $inputAddress . '.JSON',['key'=> "xrIKVZTiqc6NhEvGHRbxYYpsyoLoR2wD"]);
+      $lat=$positionData->lat;
+      $lng=$positionData->lon;
       $apartment->lat=$lat;
       $apartment->lng=$lng;
-
-      // dd($result['results'][0]['geometry']['lng']);
-
       $apartment->save();
 
       if ($request->input('services')!==null) {
@@ -137,4 +126,16 @@ class ApartmentController extends Controller
 
       return redirect('/');
     }
+
+  private function callTomTomAPI($url, $data){
+    $client = new \GuzzleHttp\Client();
+    $response = $client->get($url, ["query" => $data]);
+
+    $incData=json_decode($response->getBody());
+    $result=$incData->results[0]->position;
+
+    // dd($incData->results[0]->position);
+
+    return $result;
+  }
 }
