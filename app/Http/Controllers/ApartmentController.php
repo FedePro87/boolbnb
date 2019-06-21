@@ -37,6 +37,7 @@ class ApartmentController extends Controller
     $apartments = $apartments ->where('title', 'LIKE', '%' . $title . '%');
   }
 
+<<<<<<< Updated upstream
   if(isset($data['services'])){
     foreach($data['services'] as $service){
       $apartments = $apartments->whereHas('services', function($q)use($service){
@@ -44,6 +45,11 @@ class ApartmentController extends Controller
         $q->where('service_id', $service); //this refers id field from services table
   
       });
+=======
+   }
+   if ($title) {
+    $query =  $query ->where('title', 'LIKE', '%' . $title . '%');
+>>>>>>> Stashed changes
     }
   }
   
