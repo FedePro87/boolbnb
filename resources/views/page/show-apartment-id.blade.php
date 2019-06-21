@@ -33,8 +33,7 @@
 
 
   {{-- MAP SECTION --}}
-
-  <div id='map'></div>
+  <div data-lat={{$apartment->lat}} data-lng={{$apartment->lng}} id='map'></div>
 
   {{-- END MAP SECTION --}}
 

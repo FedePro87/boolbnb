@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "98d23a780ebd5102a13b0531ac6ea0c9",
+    "content-hash": "1f3f8c8c6582d4e5237224a96a183a96",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1019,6 +1019,53 @@
                 "php"
             ],
             "time": "2019-05-25T20:07:01+00:00"
+        },
+        {
+            "name": "opencage/geocode",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/OpenCageData/php-opencage-geocode.git",
+                "reference": "7fed059d27390712fd74a52daa60f36d34a5abcf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OpenCageData/php-opencage-geocode/zipball/7fed059d27390712fd74a52daa60f36d34a5abcf",
+                "reference": "7fed059d27390712fd74a52daa60f36d34a5abcf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~7.0",
+                "squizlabs/php_codesniffer": "^2.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OpenCage\\Geocoder\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "OpenCage Data Limited",
+                    "email": "info@opencagedata.com",
+                    "homepage": "https://opencagedata.com"
+                }
+            ],
+            "description": "A PHP library for geocoding via the OpenCage Geocoder API",
+            "keywords": [
+                "addresses",
+                "geocode",
+                "geocoding",
+                "opencagedata"
+            ],
+            "time": "2019-05-09T22:40:38+00:00"
         },
         {
             "name": "opis/closure",

@@ -16,6 +16,8 @@ class Apartment extends Model
         'bedrooms',
         'square_meters',
         'address',
+        'lat',
+        'lng',
         'image'
 
       ];

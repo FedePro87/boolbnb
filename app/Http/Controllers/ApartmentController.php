@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NewApartmentRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Apartment;
 use App\Sponsorship;
 use App\Service;
 use App\User;
+use Vendor\autoload;
 
 class ApartmentController extends Controller
 {
@@ -19,8 +20,6 @@ class ApartmentController extends Controller
           return view('page.show-apartment-id', compact('apartment'));
   }
 
-
-
   public function showSponsored(){
     $sponsoreds = Sponsorship::all();
       return view('page.sponsored-apartment', compact('sponsoreds'));
@@ -30,13 +29,13 @@ class ApartmentController extends Controller
 
   public function search(Request $request){
 
-   $title = $request -> title;
+   $title = $request -> address;
    $services = $request-> services;
    $data=$request->all();
-  $apartments= new Apartment;
+   $apartments= new Apartment;
 
-  if (isset($data['title'])) {
-    $apartments = $apartments ->where('title', 'LIKE', '%' . $title . '%');
+  if (isset($data['address'])) {
+    $apartments = $apartments ->where('address', 'LIKE', '%' . $title . '%');
   }
 
   if(isset($data['services'])){
@@ -82,6 +81,16 @@ class ApartmentController extends Controller
         $image->move($destinationPath, $name);
         $apartment->image=$name;
       }
+
+      $inputAddress=$request->input('address');
+      $geocoder = new \OpenCage\Geocoder\Geocoder('7a5d76fa6dcf4bc8ad7ad4dce1115b50');
+      $result = $geocoder->geocode($inputAddress);
+      $lat=$result['results'][0]['geometry']['lat'];
+      $lng=$result['results'][0]['geometry']['lng'];
+      $apartment->lat=$lat;
+      $apartment->lng=$lng;
+
+      // dd($result['results'][0]['geometry']['lng']);
 
       $apartment->save();
 

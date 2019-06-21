@@ -5,8 +5,8 @@
 
   <form action="{{route('search')}}" method="get">
     <div class="form-group">
-      <label for="title">Title</label><br>
-      <input type="text" name="title" value="">
+      <label for="address">Title</label><br>
+      <input type="text" name="address" value="">
     </div>
 
     <div class="form-group">
