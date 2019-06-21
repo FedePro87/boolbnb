@@ -67,7 +67,7 @@
       <label for="services"><h2>services</h2></label>
       <br>
       @foreach ($services as $service)
-        <input type="checkbox" name="{{$service->name}}" value="{{$service->id}}">{{$service->name}}
+        <input type="checkbox" name="services[]" value="{{$service->id}}">{{$service->name}}
         <br>
       @endforeach
     </div>

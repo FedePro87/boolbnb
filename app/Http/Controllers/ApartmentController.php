@@ -81,7 +81,6 @@ class ApartmentController extends Controller
         $destinationPath = public_path('/images');
         $image->move($destinationPath, $name);
         $apartment->image=$name;
-        // $apartment->save();
       }
 
       $apartment->save();
