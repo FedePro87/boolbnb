@@ -55,4 +55,31 @@ class ApartmentController extends Controller
 
   return view('page.search', compact( 'services','apartments'));
   }
+
+
+  // Creazione nuovo appartamento - tutto questa roba andrà spostata nell'HomeController
+  function createNewApartment(){
+    
+        $apartment = Apartment::all();
+        $services = Service::all();
+        
+        return view('page.add-apartment' , compact('apartment','services'));
+
+    }
+
+
+    function saveNewApartment(Request $request){
+
+      $apartment = new Apartment();
+
+      $apartment->title = $request->input('title');
+      $apartment->description = $request->textarea('description');
+      $apartment->price = $request->input('price');
+      $apartment->square_meters = $request->input('square_meters');
+      $apartment->address = $request->input('address');
+
+      
+
+
+    }
 }

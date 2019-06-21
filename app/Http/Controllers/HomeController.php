@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Apartment;
 
 class HomeController extends Controller
 {
@@ -25,4 +26,14 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+
+    // function createNewApartment(){
+    
+    //     $apartment = Apartment::all();
+    //     $services = Services::all();
+        
+    //     return view('page.add-new-apartment' , compact('apartment','services'));
+
+    // }
 }
