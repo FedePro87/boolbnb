@@ -25,6 +25,9 @@ class CreateApartmentsTable extends Migration
             $table->integer('square_meters')->unsigned();
             $table->string('address');
             $table->string('image');
+            $table->string('lat');
+            $table->string('lng');
+
 
             $table->timestamps();
         });
