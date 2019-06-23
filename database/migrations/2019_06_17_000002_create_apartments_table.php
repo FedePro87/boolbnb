@@ -27,6 +27,9 @@ class CreateApartmentsTable extends Migration
             $table->double('lat');
             $table->double('lng');
             $table->string('image');
+            $table->string('lat');
+            $table->string('lng');
+
 
             $table->timestamps();
         });

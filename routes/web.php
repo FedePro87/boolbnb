@@ -24,3 +24,5 @@ Route::get('/search', 'ApartmentController@search')->name('search');
 
 Route::get('/user/apartment/new', 'ApartmentController@createNewApartment')->name('create');
 Route::post('/user/apartment/new', 'ApartmentController@saveNewApartment')->name('save');
+Route::get('/user/sponsorship/{id}', 'SponsorshipController@showSponsorship')->name('showSponsorship');
+Route::put('/user/sponsorship/{id}', 'SponsorshipController@updateSponsor')->name('updateSponsorship');

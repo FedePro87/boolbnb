@@ -93,7 +93,7 @@ class ApartmentController extends Controller
         $datework = Carbon::parse($date);
         $now = Carbon::now();
         $diff = $date->diffInMinutes($now);
-        
+
         if($diff<$expiringMins){
           $sponsoreds[]=$apartment;
         }
@@ -103,39 +103,39 @@ class ApartmentController extends Controller
     return view('page.sponsored-apartment', compact('sponsoreds'));
   }
 
-  public function search(Request $request){
+    public function search(Request $request){
 
-   $title = $request -> address;
-   $services = $request-> services;
-   $data=$request->all();
-   $apartments= new Apartment;
+       $title = $request -> address;
+       $services = $request-> services;
+       $data=$request->all();
+       $apartments= new Apartment;
 
-  if (isset($data['address'])) {
-    $apartments = $apartments ->where('address', 'LIKE', '%' . $title . '%');
-  }
+      if (isset($data['address'])) {
+        $apartments = $apartments ->where('address', 'LIKE', '%' . $title . '%');
+      }
 
-  if(isset($data['services'])){
-    foreach($data['services'] as $service){
-      $apartments = $apartments->whereHas('services', function($q)use($service){
-        $q->where('service_id', $service); //this refers id field from services table
-      });
+      if(isset($data['services'])){
+        foreach($data['services'] as $service){
+          $apartments = $apartments->whereHas('services', function($q)use($service){
+            $q->where('service_id', $service); //this refers id field from services table
+          });
+        }
+      }
+
+      $apartments = $apartments ->get();
+
+      $services = Service::all();
+
+      return view('page.search', compact( 'services','apartments'));
     }
-  }
-  
-  $apartments = $apartments ->get();
-
-  $services = Service::all();
-  
-  return view('page.search', compact( 'services','apartments'));
-  }
 
 
   // Creazione nuovo appartamento - tutto questa roba andrà spostata nell'HomeController
-  function createNewApartment(){
-    
+    function createNewApartment(){
+
         $apartment = Apartment::all();
         $services = Service::all();
-        
+
         return view('page.add-apartment' , compact('apartment','services'));
     }
 
@@ -174,7 +174,7 @@ class ApartmentController extends Controller
       if ($request->input('services')!==null) {
         $selectedServices = $request->input('services');
         $services = Service::findOrFail($selectedServices);
-  
+
         foreach ($services as $service) {
           $apartment->services()->attach($service);
         }
@@ -184,7 +184,7 @@ class ApartmentController extends Controller
       return redirect('/');
     }
 
-  private function callTomTomAPI($url, $data){
+    private function callTomTomAPI($url, $data){
     $client = new \GuzzleHttp\Client();
     $response = $client->get($url, ["query" => $data]);
 
