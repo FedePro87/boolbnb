@@ -57,14 +57,15 @@
 
   {{-- END Contact form --}}
 
-
-  {{--
-  @if($logged)
-  <div>
-  visualizza statistiche
-</div>
-@endif --}}
-
-
+  @if(Auth::user()!==null)
+    @if($apartment->user_id==Auth::user()->id)
+    <div>
+      <h1>Visualizzazioni totali: {{$apartment->visuals->count()}}</h1>
+      <h1>Messaggi totali: {{$apartment->messages->count()}}</h1>
+      <canvas id="visualsChart" data-stats={{$visualsData}} data-months={{$months}}></canvas>
+     <canvas id="messagesChart" data-stats={{$messagesData}} data-months={{$months}}></canvas>
+    </div>
+    @endif
+  @endif
 
 @stop

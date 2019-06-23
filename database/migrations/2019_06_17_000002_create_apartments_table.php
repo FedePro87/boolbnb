@@ -24,6 +24,8 @@ class CreateApartmentsTable extends Migration
             $table->integer('bedrooms')->unsigned();
             $table->integer('square_meters')->unsigned();
             $table->string('address');
+            $table->double('lat');
+            $table->double('lng');
             $table->string('image');
 
             $table->timestamps();

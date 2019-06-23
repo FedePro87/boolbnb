@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class MessageSeeder extends Seeder
+class VisualSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,12 +11,11 @@ class MessageSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Message::class, 50)->make()->each(function($message) {
+        factory(App\Visual::class, 50)->make()->each(function($visual) {
 
             $apartment = App\Apartment::inRandomOrder()->first();
-            $message->apartment()->associate($apartment);
-            $message->save();
-    });
-
-   }
+            $visual->apartment()->associate($apartment);
+            $visual->save();
+        });
+    }
 }

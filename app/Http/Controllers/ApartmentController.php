@@ -8,20 +8,77 @@ use Illuminate\Http\Request;
 use App\Apartment;
 use App\Sponsorship;
 use App\Service;
+use App\Visual;
 use App\User;
 use Vendor\autoload;
 use DB;
+use App;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 
 class ApartmentController extends Controller
 {
- public function show($id)
-  {
-    $apartment = Apartment::findOrFail($id);
-        //   dd($apartment);
-          return view('page.show-apartment-id', compact('apartment'));
+ public function show($id){
+   $apartment = Apartment::findOrFail($id);
+   
+   $pageRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
+   
+   // Se refresho non succede niente, se entro nella pagina normalmente me lo conta come visualizzazione
+   // Qui succede che se un utente si slogga e guarda la scheda del proprio appartamento lo conta comunque come visualizzazione
+    if(!$pageRefreshed) {
+      if(Auth::user()!==null){
+        if(Auth::user()->id!==$apartment->user_id){
+          $visual= Visual::make();
+          $visual->apartment()->associate($apartment);
+          $visual->save();
+        }
+      } else {
+        $visual= Visual::make();
+        $visual->apartment()->associate($apartment);
+        $visual->save();
+      }
+    }
+
+    $months = json_encode($this->getMonthsArray());
+    $visualsData = json_encode($this->getStatsArray('visuals',$id));
+    $messagesData = json_encode($this->getStatsArray('messages',$id));
+
+    return view('page.show-apartment-id', compact('apartment', 'months','visualsData','messagesData'));
+  }
+
+  private function getMonthsArray(){
+    $startTime = Carbon::now();
+    $monthsArray=[];
+
+    foreach (range(-12, 0) as $month) {
+      $notFormattedDate= $startTime->copy()->addMonths($month);
+      $formattedDate= ucfirst(Carbon::parse($notFormattedDate)->isoFormat('MMMM'));
+      $monthsArray[] = $formattedDate;
+    }
+
+    return $monthsArray;
+  }
+
+  private function getStatsArray($table,$id){
+    $startTime = Carbon::now();
+    $statsArray=[];
+
+    foreach (range(-12, 0) as $month) {
+      $notFormattedDate= $startTime->copy()->addMonths($month);
+      $currentMonthNumber=Carbon::parse($notFormattedDate)->isoFormat('OM');
+      $currentYear=Carbon::parse($notFormattedDate)->isoFormat('YYYY');
+
+      $statsData = DB::table($table)
+      ->where('apartment_id',$id)
+      ->whereMonth('created_at', '=', $currentMonthNumber)
+      ->whereYear('created_at', '=', $currentYear)
+      ->get();
+
+      $statsArray[]=$statsData->count();
+    }
+
+    return $statsArray;
   }
 
   public function showSponsored(){
@@ -133,9 +190,7 @@ class ApartmentController extends Controller
 
     $incData=json_decode($response->getBody());
     $result=$incData->results[0]->position;
-
-    // dd($incData->results[0]->position);
-
+    
     return $result;
   }
 }
