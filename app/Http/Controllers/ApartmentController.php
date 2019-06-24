@@ -13,30 +13,56 @@ use App\User;
 use Vendor\autoload;
 use DB;
 use App;
+use Config;
+use Session;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Braintree_Gateway;
 
 class ApartmentController extends Controller
 {
- public function show($id){
+ public function show($id, Request $request){
    $apartment = Apartment::findOrFail($id);
-   
-   $pageRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
-   
-   // Se refresho non succede niente, se entro nella pagina normalmente me lo conta come visualizzazione
-   // Qui succede che se un utente si slogga e guarda la scheda del proprio appartamento lo conta comunque come visualizzazione
-    if(!$pageRefreshed) {
+
+   //Controllo se ho l'array degli appartamenti visualizzati nella sessione corrente.
+  if($request->session()->has('visulized-ids')){
+    //Se esiste l'array, controllo che l'id dell'appartamento che sto visualizzando non sia presente (se è presente l'ho
+    // evidentemente già visualizzato)
+    if(!in_array($id, $request->session()->get('visulized-ids'))){
+      //Salvo nell'array della sessione che ho visualizzato l'appartamento.
+      $request->session()->push('visulized-ids', $id);
+      //Se l'utente che sta guardando è loggato...
       if(Auth::user()!==null){
+        //Se non è l'utente a cui appartiente l'appartamento, lo conta come visualizzazione.
         if(Auth::user()->id!==$apartment->user_id){
           $visual= Visual::make();
           $visual->apartment()->associate($apartment);
           $visual->save();
         }
-      } else {
-        $visual= Visual::make();
-        $visual->apartment()->associate($apartment);
-        $visual->save();
+      }
+      //Se l'utente non è loggato, lo conta comunque come visualizzazione.
+      else {
+      $visual= Visual::make();
+      $visual->apartment()->associate($apartment);
+      $visual->save();
+      }
+    }
+  }
+  //Se non ho l'array degli appartamenti visualizzati, procedo alla sua creazione aggiungendo l'id del corrente appartamento.
+  // Dopo faccio il solito controllo sull'id dell'utente (se è loggato) per non contare come visualizzazione quella del proprietario.
+  else{
+    $request->session()->push('visulized-ids', $id);
+    if(Auth::user()!==null){
+        if(Auth::user()->id!==$apartment->user_id){
+          $visual= Visual::make();
+          $visual->apartment()->associate($apartment);
+          $visual->save();
+      }
+    } else {
+      $visual= Visual::make();
+      $visual->apartment()->associate($apartment);
+      $visual->save();
       }
     }
 
@@ -82,22 +108,33 @@ class ApartmentController extends Controller
   }
 
   public function showSponsored(){
-    $apartments= Apartment::all();
+    
+
     $sponsoreds=[];
+    $sponsorships= Sponsorship::all();
+    
+    // Per ogni sponsorizzazione ci sarà un timeout diverso, quindi mi vado a prendere il tipo di sponsorizzazione per sapere quanto
+    // tempo deve trascorrere.
+    foreach ($sponsorships as $sponsorship){
+      // Con questa funzione posso prendere qualsiasi data (in questo caso è quella di ADESSO) e diminuirla di tot minuti)
+      $diff = Carbon::now()->subMinutes($sponsorship->type);
 
-    foreach ($apartments as $apartment){
-      $apartmentSponsorships = $apartment->sponsorships()->get();
-      foreach ($apartmentSponsorships as $apartmentSponsorship){
-        $expiringMins=$apartmentSponsorship->type;
-        $date = $apartmentSponsorship->pivot->created_at;
-        $datework = Carbon::parse($date);
-        $now = Carbon::now();
-        $diff = $date->diffInMinutes($now);
+      // Utilizzo il wherehas così da andarmi a collegare direttamente con la tabella apartment_sponsorship.
+        $apartments = new Apartment;
+        $apartments = $apartments->whereHas('sponsorships', function($q)use($sponsorship,$diff){
+      // Faccio una query per prendermi solo gli appartamenti che hanno la sponsorizzazione che sto ciclando in questo momento
+          $q->where('sponsorship_id', $sponsorship->id);
+          //Mi prendo solo quelli che hanno la data successiva alla differenza tra ADESSO e i minuti della sponsorizzazione.
+          //IMPORTANTE whereHas ha la caratteristica di considerare come id univoco anche una foreign key (oppure lo fa 
+          // apposta, chi lo sa!), quindi se becca un'altra colonna con lo stesso apartment_id ignora completamente la precedente
+          // e prende in considerazione solo l'ultima
+          $q->where('apartment_sponsorship.created_at','>',$diff);
+        })->get();
 
-        if($diff<$expiringMins){
+
+        foreach ($apartments as $apartment){
           $sponsoreds[]=$apartment;
         }
-      }
     }
 
     return view('page.sponsored-apartment', compact('sponsoreds'));
@@ -179,7 +216,6 @@ class ApartmentController extends Controller
           $apartment->services()->attach($service);
         }
       }
-
 
       return redirect('/');
     }
