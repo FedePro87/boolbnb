@@ -20,7 +20,7 @@ class SponsorshipController extends Controller
 
 
      // Apartment::whereId($id)->update($apartment);
-     Apartment::findOrFail($id)->sponsorships()->sync($request['sponsorships']);
+     Apartment::findOrFail($id)->sponsorships()->attach($request['sponsorships']);
 
 
      return redirect('/homesponsor');
