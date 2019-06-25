@@ -44,33 +44,12 @@
   <h3>Scrivi al proprietario</h3>
 
   <form class="create" action="{{route('create-message',$apartment->id)}}" method="post">
-    
-  @guest
-    <label for="email">indirizzo mail</label><br>
-    <input type="text" name="email" value=""><br>   
-  @endguest
-
-    <label for="title">Oggetto</label><br>
-    <input name="title" type="text"><br>
-
-    <label for="content">Testo</label><br>
-    <textarea name="content" id="" cols="30" rows="10"></textarea><br>
-
-    <button type="submit" name="button">Invia</button>
-
-  </form> --}}
-
-  <form class="create" action="{{route('create-message',$apartment->id)}}" method="post">
   @csrf
 
   @guest
   <label for="email">indirizzo mail</label><br>
-  <input type="text" name="email" value=""><br>   
+  <input type="text" name="email" value=""><br>
   @endguest
-
-  {{-- @auth
-  <input type="text" name="email" value="{{Auth::user()->email}}"><br>
-  @endauth --}}
 
   <label for="title">Oggetto</label><br>
   <input type="text" name="title" value="Oggetto della mail"><br>

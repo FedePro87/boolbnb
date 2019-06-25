@@ -1,69 +1,79 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- ADD MY STYLE --}}
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-    {{-- ADD MY JS --}}
-    <script src="{{ mix('js/app.js') }}" charset="utf-8"></script>
+  {{-- ADD MY STYLE --}}
+  <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+  {{-- ADD MY JS --}}
+  <script src="{{ mix('js/app.js') }}" charset="utf-8"></script>
 
-    <title>BoolBnB</title>
+  <title>BoolBnB</title>
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
-    <script src="{{ asset('tomtom-sdk/tomtom.min.js')}}" type="text/javascript"></script>
-    <script src="{{ asset('dropin.min.js')}}" type="text/javascript"></script>
-    <link rel="stylesheet" href="{{ asset('tomtom-sdk/map.css') }}">
-  </head>
-  <body>
-    <header>
+  <script src="{{ asset('tomtom-sdk/tomtom.min.js')}}" type="text/javascript"></script>
+  <script src="{{ asset('dropin.min.js')}}" type="text/javascript"></script>
+  <link rel="stylesheet" href="{{ asset('tomtom-sdk/map.css') }}">
+</head>
+<body>
+  <header>
+    <h1>Header</h1>
+    <h1>Ricerca</h1>
 
-      <h1>Header</h1>
-        <h2> INSERIRE RICERCA</h2>
-
-
-    </header>
-
-
-    {{-- ERROR CONTROL --}}
-    @if ($errors->any())
-      <div class="alert alert-danger">
-        <ul>
-          @foreach($errors->all() as $error)
-            <li>{{$error}}</li>
-          @endforeach
-        </ul>
+    <form action="{{route('basic-search')}}" method="get">
+      <div class="form-group">
+        <input type="hidden" data-lat="" name="lat" value="">
+        <input type="hidden" data-lon="" name="lon" value="">
+        <input class="address-search" type="text" name="address" value="" placeholder="Insert address...">
       </div>
-    @endif
 
-    @if(session('success'))
-      <div class="alert alert-success">
-        <div class="container">
+      <div class="query-results">
 
-          {{session ('success')}}
-
-        </div>
       </div>
-    @endif
 
-    {{-- END ERROR CONTROL --}}
+      <input id="search-btn" type="submit" name="" value="SEARCH">
+    </form>
+  </header>
+
+  {{-- ERROR CONTROL --}}
+  @if ($errors->any())
+    <div class="alert alert-danger">
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+        @endforeach
+      </ul>
+    </div>
+  @endif
+
+  @if(session('success'))
+    <div class="alert alert-success">
+      <div class="container">
+
+        {{session ('success')}}
+
+      </div>
+    </div>
+  @endif
+
+  {{-- END ERROR CONTROL --}}
 
 
 
-    @yield('content')
+  @yield('content')
 
 
 
 
-    <footer>
+  <footer>
     <h5>It's like Airbnb but made with much more love</h5>
-    </footer>
+  </footer>
 
 
 
-  </body>
+</body>
 </html>

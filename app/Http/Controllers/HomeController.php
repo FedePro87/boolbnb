@@ -36,8 +36,6 @@ class HomeController extends Controller
 
       $user = User::findOrFail($id);
 
-      // $apartments = new Apartment;
-      // $apartments = $apartments->where('user_id', $id)->get();
       return view('page.show-user-apartments', compact('user'));
     }
 
@@ -60,7 +58,10 @@ class HomeController extends Controller
     $message->save();
     }
 
-
+    public function basicSearch(Request $request)
+    {
+      $queryAddress= $request['address'];
+    }
 
     // public function showMessageApartment($id){
     //

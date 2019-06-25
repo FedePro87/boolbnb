@@ -29,31 +29,74 @@ function addStatsCharts(ctx,chartLabel) {
   var myChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: monthsLabels,
-        datasets: [{
-            label: chartLabel,
-            data: stats,
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-        }]
+      labels: monthsLabels,
+      datasets: [{
+        label: chartLabel,
+        data: stats,
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      }]
     },
     options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        },
-        responsive: false,
-        maintainAspectRatio: false
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      },
+      responsive: false,
+      maintainAspectRatio: false
     }
+  });
+}
+
+function search(searching,index) {
+  var query = $('.address-search').val();
+  var outData = {
+    access_token:"pk.eyJ1IjoiYm9vbGVhbmdydXBwbzQiLCJhIjoiY2p4YnN5N3ltMDdkbjNzcGVsdW54eXFodCJ9.BP8Cf-t-evfHO22_kDFzbg",
+    types:"place,address",
+    autocomplete:true,
+    limit:6
+  };
+  $.ajax({
+    url:'https://api.mapbox.com' + '/geocoding/v5/mapbox.places/' + query +'.json',
+    method:"GET",
+    data:outData,
+    success:function(inData,state){
+      if(searching){
+        $('.query-results').text("");
+        var resultsArray = inData['features'];
+        for (var i = 0; i < resultsArray.length; i++) {
+          let resultObject = resultsArray[i];
+          var newP = document.createElement("p");
+          $(newP).text(resultObject['place_name']);
+          $(newP).addClass('query-selector');
+          $('.query-results').append(newP);
+        }
+      } else {
+        var resultsArray = inData['features'];
+        var myQuery = resultsArray[index];
+        var myCoordinates = myQuery['center'];
+        var lat = myCoordinates[0];
+        var lon = myCoordinates[1];
+        $("input[name='lat']").attr("data-lat", lat);
+        $("input[name='lon']").attr( "data-long", lon );
+      }
+    },
+  error:function(request, state, error){
+    console.log(request);
+    console.log(state);
+    console.log(error);
+  }
 });
 }
 
-function initBraintree(){
-
+function addressRealTimeSearch() {
+  $('.address-search').keyup(function() {
+    search(true);
+  });
 }
 
 function init() {
@@ -62,8 +105,8 @@ function init() {
     addMap();
   }
 
-  if ($('#dropin-container').length){
-    initBraintree();
+  if ($('.address-search').length){
+    addressRealTimeSearch();
   }
 
   //I nomi delle label non sono localizzate.
@@ -71,6 +114,14 @@ function init() {
     addStatsCharts($('#visualsChart'),'Visuals');
     addStatsCharts($('#messagesChart'),'Messages');
   }
+
+  $(document).on('click','.query-selector',function(){
+    var queryName = $(this).text();
+    var index = $(this).index();
+    $('.address-search').val(queryName);
+    $('.query-results').text("");
+    search(false,index);
+  });
 }
 
 $(document).ready(init);

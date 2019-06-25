@@ -5,8 +5,8 @@
 
   <form action="{{route('search')}}" method="get">
     <div class="form-group">
-      <label for="address">Title</label><br>
-      <input type="text" name="address" value="">
+      <label for="address"></label><br>
+      <input type="text" name="address" value="" placeholder="Insert address...">
     </div>
 
     <div class="form-group">
@@ -18,11 +18,7 @@
 
     </div>
 
-
     <input id="search-btn" type="submit" name="" value="SEARCH">
-
-
-
   </form>
 </div>
 
@@ -49,7 +45,7 @@
   @endforeach
 
   @if (!isset($apartments[0]))
-    
+
     <h1>Non ci sono risultati!</h1>
   @endif
 </div>

@@ -20,19 +20,20 @@
 </div>
 
 <script>
-  var url= '{{ route('payment.process',['amount','apartment-id','sponsorship-id']) }}';
-   var button = document.querySelector('#submit-button');
-   braintree.dropin.create({
+  var url= '{{ route('payment.process',['amount','{{$apartment->id}}','sponsorship-id']) }}';
+  var amount= $("input[name='sponsorship']:checked").val();
+  var sponsorshipId = $("input[name='sponsorship']:checked").data('sponsorship-id');
+  url = url.replace('amount',amount);
+  url = url.replace('sponsorship-id',sponsorshipId);
+  var button = document.querySelector('#submit-button');
+  braintree.dropin.create({
      authorization: "{{ Braintree_ClientToken::generate() }}",
      container: '#dropin-container'
    }, function (createErr, instance) {
      button.addEventListener('click', function () {
-       var amount= $("input[name='sponsorship']:checked").val();
-       var sponsorshipId = $("input[name='sponsorship']:checked").data('sponsorship-id');
+       
        instance.requestPaymentMethod(function (err, payload) {
-        url = url.replace('amount',amount);
-        url = url.replace('apartment-id',{{$apartment->id}});
-        url = url.replace('sponsorship-id',sponsorshipId);
+        
          $.get(url, {payload}, function (response) {
            if (response.success) {
              alert('Payment successfull!');
