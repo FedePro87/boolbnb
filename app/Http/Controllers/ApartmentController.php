@@ -20,6 +20,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Braintree_Gateway;
 
+
 class ApartmentController extends Controller
 {
  public function show($id, Request $request){
@@ -101,11 +102,19 @@ class ApartmentController extends Controller
       ->whereYear('created_at', '=', $currentYear)
       ->get();
 
-      $statsArray[]=$statsData->count();
+  if(isset($data['services'])){
+    foreach($data['services'] as $service){
+      $apartments = $apartments->whereHas('services', function($q)use($service){
+
+        $q->where('service_id', $service); //this refers id field from services table
+
+      });
     }
 
     return $statsArray;
   }
+}
+}
 
   public function showSponsored(){
 
@@ -176,6 +185,15 @@ class ApartmentController extends Controller
     }
 
     function saveNewApartment(NewApartmentRequest $request){
+      if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $name = time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path('/images');
+        $image->move($destinationPath, $name);
+        $this->save();
+      }
+
+
       $validateData = $request -> validated();
 
       $apartment = Apartment::make($validateData);
@@ -228,3 +246,29 @@ class ApartmentController extends Controller
     return $result;
   }
 }
+
+
+// public function fileUpload(Request $request) {
+//   $this->validate($request, [
+//       'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+//   ]);
+
+
+//       return back()->with('success','Image Upload successfully');
+//   }
+// }
+
+// function saveNewPost(NewPostRequest $request){
+
+//   $validateData = $request -> validated();
+
+//   $categoriesId = $validateData['categories'];
+//   $categories = Category::find($categoriesId);
+//   // dd($validateData);
+
+//   $post = Post::create($validateData);
+//   $post->categories()->attach($categories);
+
+//   return redirect('/');
+
+// }

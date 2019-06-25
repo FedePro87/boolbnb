@@ -24,7 +24,7 @@ class NewApartmentRequest extends FormRequest
     public function rules()
     {
         return [
-            
+
             'title'=> '',
             'description'=> '',
             'price'=> '',

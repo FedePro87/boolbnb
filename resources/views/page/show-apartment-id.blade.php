@@ -60,18 +60,23 @@
 
   </form> --}}
 
-  <form class="create" action="{{route('create-message')}}" method="post">
+  <form class="create" action="{{route('create-message',$apartment->id)}}" method="post">
   @csrf
 
-
+  @guest
   <label for="email">indirizzo mail</label><br>
-  <input type="text" name="email" value=""><br>
+  <input type="text" name="email" value=""><br>   
+  @endguest
+
+  {{-- @auth
+  <input type="text" name="email" value="{{Auth::user()->email}}"><br>
+  @endauth --}}
+
   <label for="title">Oggetto</label><br>
   <input type="text" name="title" value="Oggetto della mail"><br>
 
   <label for="content">Testo della Mail</label><br>
   <textarea name="content" rows="10" cols="30"></textarea><br>
-
 
   <button type="submit" name="button">Send Mail</button>
   </form>

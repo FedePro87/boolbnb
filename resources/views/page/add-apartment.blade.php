@@ -78,4 +78,4 @@
   </form>
 
 
-@stop
+@endsection
