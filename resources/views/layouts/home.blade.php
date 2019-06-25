@@ -22,22 +22,9 @@
 <body>
   <header>
     <h1>Header</h1>
-    <h1>Ricerca</h1>
-
-    <form action="{{route('basic-search')}}" method="get">
-      <div class="form-group">
-        <input type="hidden" name="lat">
-        <input type="hidden" name="lon">
-        <input class="address-search" type="text" name="address" value="" placeholder="Insert address...">
-      </div>
-
-      <div class="query-results">
-
-      </div>
-
-      <input id="search-btn" type="submit" name="" value="SEARCH">
-    </form>
   </header>
+
+  @yield('content-header')
 
   {{-- ERROR CONTROL --}}
   @if ($errors->any())

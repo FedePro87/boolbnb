@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Apartment;
 use App\User;
 use App\Message;
-
+use DB;
+use App\Service;
 
 class HomeController extends Controller
 {
@@ -29,6 +30,10 @@ class HomeController extends Controller
   public function index()
   {
     return view('home');
+  }
+
+  public function abort(){
+    return abort(404);
   }
 
   public function showUserApartments($id){
@@ -62,18 +67,24 @@ class HomeController extends Controller
   {
     $lat= $request['lat'];
     $lon= $request['lon'];
-    $rad= 10;
-    $R=6371;
+    $maxDistance= 20;
 
-    $maxLat = $lat + rad2deg($rad/$R);
-    $minLat = $lat - rad2deg($rad/$R);
-    $maxLon = $lon + rad2deg(asin($rad/$R) / cos(deg2rad($lat)));
-    $minLon = $lon - rad2deg(asin($rad/$R) / cos(deg2rad($lat)));
+    // $R=6371;
+    // $maxLat = $lat + rad2deg($rad/$R);
+    // $minLat = $lat - rad2deg($rad/$R);
+    // $maxLon = $lon + rad2deg(asin($rad/$R) / cos(deg2rad($lat)));
+    // $minLon = $lon - rad2deg(asin($rad/$R) / cos(deg2rad($lat)));
 
-    $queryApartments = new Apartment;
-    $queryApartments= $queryApartments->where('lat','>',$minLat)->where('lat','<',$maxLat)->where('lng','>',$minLon)->where('lng','<',$maxLon)->get();
+    //Fino a qua recupera perfettamente gli appartamenti nel raggio, ma non li ordina per vicinanza.
+    // $queryApartments = new Apartment;
+    // $queryApartments= $queryApartments->where('lat','>',$minLat)->where('lat','<',$maxLat)->where('lng','>',$minLon)->where('lng','<',$maxLon)->get();
 
-    return view('page.show-query-results', compact('++++queryApartments'));;
+    $latLongQuery= 'SELECT id,title,description,image,address,lat,lng, ((ACOS(SIN(' . $lat . ' * PI() / 180) * SIN(lat * PI() / 180) + COS(' . $lat . '* PI() / 180) * COS(lat * PI() / 180) * COS((' . $lon . ' - lng) * PI() / 180)) * 180 / PI()) * 60 * 1.1515* 1.609344) AS distance FROM apartments HAVING distance <=' . $maxDistance . ' ORDER BY distance ASC';
+
+    $queryApartments = DB::select(DB::raw($latLongQuery));
+    $services=Service::all();
+
+    return view('page.show-query-results', compact('queryApartments','services'));;
   }
 
   // public function showMessageApartment($id){
