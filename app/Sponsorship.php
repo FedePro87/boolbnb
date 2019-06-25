@@ -11,6 +11,6 @@ class Sponsorship extends Model
     ];
 
     function apartments(){
-        return $this->belongsToMany(Apartment::class);
+        return $this->belongsToMany(Apartment::class)->withPivot('created_at', 'updated_at');
       }
 }

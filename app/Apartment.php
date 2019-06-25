@@ -16,6 +16,8 @@ class Apartment extends Model
         'bedrooms',
         'square_meters',
         'address',
+        'lat',
+        'lng',
         'image'
 
       ];
@@ -29,11 +31,15 @@ class Apartment extends Model
       }
 
       function sponsorships(){
-        return $this->belongsToMany(Sponsorship::class);
+        return $this->belongsToMany(Sponsorship::class)->withPivot('created_at', 'updated_at');
 
       }
 
       function messages(){
         return $this->hasMany(Message::class);
+      }
+
+      function visuals(){
+        return $this->hasMany(Visual::class);
       }
 }

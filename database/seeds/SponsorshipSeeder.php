@@ -18,13 +18,13 @@ class SponsorshipSeeder extends Seeder
     {
             
         Sponsorship::insert([
-            'type' => '24 ore',
+            'type' => 1440,
         ]);
         Sponsorship::insert([
-            'type' => '72 ore',
+            'type' => 4320,
         ]);
         Sponsorship::insert([
-            'type' => '144 ore',
+            'type' => 8640,
         ]);
     }
 }

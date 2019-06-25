@@ -33,8 +33,7 @@
 
 
   {{-- MAP SECTION --}}
-
-  <div id='map'></div>
+  <div data-lat={{$apartment->lat}} data-lng={{$apartment->lng}} id='map'></div>
 
   {{-- END MAP SECTION --}}
 
@@ -44,7 +43,7 @@
 
   <h3>Scrivi al proprietario</h3>
 
-  <form action="">
+  {{-- <form action="">
 
     <label for="">Oggetto</label><br>
     <input type="text"><br>
@@ -54,18 +53,35 @@
 
     <button type="submit" name="button">Invia</button>
 
+  </form> --}}
+
+  <form class="create" action="{{route('create-message')}}" method="post">
+  @csrf
+
+
+  <label for="email">indirizzo mail</label><br>
+  <input type="text" name="email" value=""><br>
+  <label for="title">Oggetto</label><br>
+  <input type="text" name="title" value="Oggetto della mail"><br>
+
+  <label for="content">Testo della Mail</label><br>
+  <textarea name="content" rows="10" cols="30"></textarea><br>
+
+
+  <button type="submit" name="button">Send Mail</button>
   </form>
 
   {{-- END Contact form --}}
 
-
-  {{--
-  @if($logged)
-  <div>
-  visualizza statistiche
-</div>
-@endif --}}
-
-
+  @if(Auth::user()!==null)
+    @if($apartment->user_id==Auth::user()->id)
+    <div>
+      <h1>Visualizzazioni totali: {{$apartment->visuals->count()}}</h1>
+      <h1>Messaggi totali: {{$apartment->messages->count()}}</h1>
+      <canvas id="visualsChart" data-stats={{$visualsData}} data-months={{$months}}></canvas>
+     <canvas id="messagesChart" data-stats={{$messagesData}} data-months={{$months}}></canvas>
+    </div>
+    @endif
+  @endif
 
 @stop

@@ -24,5 +24,7 @@ Route::get('/search', 'ApartmentController@search')->name('search');
 
 Route::get('/user/apartment/new', 'ApartmentController@createNewApartment')->name('create');
 Route::post('/user/apartment/new', 'ApartmentController@saveNewApartment')->name('save');
-
-Route::post('/add/image', 'ApartmentController@fileUpload')->name('addFile');
+Route::get('/user/sponsorship/{id}', 'SponsorshipController@showSponsorship')->name('showSponsorship');
+Route::post('/user/sponsorship/{id}', 'SponsorshipController@updateSponsor')->name('updateSponsorship');
+Route::get('/user/{id}/apartment', 'HomeController@showUserApartments')->name('showUserApartments');
+Route::post('/homesponsor', 'HomeController@storeMessage')->name('create-message');

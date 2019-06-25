@@ -15,6 +15,8 @@ $factory->define(App\Apartment::class, function (Faker $faker) {
         'bedrooms' =>$faker->numberBetween(1 , 5),
         'square_meters' =>$faker->numberBetween(20 , 100),
         'address' =>$faker->streetAddress,
+        'lat'=> $faker->latitude($min = -40, $max = 42),
+        'lng'=> $faker->longitude($min = -40, $max = 42),
         'image' =>$faker->imageUrl(640, 480, 'city')
     ];
 });

@@ -1,5 +1,8 @@
 <?php
 
+// Qui la localizzazione viene intercettata dal browser.
+$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+
 return [
 
     /*
@@ -80,7 +83,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => $lang,
 
     /*
     |--------------------------------------------------------------------------
