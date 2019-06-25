@@ -54,6 +54,12 @@ function addStatsCharts(ctx,chartLabel) {
 
 function search(searching,index) {
   var query = $('.address-search').val();
+
+  if (query=="") {
+    $('.address-search').val('Roma, RM');
+    query = $('.address-search').val();
+  }
+
   var outData = {
     access_token:"pk.eyJ1IjoiYm9vbGVhbmdydXBwbzQiLCJhIjoiY2p4YnN5N3ltMDdkbjNzcGVsdW54eXFodCJ9.BP8Cf-t-evfHO22_kDFzbg",
     types:"place,address",
@@ -77,12 +83,18 @@ function search(searching,index) {
         }
       } else {
         var resultsArray = inData['features'];
+
+        if (index==null) {
+          index = 0;
+        }
+
         var myQuery = resultsArray[index];
         var myCoordinates = myQuery['center'];
-        var lat = myCoordinates[0];
-        var lon = myCoordinates[1];
-        $("input[name='lat']").attr("data-lat", lat);
-        $("input[name='lon']").attr( "data-long", lon );
+        console.log(myCoordinates);
+        var lat = myCoordinates[1];
+        var lon = myCoordinates[0];
+        $("input[name='lat']").val(lat);
+        $("input[name='lon']").val(lon);
       }
     },
   error:function(request, state, error){
@@ -106,6 +118,7 @@ function init() {
   }
 
   if ($('.address-search').length){
+    search(false);
     addressRealTimeSearch();
   }
 

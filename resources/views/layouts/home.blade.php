@@ -26,8 +26,8 @@
 
     <form action="{{route('basic-search')}}" method="get">
       <div class="form-group">
-        <input type="hidden" data-lat="" name="lat" value="">
-        <input type="hidden" data-lon="" name="lon" value="">
+        <input type="hidden" name="lat">
+        <input type="hidden" name="lon">
         <input class="address-search" type="text" name="address" value="" placeholder="Insert address...">
       </div>
 

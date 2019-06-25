@@ -20,50 +20,49 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Braintree_Gateway;
 
-
 class ApartmentController extends Controller
 {
- public function show($id, Request $request){
-   $apartment = Apartment::findOrFail($id);
+  public function show($id, Request $request){
+    $apartment = Apartment::findOrFail($id);
 
-   //Controllo se ho l'array degli appartamenti visualizzati nella sessione corrente.
-  if($request->session()->has('visulized-ids')){
-    //Se esiste l'array, controllo che l'id dell'appartamento che sto visualizzando non sia presente (se è presente l'ho
-    // evidentemente già visualizzato)
-    if(!in_array($id, $request->session()->get('visulized-ids'))){
-      //Salvo nell'array della sessione che ho visualizzato l'appartamento.
-      $request->session()->push('visulized-ids', $id);
-      //Se l'utente che sta guardando è loggato...
-      if(Auth::user()!==null){
-        //Se non è l'utente a cui appartiente l'appartamento, lo conta come visualizzazione.
-        if(Auth::user()->id!==$apartment->user_id){
+    //Controllo se ho l'array degli appartamenti visualizzati nella sessione corrente.
+    if($request->session()->has('visulized-ids')){
+      //Se esiste l'array, controllo che l'id dell'appartamento che sto visualizzando non sia presente (se è presente l'ho
+      // evidentemente già visualizzato)
+      if(!in_array($id, $request->session()->get('visulized-ids'))){
+        //Salvo nell'array della sessione che ho visualizzato l'appartamento.
+        $request->session()->push('visulized-ids', $id);
+        //Se l'utente che sta guardando è loggato...
+        if(Auth::user()!==null){
+          //Se non è l'utente a cui appartiente l'appartamento, lo conta come visualizzazione.
+          if(Auth::user()->id!==$apartment->user_id){
+            $visual= Visual::make();
+            $visual->apartment()->associate($apartment);
+            $visual->save();
+          }
+        }
+        //Se l'utente non è loggato, lo conta comunque come visualizzazione.
+        else {
           $visual= Visual::make();
           $visual->apartment()->associate($apartment);
           $visual->save();
         }
       }
-      //Se l'utente non è loggato, lo conta comunque come visualizzazione.
-      else {
-      $visual= Visual::make();
-      $visual->apartment()->associate($apartment);
-      $visual->save();
-      }
     }
-  }
-  //Se non ho l'array degli appartamenti visualizzati, procedo alla sua creazione aggiungendo l'id del corrente appartamento.
-  // Dopo faccio il solito controllo sull'id dell'utente (se è loggato) per non contare come visualizzazione quella del proprietario.
-  else{
-    $request->session()->push('visulized-ids', $id);
-    if(Auth::user()!==null){
+    //Se non ho l'array degli appartamenti visualizzati, procedo alla sua creazione aggiungendo l'id del corrente appartamento.
+    // Dopo faccio il solito controllo sull'id dell'utente (se è loggato) per non contare come visualizzazione quella del proprietario.
+    else{
+      $request->session()->push('visulized-ids', $id);
+      if(Auth::user()!==null){
         if(Auth::user()->id!==$apartment->user_id){
           $visual= Visual::make();
           $visual->apartment()->associate($apartment);
           $visual->save();
-      }
-    } else {
-      $visual= Visual::make();
-      $visual->apartment()->associate($apartment);
-      $visual->save();
+        }
+      } else {
+        $visual= Visual::make();
+        $visual->apartment()->associate($apartment);
+        $visual->save();
       }
     }
 
@@ -102,19 +101,19 @@ class ApartmentController extends Controller
       ->whereYear('created_at', '=', $currentYear)
       ->get();
 
-  if(isset($data['services'])){
-    foreach($data['services'] as $service){
-      $apartments = $apartments->whereHas('services', function($q)use($service){
+      if(isset($data['services'])){
+        foreach($data['services'] as $service){
+          $apartments = $apartments->whereHas('services', function($q)use($service){
 
-        $q->where('service_id', $service); //this refers id field from services table
+            $q->where('service_id', $service); //this refers id field from services table
 
-      });
+          });
+        }
+
+        return $statsArray;
+      }
     }
-
-    return $statsArray;
   }
-}
-}
 
   public function showSponsored(){
 
@@ -129,114 +128,106 @@ class ApartmentController extends Controller
       $diff = Carbon::now()->subMinutes($sponsorship->duration);
 
       // Utilizzo il wherehas così da andarmi a collegare direttamente con la tabella apartment_sponsorship.
-        $apartments = new Apartment;
-        $apartments = $apartments->whereHas('sponsorships', function($q)use($sponsorship,$diff){
-      // Faccio una query per prendermi solo gli appartamenti che hanno la sponsorizzazione che sto ciclando in questo momento
-          $q->where('sponsorship_id', $sponsorship->id);
-          //Mi prendo solo quelli che hanno la data successiva alla differenza tra ADESSO e i minuti della sponsorizzazione.
-          //IMPORTANTE whereHas ha la caratteristica di considerare come id univoco anche una foreign key (oppure lo fa
-          // apposta, chi lo sa!), quindi se becca un'altra colonna con lo stesso apartment_id ignora completamente la precedente
-          // e prende in considerazione solo l'ultima
-          $q->where('apartment_sponsorship.created_at','>',$diff);
-        })->get();
+      $apartments = new Apartment;
+      $apartments = $apartments->whereHas('sponsorships', function($q)use($sponsorship,$diff){
+        // Faccio una query per prendermi solo gli appartamenti che hanno la sponsorizzazione che sto ciclando in questo momento
+        $q->where('sponsorship_id', $sponsorship->id);
+        //Mi prendo solo quelli che hanno la data successiva alla differenza tra ADESSO e i minuti della sponsorizzazione.
+        //IMPORTANTE whereHas ha la caratteristica di considerare come id univoco anche una foreign key (oppure lo fa
+        // apposta, chi lo sa!), quindi se becca un'altra colonna con lo stesso apartment_id ignora completamente la precedente
+        // e prende in considerazione solo l'ultima
+        $q->where('apartment_sponsorship.created_at','>',$diff);
+      })->get();
 
-        //Se l'appartamento è già tra gli sponsored, non lo aggiunge. Potrebbe capitare nell'assurdo caso in cui un utente fa
-        // prima un pagamento di un tipo e poi di un altro
-        foreach ($apartments as $apartment){
-          if(!in_array($apartment, $sponsoreds)){
-            $sponsoreds[]=$apartment;
-          }
+      //Se l'appartamento è già tra gli sponsored, non lo aggiunge. Potrebbe capitare nell'assurdo caso in cui un utente fa
+      // prima un pagamento di un tipo e poi di un altro
+      foreach ($apartments as $apartment){
+        if(!in_array($apartment, $sponsoreds)){
+          $sponsoreds[]=$apartment;
         }
+      }
     }
 
     return view('page.sponsored-apartment', compact('sponsoreds'));
   }
 
-    public function search(Request $request){
+  public function search(Request $request){
 
-       $title = $request -> address;
-       $services = $request-> services;
-       $data=$request->all();
-       $apartments= new Apartment;
+    $title = $request -> address;
+    $services = $request-> services;
+    $data=$request->all();
+    $apartments= new Apartment;
 
-      if (isset($data['address'])) {
-        $apartments = $apartments ->where('address', 'LIKE', '%' . $title . '%');
-      }
-
-      if(isset($data['services'])){
-        foreach($data['services'] as $service){
-          $apartments = $apartments->whereHas('services', function($q)use($service){
-            $q->where('service_id', $service); //this refers id field from services table
-          });
-        }
-      }
-
-      $apartments = $apartments ->get();
-
-      $services = Service::all();
-
-      return view('page.search', compact( 'services','apartments'));
+    if (isset($data['address'])) {
+      $apartments = $apartments ->where('address', 'LIKE', '%' . $title . '%');
     }
+
+    if(isset($data['services'])){
+      foreach($data['services'] as $service){
+        $apartments = $apartments->whereHas('services', function($q)use($service){
+          $q->where('service_id', $service); //this refers id field from services table
+        });
+      }
+    }
+
+    $apartments = $apartments ->get();
+
+    $services = Service::all();
+
+    return view('page.search', compact( 'services','apartments'));
+  }
 
 
   // Creazione nuovo appartamento - tutto questa roba andrà spostata nell'HomeController
-    function createNewApartment(){
-        return view('page.add-apartment');
+  function createNewApartment(){
+    $services = Service::all();
+    return view('page.add-apartment',compact('services'));
+  }
+
+  function saveNewApartment(NewApartmentRequest $request){
+    $validateData = $request -> validated();
+
+    $apartment = Apartment::make($validateData);
+    $inputAuthor= Auth::user()->firstname;
+    $user= User::where('firstname','=',$inputAuthor)->first();
+    $apartment->user()->associate($user);
+
+    if ($request->hasFile('image')) {
+      $image = $request->file('image');
+      $name = time().'.'.$image->getClientOriginalExtension();
+      $destinationPath = public_path('/images');
+      $image->move($destinationPath, $name);
+      $apartment->image=$name;
     }
 
-    function saveNewApartment(NewApartmentRequest $request){
-      if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $name = time().'.'.$image->getClientOriginalExtension();
-        $destinationPath = public_path('/images');
-        $image->move($destinationPath, $name);
-        $this->save();
+    $inputAddress=$request->input('address');
+    // $geocoder = new \OpenCage\Geocoder\Geocoder('7a5d76fa6dcf4bc8ad7ad4dce1115b50');
+    // $result = $geocoder->geocode($inputAddress);
+    // $lat=$result['results'][0]['geometry']['lat'];
+    // $lng=$result['results'][0]['geometry']['lng'];
+    // $apartment->lat=$lat;
+    // $apartment->lng=$lng;
+
+    $positionData = $this->callTomTomApi('https://api.tomtom.com/search/2/geocode/' . $inputAddress . '.JSON',['key'=> "xrIKVZTiqc6NhEvGHRbxYYpsyoLoR2wD"]);
+    $lat=$positionData->lat;
+    $lng=$positionData->lon;
+    $apartment->lat=$lat;
+    $apartment->lng=$lng;
+    $apartment->save();
+
+    if ($request->input('services')!==null) {
+      $selectedServices = $request->input('services');
+      $services = Service::findOrFail($selectedServices);
+
+      foreach ($services as $service) {
+        $apartment->services()->attach($service);
       }
-
-
-      $validateData = $request -> validated();
-
-      $apartment = Apartment::make($validateData);
-      $inputAuthor= Auth::user()->firstname;
-      $user= User::where('firstname','=',$inputAuthor)->first();
-      $apartment->user()->associate($user);
-
-      if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $name = time().'.'.$image->getClientOriginalExtension();
-        $destinationPath = public_path('/images');
-        $image->move($destinationPath, $name);
-        $apartment->image=$name;
-      }
-
-      $inputAddress=$request->input('address');
-      // $geocoder = new \OpenCage\Geocoder\Geocoder('7a5d76fa6dcf4bc8ad7ad4dce1115b50');
-      // $result = $geocoder->geocode($inputAddress);
-      // $lat=$result['results'][0]['geometry']['lat'];
-      // $lng=$result['results'][0]['geometry']['lng'];
-      // $apartment->lat=$lat;
-      // $apartment->lng=$lng;
-
-      $positionData = $this->callTomTomApi('https://api.tomtom.com/search/2/geocode/' . $inputAddress . '.JSON',['key'=> "xrIKVZTiqc6NhEvGHRbxYYpsyoLoR2wD"]);
-      $lat=$positionData->lat;
-      $lng=$positionData->lon;
-      $apartment->lat=$lat;
-      $apartment->lng=$lng;
-      $apartment->save();
-
-      if ($request->input('services')!==null) {
-        $selectedServices = $request->input('services');
-        $services = Service::findOrFail($selectedServices);
-
-        foreach ($services as $service) {
-          $apartment->services()->attach($service);
-        }
-      }
-
-      return redirect('/');
     }
 
-    private function callTomTomAPI($url, $data){
+    return redirect('/');
+  }
+
+  private function callTomTomAPI($url, $data){
     $client = new \GuzzleHttp\Client();
     $response = $client->get($url, ["query" => $data]);
 
@@ -246,29 +237,3 @@ class ApartmentController extends Controller
     return $result;
   }
 }
-
-
-// public function fileUpload(Request $request) {
-//   $this->validate($request, [
-//       'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-//   ]);
-
-
-//       return back()->with('success','Image Upload successfully');
-//   }
-// }
-
-// function saveNewPost(NewPostRequest $request){
-
-//   $validateData = $request -> validated();
-
-//   $categoriesId = $validateData['categories'];
-//   $categories = Category::find($categoriesId);
-//   // dd($validateData);
-
-//   $post = Post::create($validateData);
-//   $post->categories()->attach($categories);
-
-//   return redirect('/');
-
-// }

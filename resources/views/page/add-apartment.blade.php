@@ -1,7 +1,6 @@
 @extends('layouts.home')
 @section('content')
 
-
 <form enctype="multipart/form-data" class="" action="{{route('save')}}" method="post">
     @csrf
 
