@@ -52,10 +52,18 @@ function addStatsCharts(ctx,chartLabel) {
 });
 }
 
+function initBraintree(){
+
+}
+
 function init() {
   // Check se esiste il div che contiene la mappa, altrimenti da errori.
   if ($('#map').length){
     addMap();
+  }
+
+  if ($('#dropin-container').length){
+    initBraintree();
   }
 
   //I nomi delle label non sono localizzate.

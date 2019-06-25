@@ -14,7 +14,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -27,13 +27,24 @@ class HomeController extends Controller
         return view('home');
     }
 
+    public function storeMessage(Request $request,$id){
+        dd($id);
+        if(Auth::user()!==null){
+          $request['email']=Auth::user()->email;
+        }
+  
+      $message = $request-> validate([
+  
+        'email' => 'required',
+        'title' => 'required',
+        'content' => 'required'
+      ]);
+  
+      $apartment=Apartment::findOrFail($id);
+      $message= Message::make($message);
+      $message->apartment()->associate($apartment);
+      $message->save();
 
-    // function createNewApartment(){
-    
-    //     $apartment = Apartment::all();
-    //     $services = Services::all();
-        
-    //     return view('page.add-new-apartment' , compact('apartment','services'));
-
-    // }
+      return view('home');
+      }
 }

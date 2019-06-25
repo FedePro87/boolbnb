@@ -43,13 +43,18 @@
 
   <h3>Scrivi al proprietario</h3>
 
-  <form action="">
+  <form class="create" action="{{route('create-message',$apartment->id)}}" method="post">
+    
+  @guest
+    <label for="email">indirizzo mail</label><br>
+    <input type="text" name="email" value=""><br>   
+  @endguest
 
-    <label for="">Oggetto</label><br>
-    <input type="text"><br>
+    <label for="title">Oggetto</label><br>
+    <input name="title" type="text"><br>
 
-    <label for="">Testo</label><br>
-    <textarea name="" id="" cols="30" rows="10"></textarea><br>
+    <label for="content">Testo</label><br>
+    <textarea name="content" id="" cols="30" rows="10"></textarea><br>
 
     <button type="submit" name="button">Invia</button>
 

@@ -117,7 +117,7 @@ class ApartmentController extends Controller
     // tempo deve trascorrere.
     foreach ($sponsorships as $sponsorship){
       // Con questa funzione posso prendere qualsiasi data (in questo caso è quella di ADESSO) e diminuirla di tot minuti)
-      $diff = Carbon::now()->subMinutes($sponsorship->type);
+      $diff = Carbon::now()->subMinutes($sponsorship->duration);
 
       // Utilizzo il wherehas così da andarmi a collegare direttamente con la tabella apartment_sponsorship.
         $apartments = new Apartment;
@@ -131,9 +131,12 @@ class ApartmentController extends Controller
           $q->where('apartment_sponsorship.created_at','>',$diff);
         })->get();
 
-
+        //Se l'appartamento è già tra gli sponsored, non lo aggiunge. Potrebbe capitare nell'assurdo caso in cui un utente fa
+        // prima un pagamento di un tipo e poi di un altro
         foreach ($apartments as $apartment){
-          $sponsoreds[]=$apartment;
+          if(!in_array($apartment, $sponsoreds)){
+            $sponsoreds[]=$apartment;
+          }
         }
     }
 
@@ -169,13 +172,8 @@ class ApartmentController extends Controller
 
   // Creazione nuovo appartamento - tutto questa roba andrà spostata nell'HomeController
     function createNewApartment(){
-
-        $apartment = Apartment::all();
-        $services = Service::all();
-
-        return view('page.add-apartment' , compact('apartment','services'));
+        return view('page.add-apartment');
     }
-
 
     function saveNewApartment(NewApartmentRequest $request){
       $validateData = $request -> validated();

@@ -1,28 +1,49 @@
 @extends('layouts.home')
 @section('content')
-{{--
-@foreach ($sponsorships as $sponsorship)
-  <div>
-      <h4>{{$sponsorship->id}}</h4>
-      <p>{{$sponsorship->type}}</p>
-  </div>
-@endforeach --}}
 
 <div class="add-sponsorship">
 
-  <form class="" action="{{route('updateSponsorship', $apartment->id)}}" method="post">
-    @csrf
-    
+  @foreach ($sponsorships as $sponsorship)
+    <input type="radio" data-sponsorship-id="{{$sponsorship->id}}" name="sponsorship" value="{{$sponsorship->amount}}" @if($sponsorship->id==1)checked="checked"@endif>
+      {{$sponsorship->amount}} € per @php echo(floor($sponsorship->duration / 60));@endphp ore di sponsorizzazione.
+      </input><br>
+  @endforeach
 
-    @foreach ($sponsorships as $sponsorship)
-      <input type="radio" name="sponsorships" value="{{$sponsorship->id}}">        {{$sponsorship->type}}</input><br>
-
-
-    @endforeach
-
-      <button type="submit" name="button">Add Sponsorship</button>
-  </form>
-
+  <div class="container">
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+          <div id="dropin-container"></div>
+          <button id="submit-button">Request payment method</button>
+        </div>
+      </div>
+   </div>
 </div>
+
+<script>
+  var url= '{{ route('payment.process',['amount','apartment-id','sponsorship-id']) }}';
+   var button = document.querySelector('#submit-button');
+   braintree.dropin.create({
+     authorization: "{{ Braintree_ClientToken::generate() }}",
+     container: '#dropin-container'
+   }, function (createErr, instance) {
+     button.addEventListener('click', function () {
+       var amount= $("input[name='sponsorship']:checked").val();
+       var sponsorshipId = $("input[name='sponsorship']:checked").data('sponsorship-id');
+       instance.requestPaymentMethod(function (err, payload) {
+        url = url.replace('amount',amount);
+        url = url.replace('apartment-id',{{$apartment->id}});
+        url = url.replace('sponsorship-id',sponsorshipId);
+         $.get(url, {payload}, function (response) {
+           if (response.success) {
+             alert('Payment successfull!');
+             window.location.href='/homesponsor';
+           } else {
+             alert('Payment failed');
+           }
+         }, 'json');
+       });
+     });
+   });
+</script>
 
 @stop
