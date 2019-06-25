@@ -27,4 +27,4 @@ Route::post('/user/apartment/new', 'ApartmentController@saveNewApartment')->name
 Route::get('/user/sponsorship/{id}', 'SponsorshipController@showSponsorship')->name('showSponsorship');
 Route::post('/user/sponsorship/{id}', 'SponsorshipController@updateSponsor')->name('updateSponsorship');
 Route::get('/user/{id}/apartment', 'HomeController@showUserApartments')->name('showUserApartments');
-Route::post('/homesponsor', 'HomeController@storeMessage')->name('create-message');
+Route::post('/user/message/{id}', 'HomeController@storeMessage')->name('create-message');

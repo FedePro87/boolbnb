@@ -18,7 +18,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -39,11 +39,13 @@ class HomeController extends Controller
       // $apartments = new Apartment;
       // $apartments = $apartments->where('user_id', $id)->get();
       return view('page.show-user-apartments', compact('user'));
-
-
     }
 
-    public function storeMessage(Request $request){
+    public function storeMessage(Request $request,$id){
+
+      if(Auth::user()!==null){
+        $request['email']=Auth::user()->email;
+      }
 
     $message = $request-> validate([
 
@@ -52,12 +54,10 @@ class HomeController extends Controller
       'content' => 'required'
     ]);
 
-    $inputAuthor= Auth::user()->email;
-    $user= User::where('email','=',$inputAuthor)->first();
-    $apartment->user()->associate($user);
-    $message = Message::create($message);
-
-
+    $apartment=Apartment::findOrFail($id);
+    $message= Message::make($message);
+    $message->apartment()->associate($apartment);
+    $message->save();
     }
 
 

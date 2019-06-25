@@ -102,7 +102,6 @@ class ApartmentController extends Controller
       ->whereYear('created_at', '=', $currentYear)
       ->get();
 
-<<<<<<< HEAD
   if(isset($data['services'])){
     foreach($data['services'] as $service){
       $apartments = $apartments->whereHas('services', function($q)use($service){
@@ -110,21 +109,12 @@ class ApartmentController extends Controller
         $q->where('service_id', $service); //this refers id field from services table
 
       });
-=======
-      $statsArray[]=$statsData->count();
->>>>>>> origin/Fede_Prove
     }
 
     return $statsArray;
   }
-<<<<<<< HEAD
-
-  $apartments = $apartments ->get();
-
-  $services = Service::all();
-
-  return view('page.search', compact( 'services','apartments'));
-=======
+}
+}
 
   public function showSponsored(){
 
@@ -157,7 +147,6 @@ class ApartmentController extends Controller
     }
 
     return view('page.sponsored-apartment', compact('sponsoreds'));
->>>>>>> origin/Fede_Prove
   }
 
     public function search(Request $request){
@@ -188,11 +177,7 @@ class ApartmentController extends Controller
 
 
   // Creazione nuovo appartamento - tutto questa roba andrà spostata nell'HomeController
-<<<<<<< HEAD
-  function createNewApartment(){
-=======
     function createNewApartment(){
->>>>>>> origin/Fede_Prove
 
         $apartment = Apartment::all();
         $services = Service::all();
@@ -202,7 +187,6 @@ class ApartmentController extends Controller
 
 
     function saveNewApartment(NewApartmentRequest $request){
-<<<<<<< HEAD
       if ($request->hasFile('image')) {
         $image = $request->file('image');
         $name = time().'.'.$image->getClientOriginalExtension();
@@ -212,23 +196,12 @@ class ApartmentController extends Controller
       }
 
 
-=======
->>>>>>> origin/Fede_Prove
       $validateData = $request -> validated();
 
       $apartment = Apartment::make($validateData);
       $inputAuthor= Auth::user()->firstname;
       $user= User::where('firstname','=',$inputAuthor)->first();
       $apartment->user()->associate($user);
-<<<<<<< HEAD
-      $apartment->save();
-
-      // $apartment = Apartment::create($validateData);
-      $apartment->services()->attach($services);
-
-
-      return redirect('/');
-=======
 
       if ($request->hasFile('image')) {
         $image = $request->file('image');
@@ -261,7 +234,6 @@ class ApartmentController extends Controller
           $apartment->services()->attach($service);
         }
       }
->>>>>>> origin/Fede_Prove
 
       return redirect('/');
     }
