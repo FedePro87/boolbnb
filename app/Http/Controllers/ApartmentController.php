@@ -108,11 +108,11 @@ class ApartmentController extends Controller
   }
 
   public function showSponsored(){
-    
+
 
     $sponsoreds=[];
     $sponsorships= Sponsorship::all();
-    
+
     // Per ogni sponsorizzazione ci sarà un timeout diverso, quindi mi vado a prendere il tipo di sponsorizzazione per sapere quanto
     // tempo deve trascorrere.
     foreach ($sponsorships as $sponsorship){
@@ -125,7 +125,7 @@ class ApartmentController extends Controller
       // Faccio una query per prendermi solo gli appartamenti che hanno la sponsorizzazione che sto ciclando in questo momento
           $q->where('sponsorship_id', $sponsorship->id);
           //Mi prendo solo quelli che hanno la data successiva alla differenza tra ADESSO e i minuti della sponsorizzazione.
-          //IMPORTANTE whereHas ha la caratteristica di considerare come id univoco anche una foreign key (oppure lo fa 
+          //IMPORTANTE whereHas ha la caratteristica di considerare come id univoco anche una foreign key (oppure lo fa
           // apposta, chi lo sa!), quindi se becca un'altra colonna con lo stesso apartment_id ignora completamente la precedente
           // e prende in considerazione solo l'ultima
           $q->where('apartment_sponsorship.created_at','>',$diff);
@@ -224,7 +224,7 @@ class ApartmentController extends Controller
 
     $incData=json_decode($response->getBody());
     $result=$incData->results[0]->position;
-    
+
     return $result;
   }
 }
