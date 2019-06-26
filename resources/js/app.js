@@ -1,5 +1,6 @@
 require('./bootstrap');
 var Chart = require('chart.js');
+window.Vue = require('vue');
 
 function addMap() {
   // Qui viene impostata una variabile che rappresenta un array. Rispettivamente ci sono la latitudine e la longitudine. Questi dati possono essere recuperati passando nell'url della show la query o in alternativa nascondendo i dati che ci servono da qualche parte e recuperandoli con jquery.
@@ -100,12 +101,12 @@ function search(searching,index) {
         $("input[name='lon']").val(lon);
       }
     },
-  error:function(request, state, error){
-    console.log(request);
-    console.log(state);
-    console.log(error);
-  }
-});
+    error:function(request, state, error){
+      console.log(request);
+      console.log(state);
+      console.log(error);
+    }
+  });
 }
 
 function addressRealTimeSearch() {
@@ -114,8 +115,69 @@ function addressRealTimeSearch() {
   });
 }
 
+function addAdvancedSearchComponent() {
+  Vue.component('advanced-search', {
+    template:"#advanced-search",
+    props: {
+      address: String,
+      lat: String,
+      lon: String,
+      rooms: String,
+      bedrooms: String,
+      radius: String
+    },
+    data:function(){
+      return {
+        addressValue:this.address,
+      };
+    },
+    computed: {
+
+    },
+    methods: {
+      searchAgain(){
+        search(true);
+
+        $.ajax({
+          url:"/search",
+          method:"GET",
+          data:{
+            // address: this.address,
+            lat:this.lat,
+            lon:this.lon,
+            // number_of_rooms: this.rooms,
+            // bedrooms: this.bedrooms,
+            radius: this.radius,
+            advancedSearch:1,
+          },
+          success:function(inData,state){
+            console.log(JSON.parse(inData));
+          },
+          error:function(request, state, error){
+            console.log(request);
+            console.log(state);
+            console.log(error);
+          }
+        });
+
+        // axios.get('/search', null, { params: {
+        //   numberOfRooms: this.compNumberOfRooms
+        // }})
+        // .then((response)=>{
+        //   console.log(response.data);
+        // }).catch((error)=>{
+        //   console.log(error.response.data);
+        // });
+      }
+    }
+  });
+
+  new Vue({
+    el:"#component-vue"
+  });
+}
+
 function init() {
-  // Check se esiste il div che contiene la mappa, altrimenti da errori.
   if ($('#map').length){
     addMap();
   }
@@ -125,10 +187,13 @@ function init() {
     addressRealTimeSearch();
   }
 
-  //I nomi delle label non sono localizzate.
   if ($('#visualsChart').length && $('#messagesChart').length){
     addStatsCharts($('#visualsChart'),'Visuals');
     addStatsCharts($('#messagesChart'),'Messages');
+  }
+
+  if ($('#advanced-search').length) {
+    addAdvancedSearchComponent();
   }
 
   $(document).on('click','.query-selector',function(){

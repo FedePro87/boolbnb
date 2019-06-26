@@ -66,6 +66,7 @@ class HomeController extends Controller
   public function basicSearch(Request $request)
   {
     $services=Service::all();
+    $advancedSearch=$request['advancedSearch'];
     $address = $request['address'];
     $numberOfRooms=$request['number_of_rooms'];
     $bedrooms=$request['bedrooms'];
@@ -106,10 +107,12 @@ class HomeController extends Controller
 
       $queryApartments= $queryApartments->get();
 
-      if ($bedrooms!=null) {
-        return view('page.show-query-results', compact('queryApartments','services','address','maxDistance','numberOfRooms','bedrooms','queryServices'));;
+      if ($advancedSearch) {
+        return json_encode($queryApartments);
+      } else if ($bedrooms!==null&&$numberOfRooms!==null) {
+        return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','numberOfRooms','bedrooms','queryServices'));;
       } else {
-        return view('page.show-query-results', compact('queryApartments','services','address','maxDistance'));;
+        return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance'));;
       }
     }
 

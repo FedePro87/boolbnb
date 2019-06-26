@@ -6,6 +6,7 @@
     <div class="form-group">
       <input type="hidden" name="lat">
       <input type="hidden" name="lon">
+      <input type="hidden" name="advancedSearch" value="0">
       <input class="address-search" type="text" name="address" value="" placeholder="Insert address...">
     </div>
 
