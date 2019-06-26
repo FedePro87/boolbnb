@@ -2,9 +2,9 @@
   <div class="d-flex">
     <div>
       <div class="form-group">
-        <input type="hidden" name="lat">
-        <input type="hidden" name="lon">
-        <input v-model="addressValue" v-on:keyup="searchAgain" class="address-search" type="text" name="address" value="{{$address}}" placeholder="Insert address...">
+        <input v-model="latComp" type="hidden" name="lat">
+        <input v-model="lonComp" type="hidden" name="lon">
+        <input v-model="realTimeAddress" v-on:keyup="searchAgain" class="address-search" type="text" name="address" value="{{$address}}" placeholder="Insert address...">
       </div>
       <div class="query-results"></div>
     </div>

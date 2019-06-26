@@ -26,12 +26,14 @@
 @section('content')
   <h1>Risultati ricerca:</h1>
 
-  @foreach ($queryApartments as $apartment)
-    <div>
-      <img src="{{asset('images/' . $apartment->image)}}" alt="" style="width:100px">
-      <h4>{{$apartment->title}}</h4>
-      <p>{{$apartment->description}}</p>
-    </div>
-  @endforeach
+  <div id="query-apartments">
+    @foreach ($queryApartments as $apartment)
+      <div>
+        <img src="{{asset('images/' . $apartment->image)}}" alt="" style="width:100px">
+        <h4>{{$apartment->title}}</h4>
+        <p>{{$apartment->description}}</p>
+      </div>
+    @endforeach
+  </div>
 
 @stop

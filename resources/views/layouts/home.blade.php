@@ -14,10 +14,20 @@
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+  <!-- Handlebars -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js" charset="utf-8"></script>
 
   <script src="{{ asset('tomtom-sdk/tomtom.min.js')}}" type="text/javascript"></script>
   <script src="{{ asset('dropin.min.js')}}" type="text/javascript"></script>
   <link rel="stylesheet" href="{{ asset('tomtom-sdk/map.css') }}">
+
+  <script id="apartment-template" type="text/x-handlebars-template">
+    <div class="apartment">
+      <img src="/images/@{{image}}" alt="" style="width:100px">
+      <h4>@{{title}}</h4>
+      <p>@{{description}}</p>
+    </div>
+  </script>
 </head>
 <body>
   <header>
