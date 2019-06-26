@@ -60,7 +60,8 @@
       <br>
 
       <label for="address"><h2>Address</h2></label>
-      <input type="text" name="address">
+      <input class="address-search" type="text" name="address">
+      <div class="query-results"></div>
       <br>
 
       <div class="checkbox-cont">

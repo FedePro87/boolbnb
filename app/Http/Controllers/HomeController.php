@@ -65,39 +65,65 @@ class HomeController extends Controller
 
   public function basicSearch(Request $request)
   {
+    $services=Service::all();
+    $address = $request['address'];
+    $numberOfRooms=$request['number_of_rooms'];
+    $bedrooms=$request['bedrooms'];
+    $queryServices=$request['services'];
     $lat= $request['lat'];
     $lon= $request['lon'];
     $maxDistance= 20;
 
-    // $R=6371;
-    // $maxLat = $lat + rad2deg($rad/$R);
-    // $minLat = $lat - rad2deg($rad/$R);
-    // $maxLon = $lon + rad2deg(asin($rad/$R) / cos(deg2rad($lat)));
-    // $minLon = $lon - rad2deg(asin($rad/$R) / cos(deg2rad($lat)));
+    if ($request['radius']!==null) {
+      $maxDistance=$request['radius'];
+    }
 
-    //Fino a qua recupera perfettamente gli appartamenti nel raggio, ma non li ordina per vicinanza.
-    // $queryApartments = new Apartment;
-    // $queryApartments= $queryApartments->where('lat','>',$minLat)->where('lat','<',$maxLat)->where('lng','>',$minLon)->where('lng','<',$maxLon)->get();
+    $queryApartments = Apartment::select('apartments.*')
+      ->selectRaw('( 3959 * acos( cos( radians(?) ) *
+                           cos( radians( lat ) )
+                           * cos( radians( lng ) - radians(?)
+                           ) + sin( radians(?) ) *
+                           sin( radians( lat ) ) )
+                         ) AS distance', [$lat, $lon, $lat])
+      ->havingRaw("distance < ?", [$maxDistance])
+      ->orderBy('distance','ASC');
 
-    $latLongQuery= 'SELECT id,title,description,image,address,lat,lng, ((ACOS(SIN(' . $lat . ' * PI() / 180) * SIN(lat * PI() / 180) + COS(' . $lat . '* PI() / 180) * COS(lat * PI() / 180) * COS((' . $lon . ' - lng) * PI() / 180)) * 180 / PI()) * 60 * 1.1515* 1.609344) AS distance FROM apartments HAVING distance <=' . $maxDistance . ' ORDER BY distance ASC';
+      if ($numberOfRooms!=null && $numberOfRooms!="*") {
+        $queryApartments= $queryApartments->where('number_of_rooms',$numberOfRooms);
+      }
 
-    $queryApartments = DB::select(DB::raw($latLongQuery));
-    $services=Service::all();
+      if ($bedrooms!=null && $bedrooms!="*") {
+        $queryApartments= $queryApartments->where('bedrooms',$bedrooms);
+      }
 
-    return view('page.show-query-results', compact('queryApartments','services'));;
+      if ($queryServices!=null) {
+        foreach($queryServices as $service){
+          $queryApartments = $queryApartments->whereHas('services', function($q)use($service){
+            $q->where('service_id', $service); //this refers id field from services table
+          });
+        }
+      }
+
+      $queryApartments= $queryApartments->get();
+
+      if ($bedrooms!=null) {
+        return view('page.show-query-results', compact('queryApartments','services','address','maxDistance','numberOfRooms','bedrooms','queryServices'));;
+      } else {
+        return view('page.show-query-results', compact('queryApartments','services','address','maxDistance'));;
+      }
+    }
+
+    // public function showMessageApartment($id){
+    //
+    //   $apartment = Apartment::findOrFail($id);
+    //
+    // }
+    // function createNewApartment(){
+
+    //     $apartment = Apartment::all();
+    //     $services = Services::all();
+
+    //     return view('page.add-new-apartment' , compact('apartment','services'));
+
+    // }
   }
-
-  // public function showMessageApartment($id){
-  //
-  //   $apartment = Apartment::findOrFail($id);
-  //
-  // }
-  // function createNewApartment(){
-
-  //     $apartment = Apartment::all();
-  //     $services = Services::all();
-
-  //     return view('page.add-new-apartment' , compact('apartment','services'));
-
-  // }
-}

@@ -55,9 +55,13 @@ function addStatsCharts(ctx,chartLabel) {
 function search(searching,index) {
   var query = $('.address-search').val();
 
-  if (query=="") {
+  if (!searching && query=="") {
     $('.address-search').val('Roma, RM');
     query = $('.address-search').val();
+  }
+
+  if (query=="") {
+    $('.query-results').text("");
   }
 
   var outData = {
@@ -90,7 +94,6 @@ function search(searching,index) {
 
         var myQuery = resultsArray[index];
         var myCoordinates = myQuery['center'];
-        console.log(myCoordinates);
         var lat = myCoordinates[1];
         var lon = myCoordinates[0];
         $("input[name='lat']").val(lat);
