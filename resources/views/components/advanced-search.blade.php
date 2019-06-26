@@ -4,7 +4,7 @@
       <div class="form-group">
         <input v-model="latComp" type="hidden" name="lat">
         <input v-model="lonComp" type="hidden" name="lon">
-        <input v-model="realTimeAddress" v-on:keyup="searchAgain" class="address-search" type="text" name="address" value="{{$address}}" placeholder="Insert address...">
+        <input v-model="realTimeAddress" v-on:keyup="addressPageRealTimeRefresh" class="address-search-spa" type="text" name="address" value="{{$address}}" placeholder="Insert address...">
       </div>
       <div class="query-results"></div>
     </div>

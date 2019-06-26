@@ -54,7 +54,13 @@ function addStatsCharts(ctx,chartLabel) {
 }
 
 function search(searching,index) {
-  var query = $('.address-search').val();
+  var query= -1;
+
+  if ($('.address-search').length) {
+    query = $('.address-search').val();
+  } else {
+    query = $('.address-search-spa').val();
+  }
 
   if (!searching && query=="") {
     $('.address-search').val('Roma, RM');
@@ -71,6 +77,7 @@ function search(searching,index) {
     autocomplete:true,
     limit:6
   };
+
   $.ajax({
     url:'https://api.mapbox.com' + '/geocoding/v5/mapbox.places/' + query +'.json',
     method:"GET",
@@ -79,26 +86,89 @@ function search(searching,index) {
       if(searching){
         $('.query-results').text("");
         var resultsArray = inData['features'];
+        console.log(resultsArray);
         for (var i = 0; i < resultsArray.length; i++) {
-          let resultObject = resultsArray[i];
+          var resultObject = resultsArray[i];
           var newP = document.createElement("p");
           $(newP).text(resultObject['place_name']);
-          $(newP).addClass('query-selector');
+
+          if (searching=="spa") {
+            $(newP).addClass('query-selector-spa');
+          } else {
+            $(newP).addClass('query-selector');
+          }
+
           $('.query-results').append(newP);
+        }
+
+        if (searching=="spa") {
+          var radius = $("select[name='radius']").val();
+
+          if (index!=null) {
+            $('.query-results').text("");
+          }
+
+          var myQuery = resultsArray[0];
+          var myCoordinates = myQuery['center'];
+          var lat = myCoordinates[1];
+          var lon = myCoordinates[0];
+          $("input[name='lat']").val(lat);
+          $("input[name='lon']").val(lon);
+
+          apartmentsDatabaseSearch(lat,lon,radius);
         }
       } else {
         var resultsArray = inData['features'];
-
-        if (index==null) {
-          index = 0;
-        }
-
-        var myQuery = resultsArray[index];
+        var myQuery = resultsArray[0];
         var myCoordinates = myQuery['center'];
         var lat = myCoordinates[1];
         var lon = myCoordinates[0];
         $("input[name='lat']").val(lat);
         $("input[name='lon']").val(lon);
+      }
+    },
+    error:function(request, state, error){
+      console.log(request);
+      console.log(state);
+      console.log(error);
+    }
+  });
+}
+
+function apartmentsDatabaseSearch(lat,lon,radius) {
+  console.log(lat,lon,radius);
+  $.ajax({
+    url:"/search",
+    method:"GET",
+    data:{
+      // address: this.address,
+      lat:lat,
+      lon:lon,
+      // number_of_rooms: this.rooms,
+      // bedrooms: this.bedrooms,
+      radius: radius,
+      advancedSearch:1,
+    },
+    success:function(inData,state){
+      console.log(JSON.parse(inData));
+      var queryContainer=$("#query-apartments");
+      queryContainer.text("");
+      var resultsArray = JSON.parse(inData);
+
+      if (resultsArray.length==0) {
+        var noResultsMessage=document.createElement('h1');
+        $(noResultsMessage).text("Non ci sono risultati!");
+        queryContainer.append(noResultsMessage);
+      } else {
+        for (var i = 0; i < resultsArray.length; i++) {
+          let resultObject = resultsArray[i];
+
+          var apartmentTemplate=$("#apartment-template").html();
+          var compiled=Handlebars.compile(apartmentTemplate);
+          var finalApartment=compiled(resultObject);
+
+          queryContainer.append(finalApartment);
+        }
       }
     },
     error:function(request, state, error){
@@ -138,92 +208,8 @@ function addAdvancedSearchComponent() {
 
     },
     methods: {
-      searchAgain(){
-        var outData = {
-          access_token:"pk.eyJ1IjoiYm9vbGVhbmdydXBwbzQiLCJhIjoiY2p4YnN5N3ltMDdkbjNzcGVsdW54eXFodCJ9.BP8Cf-t-evfHO22_kDFzbg",
-          types:"place,address",
-          autocomplete:true,
-          limit:6
-        };
-
-        $.ajax({
-          url:'https://api.mapbox.com' + '/geocoding/v5/mapbox.places/' + this.realTimeAddress +'.json',
-          method:"GET",
-          data:outData,
-          success:function(inData,state){
-            var resultsArray = inData['features'];
-
-            // if (index==null) {
-            //   index = 0;
-            // }
-
-            var myQuery = resultsArray[0];
-            var myCoordinates = myQuery['center'];
-            var lat = myCoordinates[1];
-            var lon = myCoordinates[0];
-            $("input[name='lat']").val(lat);
-            $("input[name='lon']").val(lon);
-
-            $.ajax({
-              url:"/search",
-              method:"GET",
-              data:{
-                // address: this.address,
-                lat:lat,
-                lon:lon,
-                // number_of_rooms: this.rooms,
-                // bedrooms: this.bedrooms,
-                radius: this.radius,
-                advancedSearch:1,
-              },
-              success:function(inData,state){
-                console.log(JSON.parse(inData));
-                var queryContainer=$("#query-apartments");
-                queryContainer.text("");
-                var resultsArray = JSON.parse(inData);
-
-                if (resultsArray.length==0) {
-                  var noResultsMessage=document.createElement('h1');
-                  $(noResultsMessage).text("Non ci sono risultati!");
-                  queryContainer.append(noResultsMessage);
-                } else {
-                  for (var i = 0; i < resultsArray.length; i++) {
-                    let resultObject = resultsArray[i];
-
-                    var apartmentTemplate=$("#apartment-template").html();
-                    var compiled=Handlebars.compile(apartmentTemplate);
-                    var finalApartment=compiled(resultObject);
-
-                    queryContainer.append(finalApartment);
-                  }
-                }
-              },
-              error:function(request, state, error){
-                console.log(request);
-                console.log(state);
-                console.log(error);
-              }
-            });
-          },
-          error:function(request, state, error){
-            console.log(request);
-            console.log(state);
-            console.log(error);
-          }
-        });
-
-        // search(false);
-
-
-
-        // axios.get('/search', null, { params: {
-        //   numberOfRooms: this.compNumberOfRooms
-        // }})
-        // .then((response)=>{
-        //   console.log(response.data);
-        // }).catch((error)=>{
-        //   console.log(error.response.data);
-        // });
+      addressPageRealTimeRefresh(){
+        search("spa"); //era true
       }
     }
   });
@@ -231,6 +217,18 @@ function addAdvancedSearchComponent() {
   new Vue({
     el:"#component-vue"
   });
+}
+
+function querySelected(spa,queryName,index){
+  $('.address-search').val(queryName);
+  $('.address-search-spa').val(queryName);
+  $('.query-results').text("");
+
+  if (spa) {
+    search("spa",index);
+  } else {
+    search(false,index);
+  }
 }
 
 function init() {
@@ -252,12 +250,15 @@ function init() {
     addAdvancedSearchComponent();
   }
 
-  $(document).on('click','.query-selector',function(){
+  $(document).on('click','.query-selector', function(){
     var queryName = $(this).text();
     var index = $(this).index();
-    $('.address-search').val(queryName);
-    $('.query-results').text("");
-    search(false,index);
+    querySelected(false,queryName,index);
+  });
+  $(document).on('click','.query-selector-spa', function(){
+    var queryName = $(this).text();
+    var index = $(this).index();
+    querySelected(true,queryName,index);
   });
 }
 

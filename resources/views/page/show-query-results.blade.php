@@ -26,7 +26,13 @@
 @section('content')
   <h1>Risultati ricerca:</h1>
 
+
   <div id="query-apartments">
+
+    @if ($queryApartments->count()==0)
+      <h1>Non ci sono risultati!</h1>
+    @endif
+
     @foreach ($queryApartments as $apartment)
       <div>
         <img src="{{asset('images/' . $apartment->image)}}" alt="" style="width:100px">
