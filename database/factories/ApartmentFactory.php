@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Apartment::class, function (Faker $faker) {
     return [
-        'title' =>$faker->word(3),
+        'title' =>$faker->sentence(6, true),
         'description' =>$faker->sentence(50),
         'price' =>$faker->numberBetween(20, 100),
         'number_of_rooms' =>$faker->numberBetween(1 , 5),

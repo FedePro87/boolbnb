@@ -240,6 +240,34 @@ function addAdvancedSearchComponent() {
   });
 }
 
+function addApartmentComponent() {
+  Vue.component('apartment-component', {
+    template:"#apartment-component",
+    props: {
+      description: String,
+      image: String,
+      address: String,
+      visual: Number,
+      showIndex: String
+    },
+    data:function(){
+      return {
+
+      };
+    },
+    computed: {
+
+    },
+    methods: {
+
+    }
+  });
+
+  new Vue({
+    el:"#sponsoreds-wrapper"
+  });
+}
+
 function querySelected(spa,queryName,index){
   $('.query-results').text("");
 
@@ -281,6 +309,8 @@ function init() {
     var index = $(this).index();
     querySelected(true,queryName,index);
   });
+
+  addApartmentComponent();
 }
 
 $(document).ready(init);

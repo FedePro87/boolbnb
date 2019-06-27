@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Service;
 
 class CreateServicesTable extends Migration
 {
@@ -18,9 +19,28 @@ class CreateServicesTable extends Migration
             $table->string('name');
             $table->timestamps();
         });
+
+        Service::insert([
+            'name' => 'WI-FI',
+        ]);
+        Service::insert([
+            'name' => 'Piscina',
+        ]);
+        Service::insert([
+            'name' => 'Posto Macchina',
+        ]);
+        Service::insert([
+            'name' => 'Portineria',
+        ]);
+        Service::insert([
+            'name' => 'Sauna',
+        ]);
+        Service::insert([
+            'name' => 'Vista mare',
+        ]);
     }
 
-    
+
 
     /**
      * Reverse the migrations.

@@ -1,7 +1,7 @@
 @extends('layouts.home')
 @section('content-header')
 
-{{-- Ricerca --}}
+  {{-- Ricerca --}}
 
   <form action="{{route('basic-search')}}" method="get">
     <div class="form-group">
@@ -18,13 +18,14 @@
 @stop
 
 @section('content')
+  @include ('components.apartment-component')
 
-  @foreach ($sponsoreds as $sponsored)
-    <div>
-      <img src="{{$sponsored->image}}" alt="" style="width:100px">
-      <h4>{{$sponsored->title}}</h4>
-      <p>{{$sponsored->description}}</p>
+  <div class="container-fluid mt-4">
+    <div id="sponsoreds-wrapper" class="d-flex flex-wrap">
+      @foreach ($sponsoreds as $sponsored)
+        <apartment-component description="{{$sponsored->title}}" image={{$sponsored->image}} address="{{$sponsored->address}}" v-bind:visual="{{$sponsored->visuals->count()}}" show-index="{{route('show',$sponsored->id)}}"></apartment-component>
+      @endforeach
     </div>
-  @endforeach
+  </div>
 
 @stop
