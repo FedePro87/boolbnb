@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Sponsorship extends Model
 {
     protected $fillable = [
-        'type'
+        'duration',
+        'amount'
     ];
 
     function apartments(){
-        return $this->belongsToMany(Apartment::class);
+        return $this->belongsToMany(Apartment::class)->withPivot('created_at', 'updated_at');
       }
 }

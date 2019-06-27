@@ -21,7 +21,6 @@ class ApartmentSeeder extends Seeder
             $user = User::inRandomOrder()->first();
             $apartment->user()->associate($user);
 
-           
             $apartment->save();
             
             $services = Service::inRandomOrder()->take(rand(1,6))->get();

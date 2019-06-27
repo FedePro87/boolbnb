@@ -18,7 +18,7 @@ class CreateMessagesTable extends Migration
             $table->string('title');
             $table->text('content');
             $table->bigInteger('apartment_id')->unsigned()->index();
-
+            $table->string('email');
             $table->timestamps();
         });
     }

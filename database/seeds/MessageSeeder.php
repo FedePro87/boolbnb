@@ -16,7 +16,6 @@ class MessageSeeder extends Seeder
             $apartment = App\Apartment::inRandomOrder()->first();
             $message->apartment()->associate($apartment);
             $message->save();
-  
     });
 
    }

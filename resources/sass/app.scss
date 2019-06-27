@@ -6,3 +6,25 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+#airbnb-logo{
+  width: 34px;
+}
+
+#map{
+  height: 500px;
+  width: 500px;
+}
+
+canvas{
+  width:1000px;
+  height:700px;
+}
+
+.address-search{
+  width:300px;
+}
+
+.query-selector,.query-selector-spa{
+  cursor: pointer;
+}

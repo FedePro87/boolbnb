@@ -32,8 +32,15 @@ class AddForeignKeys extends Migration
                     ->references('id')
                     ->on('apartments')
                     ->onDelete('cascade');
+        });
 
-                });
+        Schema::table('visuals', function(Blueprint $table) {
+
+            $table->foreign('apartment_id', 'apartment4')
+                    ->references('id')
+                    ->on('apartments')
+                    ->onDelete('cascade');
+        });
 
         Schema::table('apartment_service', function(Blueprint $table){
             $table->foreign('service_id','service')
