@@ -2,6 +2,10 @@ require('./bootstrap');
 var Chart = require('chart.js');
 window.Vue = require('vue');
 
+window.onerror = function(message, source, lineno, colno, error) {
+  console.log('Exception: ', error)
+}
+
 function addMap() {
   // Qui viene impostata una variabile che rappresenta un array. Rispettivamente ci sono la latitudine e la longitudine. Questi dati possono essere recuperati passando nell'url della show la query o in alternativa nascondendo i dati che ci servono da qualche parte e recuperandoli con jquery.
   var lat=$('#map').data('lat');
@@ -246,8 +250,9 @@ function addApartmentComponent() {
     props: {
       description: String,
       image: String,
+      altImage: String,
       address: String,
-      visual: Number,
+      visuals: Number,
       showIndex: String
     },
     data:function(){
@@ -259,12 +264,14 @@ function addApartmentComponent() {
 
     },
     methods: {
-
+      changeSrc(event) {
+        event.target.src = this.altImage;
+      }
     }
   });
 
   new Vue({
-    el:"#sponsoreds-wrapper"
+    el:"#apartment-component-wrapper"
   });
 }
 
@@ -299,6 +306,17 @@ function init() {
     addAdvancedSearchComponent();
   }
 
+  if ($('#apartment-component-wrapper').length) {
+    addApartmentComponent();
+  }
+
+  $('#fake-upload-image').click(function(){
+    $("#upload-image").click();
+  });
+  $('#upload-image').change(function() {
+    $('#selected_filename').text($('#fileinput]')[0].files[0].name);
+  });
+
   $(document).on('click','.query-selector', function(){
     var queryName = $(this).text();
     var index = $(this).index();
@@ -309,8 +327,6 @@ function init() {
     var index = $(this).index();
     querySelected(true,queryName,index);
   });
-
-  addApartmentComponent();
 }
 
 $(document).ready(init);

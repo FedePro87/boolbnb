@@ -11,9 +11,9 @@
       <br>
 
       <div>
-        <label for="image"><h2>Add Image</h2></label>
+        <label id="fake-upload-image" for="image"><h2>Add Image</h2></label>
         <br>
-        <input type="file" name="image">
+        <input type="file" name="image" id="upload-image">
       </div>
       <br>
 

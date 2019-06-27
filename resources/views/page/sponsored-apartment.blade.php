@@ -13,7 +13,7 @@
 
     <div class="query-results"></div>
 
-    <input id="search-btn" type="submit" name="" value="SEARCH">
+    <input class="boolbnb-btn" type="submit" name="" value="SEARCH">
   </form>
 @stop
 
@@ -21,9 +21,9 @@
   @include ('components.apartment-component')
 
   <div class="container-fluid mt-4">
-    <div id="sponsoreds-wrapper" class="d-flex flex-wrap">
+    <div id="apartment-component-wrapper" class="d-flex flex-wrap">
       @foreach ($sponsoreds as $sponsored)
-        <apartment-component description="{{$sponsored->title}}" image={{$sponsored->image}} address="{{$sponsored->address}}" v-bind:visual="{{$sponsored->visuals->count()}}" show-index="{{route('show',$sponsored->id)}}"></apartment-component>
+        <apartment-component description="{{$sponsored->title}}" image={{$sponsored->image}} alt-image="{{asset('images/' . $sponsored->image)}}" address="{{$sponsored->address}}" v-bind:visuals="{{$sponsored->visuals->count()}}" show-index="{{route('show',$sponsored->id)}}"></apartment-component>
       @endforeach
     </div>
   </div>

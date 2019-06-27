@@ -17,9 +17,9 @@
   <!-- Handlebars -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js" charset="utf-8"></script>
 
+  <link rel="stylesheet" href="{{ asset('tomtom-sdk/map.css') }}">
   <script src="{{ asset('tomtom-sdk/tomtom.min.js')}}" type="text/javascript"></script>
   <script src="{{ asset('dropin.min.js')}}" type="text/javascript"></script>
-  <link rel="stylesheet" href="{{ asset('tomtom-sdk/map.css') }}">
 
   <script id="apartment-template" type="text/x-handlebars-template">
     <div class="apartment">

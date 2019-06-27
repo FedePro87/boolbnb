@@ -3,14 +3,14 @@
     <div class="apartment-wrapper">
       <a :href="showIndex">
         <div>
-          <img :src="image" class="img-fluid"></img>
+          <img :src="image" @@error="changeSrc" class="img-fluid"/>
         </div>
         <span class="">@{{description}}</span>
 
         <div>
           <span class="">@{{address}}</span><br>
-          <span v-if="visual==1" class="">@{{visual}} visualizzazione</span>
-          <span v-else class="">@{{visual}} visualizzazioni</span>
+          <span v-if="visuals==1" class="">@{{visuals}} visualizzazione</span>
+          <span v-else class="">@{{visuals}} visualizzazioni</span>
         </div>
       </a>
     </div>
