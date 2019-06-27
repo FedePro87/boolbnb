@@ -32,6 +32,7 @@
 
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="{{route('create')}}">Aggiungi un nuovo appartamento</a>
+                <a class="dropdown-item" href="{{route('showUserApartments',Auth::user()->id)}}">Gestisci i tuoi appartamenti</a>
                 <a class="dropdown-item" href="{{ route('logout') }}"
                 onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();">
