@@ -76,7 +76,7 @@
       <div class="d-flex">
         <label for="service">Services</label><br>
         @foreach ($services as $service)
-        <input type="checkbox" name="services[]" value="{{$service->id}}"
+        <input @change="optionSelected" type="checkbox" name="services[]" value="{{$service->id}}"
         @isset($queryServices)
         @foreach ($queryServices as $queryService)
         @if ($queryService==$service->id)

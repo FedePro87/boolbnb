@@ -116,7 +116,11 @@ function search(searching,index) {
           var bedrooms = $("select[name='bedrooms']").val();
           var radius = $("select[name='radius']").val();
 
-          apartmentsDatabaseSearch(lat,lon,numberOfRooms,bedrooms,radius);
+          var services = $("input[name='services[]']:checked").map(function(){
+            return $(this).val();
+          }).get();
+
+          apartmentsDatabaseSearch(lat,lon,numberOfRooms,bedrooms,radius,services);
         }
       } else {
         var resultsArray = inData['features'];
@@ -136,7 +140,7 @@ function search(searching,index) {
   });
 }
 
-function apartmentsDatabaseSearch(lat,lon,rooms,bedrooms,radius) {
+function apartmentsDatabaseSearch(lat,lon,rooms,bedrooms,radius,services) {
   $.ajax({
     url:"/search",
     method:"GET",
@@ -146,6 +150,7 @@ function apartmentsDatabaseSearch(lat,lon,rooms,bedrooms,radius) {
       number_of_rooms: rooms,
       bedrooms: bedrooms,
       radius: radius,
+      services:services,
       advancedSearch:1,
     },
     success:function(inData,state){
