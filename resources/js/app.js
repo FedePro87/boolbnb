@@ -62,15 +62,31 @@ function search(searching,index) {
     query = $('.address-search-spa').val();
   }
 
-  if (!searching && query=="") {
-    $('.address-search').val('Roma, RM');
-    query = $('.address-search').val();
-  }
-
   if (query=="") {
     $('.query-results').text("");
   }
 
+  if (!searching && query=="") {
+    $.getJSON('http://ip-api.com/json?callback=?', function(data) {
+      var clientLocation = data;
+
+      if (data!=null) {
+        var clientCityApprox = clientLocation['city'];
+
+        $('.address-search').val(clientCityApprox);
+        query = $('.address-search').val();
+      } else {
+        query="Roma, RM";
+      }
+
+      getCoordinates(query,searching,index);
+    });
+  } else {
+    getCoordinates(query,searching,index);
+  }
+}
+
+function getCoordinates(query,searching,index) {
   var outData = {
     access_token:"pk.eyJ1IjoiYm9vbGVhbmdydXBwbzQiLCJhIjoiY2p4YnN5N3ltMDdkbjNzcGVsdW54eXFodCJ9.BP8Cf-t-evfHO22_kDFzbg",
     types:"place,address",
