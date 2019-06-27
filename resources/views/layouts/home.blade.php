@@ -30,9 +30,8 @@
   </script>
 </head>
 <body>
-  <header>
-    <h1>Header</h1>
-  </header>
+
+  @include('layouts.header')
 
   @yield('content-header')
 

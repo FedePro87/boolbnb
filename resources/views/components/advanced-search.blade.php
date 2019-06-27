@@ -4,14 +4,14 @@
       <div class="form-group">
         <input v-model="latComp" type="hidden" name="lat">
         <input v-model="lonComp" type="hidden" name="lon">
-        <input v-model="realTimeAddress" v-on:keyup="addressPageRealTimeRefresh" class="address-search-spa" type="text" name="address" value="{{$address}}" placeholder="Insert address...">
+        <input v-on:keyup="pageRealTimeRefresh" class="address-search-spa" type="text" name="address" value="{{$address}}" placeholder="Insert address...">
       </div>
       <div class="query-results"></div>
     </div>
 
     <div>
       <label for="number_of_rooms"><h2>Rooms</h2></label>
-      <select name="number_of_rooms">
+      <select @change="optionSelected" name="number_of_rooms">
         @for ($i=0; $i<=10; $i++)
         @php
         if ($i==0) {
@@ -36,7 +36,7 @@
 
     <div>
       <label for="bedrooms"><h2>Bedrooms</h2></label>
-      <select name="bedrooms">
+      <select @change="optionSelected" name="bedrooms">
         @for ($i=0; $i<=10; $i++)
         @php
         if ($i==0) {
@@ -61,13 +61,13 @@
 
     <div class="ml-4">
       <label for="radius"><h2>Distanza</h2></label>
-      <select name="radius">
+      <select @change="optionSelected" name="radius">
         @for ($i=1; $i<=5; $i++)
-        <option value="{{$i*20}}"
-        @if ($maxDistance==$i*20)
+        <option value="{{$i*200}}"
+        @if ($maxDistance==$i*200)
         selected
         @endif
-        >{{$i*20}} km</option>
+        >{{$i*200}} km</option>
         @endfor
       </select><br>
     </div>

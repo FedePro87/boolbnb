@@ -1,6 +1,7 @@
 @extends('layouts.home')
 @section('content-header')
-  <h1>Ricerca</h1>
+
+{{-- Ricerca --}}
 
   <form action="{{route('basic-search')}}" method="get">
     <div class="form-group">

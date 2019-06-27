@@ -86,7 +86,6 @@ function search(searching,index) {
       if(searching){
         $('.query-results').text("");
         var resultsArray = inData['features'];
-        console.log(resultsArray);
         for (var i = 0; i < resultsArray.length; i++) {
           var resultObject = resultsArray[i];
           var newP = document.createElement("p");
@@ -102,8 +101,6 @@ function search(searching,index) {
         }
 
         if (searching=="spa") {
-          var radius = $("select[name='radius']").val();
-
           if (index!=null) {
             $('.query-results').text("");
           }
@@ -115,7 +112,11 @@ function search(searching,index) {
           $("input[name='lat']").val(lat);
           $("input[name='lon']").val(lon);
 
-          apartmentsDatabaseSearch(lat,lon,radius);
+          var numberOfRooms = $("select[name='number_of_rooms']").val();
+          var bedrooms = $("select[name='bedrooms']").val();
+          var radius = $("select[name='radius']").val();
+
+          apartmentsDatabaseSearch(lat,lon,numberOfRooms,bedrooms,radius);
         }
       } else {
         var resultsArray = inData['features'];
@@ -135,22 +136,19 @@ function search(searching,index) {
   });
 }
 
-function apartmentsDatabaseSearch(lat,lon,radius) {
-  console.log(lat,lon,radius);
+function apartmentsDatabaseSearch(lat,lon,rooms,bedrooms,radius) {
   $.ajax({
     url:"/search",
     method:"GET",
     data:{
-      // address: this.address,
       lat:lat,
       lon:lon,
-      // number_of_rooms: this.rooms,
-      // bedrooms: this.bedrooms,
+      number_of_rooms: rooms,
+      bedrooms: bedrooms,
       radius: radius,
       advancedSearch:1,
     },
     success:function(inData,state){
-      console.log(JSON.parse(inData));
       var queryContainer=$("#query-apartments");
       queryContainer.text("");
       var resultsArray = JSON.parse(inData);
@@ -161,7 +159,7 @@ function apartmentsDatabaseSearch(lat,lon,radius) {
         queryContainer.append(noResultsMessage);
       } else {
         for (var i = 0; i < resultsArray.length; i++) {
-          let resultObject = resultsArray[i];
+          var resultObject = resultsArray[i];
 
           var apartmentTemplate=$("#apartment-template").html();
           var compiled=Handlebars.compile(apartmentTemplate);
@@ -198,7 +196,6 @@ function addAdvancedSearchComponent() {
     },
     data:function(){
       return {
-        addressComp:this.address,
         latComp: this.lat,
         lonComp: this.lon,
         realTimeAddress: this.address
@@ -208,8 +205,11 @@ function addAdvancedSearchComponent() {
 
     },
     methods: {
-      addressPageRealTimeRefresh(){
-        search("spa"); //era true
+      pageRealTimeRefresh(){
+        search("spa");
+      },
+      optionSelected() {
+        querySelected("spa", $('.address-search-spa').val(),$("select[name='number_of_rooms']").val());
       }
     }
   });
@@ -220,13 +220,13 @@ function addAdvancedSearchComponent() {
 }
 
 function querySelected(spa,queryName,index){
-  $('.address-search').val(queryName);
-  $('.address-search-spa').val(queryName);
   $('.query-results').text("");
 
   if (spa) {
+    $('.address-search-spa').val(queryName);
     search("spa",index);
   } else {
+    $('.address-search').val(queryName);
     search(false,index);
   }
 }
