@@ -25,16 +25,16 @@ class NewApartmentRequest extends FormRequest
     {
         return [
 
-            'title'=> '',
-            'description'=> '',
-            'price'=> '',
-            'number_of_rooms'=> '',
-            'bathrooms'=> '',
-            'bedrooms'=> '',
-            'square_meters'=> '',
-            'address'=> '',
-            'image'=> '',
-            'services'=>''
+            'title'=> 'required',
+            'description'=> 'required',
+            'price'=> 'required',
+            'number_of_rooms'=> 'required',
+            'bathrooms'=> 'required',
+            'bedrooms'=> 'required',
+            'square_meters'=> 'required',
+            'address'=> 'required',
+            'image'=> 'required',
+            'services'=>'required'
         ];
     }
 }
