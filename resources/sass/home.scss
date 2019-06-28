@@ -1,0 +1,33 @@
+.main-header{
+  width: 100%;
+  background-image: url(https://a0.muscache.com/4ea/air/v2/pictures/b7ca8f0c-030a-401a-a3a6-fc3d50f3425f.jpg?t=c:3w-h2-gw,r:w3100-h2074-sfit,e:fjpg-c80);
+  height: 90vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+
+  .form-style{
+    width: 30%;
+    background: white;
+    position: absolute;
+    left: 300px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 40px;
+    border-radius: 5px;
+    box-shadow: 10px 10px 24px 0px rgba(0,0,0,0.39);
+
+    h1{
+      font-weight: bold;
+    }
+
+    .address-search{
+      border: none;
+      height: 40px;
+      box-shadow: 10px 10px 25px 0px rgba(0,0,0,0.08);
+      width: 100%;
+      margin: 20px 0;
+
+    }
+  }
+}

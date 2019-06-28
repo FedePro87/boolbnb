@@ -10,7 +10,7 @@
 @import 'header';
 @import 'footer';
 @import 'home';
-@import 'showApartment';
+@import 'showApartament';
 
 
 
@@ -53,11 +53,34 @@
 }
 
 .apartment{
+
+  box-shadow:10px 10px 17px -7px rgba(0,0,0,0.25);
+  margin: 50px;
+  padding-right: 0;
+  padding-left: 0;
+  border-radius: 5px;
   .apartment-wrapper{
     cursor: pointer;
     a{
       text-decoration: none;
       color: black;
+
+      img{
+        border-radius: 5px 5px 0 0;
+      }
+
+      .content-apartment{
+        padding: 15px;
+        color: grey;
+
+        .description{
+          font-weight: bolder;
+          color: black;
+          font-size: 16px;
+        }
+
+
+      }
     }
   }
 }
@@ -79,9 +102,7 @@ canvas{
   height:700px;
 }
 
-.address-search{
-  width:300px;
-}
+
 
 .query-selector,.query-selector-spa{
   cursor: pointer;

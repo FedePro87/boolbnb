@@ -5,10 +5,10 @@
         <div>
           <img :src="image" @@error="changeSrc" class="img-fluid"/>
         </div>
-        <span class="">@{{description}}</span>
 
-        <div>
-          <span class="">@{{address}}</span><br>
+        <div class="content-apartment">
+          <span class="description">@{{description}}</span><br>
+          <span class="address">@{{address}}</span><br>
           <span v-if="visuals==1" class="">@{{visuals}} visualizzazione</span>
           <span v-else class="">@{{visuals}} visualizzazioni</span>
         </div>

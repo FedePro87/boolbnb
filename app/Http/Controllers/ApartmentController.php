@@ -147,6 +147,7 @@ class ApartmentController extends Controller
         }
       }
     }
+    
 
     return view('page.sponsored-apartment', compact('sponsoreds'));
   }
