@@ -212,7 +212,17 @@ function apartmentsDatabaseSearch(lat,lon,rooms,bedrooms,radius,services) {
 //Quando viene schiacciato un tasto, chiamiamo search impostando true.
 function addressRealTimeSearch() {
   search(false);
+  $('.address-search').click(function() {
+    search(true);
+    $('.fa-times').removeClass('d-none');
+  });
+
   $('.address-search').keyup(function() {
+    if ($('.address-search').val()=="") {
+      $('.fa-times').addClass('d-none');
+    } else {
+      $('.fa-times').removeClass('d-none');
+    }
     search(true);
   });
 }
@@ -326,9 +336,6 @@ function init() {
     addApartmentComponent();
   }
 
-  if ($('#save-apartment').length) {
-  }
-
   //Il pulsante base per l'immissione del file è una cosa orrida, quindi l'ho nascosto con un pulsante un tantino più bello.
   //Qui dice che quando viene premuto il pulsante farlocco è come se hai premuto quello "originale"
   $('#fake-upload-image').click(function(){
@@ -357,10 +364,24 @@ function init() {
     var queryName = $(this).text();
     querySelected(false,queryName);
   });
+
   //Analogamente,se clicco nella ricerca in tempo reale passo alla funzione 'true'.
   $(document).on('click','.query-selector-spa', function(){
     var queryName = $(this).text();
     querySelected(true,queryName);
+  });
+
+  $(document).on('click','.fa-times', function(){
+    $('.address-search').val("");
+  });
+
+  $(document).click(function(event) {
+    var target = $(event.target);
+    if(!target.closest('.address-search').length &&
+    $('.address-search').is(":visible") && $(event.target).attr('class')!="fas fa-times") {
+      $('.query-results').empty();
+      $('.fa-times').addClass('d-none');
+    }
   });
 }
 

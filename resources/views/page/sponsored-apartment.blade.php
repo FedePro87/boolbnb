@@ -12,15 +12,17 @@
         <h1>Ciao {{ Auth::user()->firstname }}, dove vorresti andare?</h1>
 
       @endif
-      <form action="{{route('basic-search')}}" method="get">
+      <form class="address-search-wrapper" action="{{route('basic-search')}}" method="get">
         <div class="form-group">
           <input type="hidden" name="lat">
           <input type="hidden" name="lon">
           <input type="hidden" name="advancedSearch" value="0">
-          <input class="address-search" type="text" name="address" value="" placeholder="Insert address...">
+          <div class="close-results-wrapper">
+            <input class="address-search" type="text" name="address" value="" placeholder="Insert address..."><i class="fas fa-times d-none"></i></input>
+          </div>
+          <div class="query-results"></div>
         </div>
 
-        <div class="query-results"></div>
 
         <input class="boolbnb-btn" type="submit" name="" value="SEARCH">
       </form>
