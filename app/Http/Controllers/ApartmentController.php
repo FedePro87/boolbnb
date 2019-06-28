@@ -116,8 +116,6 @@ class ApartmentController extends Controller
   }
 
   public function showSponsored(){
-
-
     $sponsoreds=[];
     $sponsorships= Sponsorship::all();
 
@@ -177,7 +175,6 @@ class ApartmentController extends Controller
 
     return view('page.search', compact( 'services','apartments'));
   }
-
 
   // Creazione nuovo appartamento - tutto questa roba andrà spostata nell'HomeController
   function createNewApartment(){

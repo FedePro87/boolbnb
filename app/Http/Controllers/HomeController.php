@@ -115,18 +115,4 @@ class HomeController extends Controller
         return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance'));;
       }
     }
-
-    // public function showMessageApartment($id){
-    //
-    //   $apartment = Apartment::findOrFail($id);
-    //
-    // }
-    // function createNewApartment(){
-
-    //     $apartment = Apartment::all();
-    //     $services = Services::all();
-
-    //     return view('page.add-new-apartment' , compact('apartment','services'));
-
-    // }
   }
