@@ -7,6 +7,14 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@import 'header';
+@import 'footer';
+@import 'home';
+@import 'showApartment';
+
+
+
+
 #airbnb-logo{
   width: 34px;
 }
