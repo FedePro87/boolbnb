@@ -208,9 +208,10 @@ class ApartmentController extends Controller
       }
       return json_encode($queryApartments);
     } else if ($bedrooms!==null&&$numberOfRooms!==null) {
-      return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','numberOfRooms','bedrooms','queryServices','sponsoredApartments'));;
+      return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','numberOfRooms','bedrooms','queryServices','sponsoredApartments'));
     } else {
-      return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','sponsoredApartments'));;
+      return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','sponsoredApartments'));
+
     }
   }
 

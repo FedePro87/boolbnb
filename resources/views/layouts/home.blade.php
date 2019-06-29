@@ -44,10 +44,6 @@
     </script>
   </head>
   <body>
-
-    @include('layouts.header')
-
-
     {{-- ERROR CONTROL --}}
     @if ($errors->any())
       <div class="alert alert-danger">
@@ -68,22 +64,13 @@
         </div>
       </div>
     @endif
-
     {{-- END ERROR CONTROL --}}
-
     @yield('content-header')
 
-
     @yield('content')
-
-
-
 
     <footer>
       <h5>It's like Airbnb but made with much more love</h5>
     </footer>
-
-
-
   </body>
   </html>

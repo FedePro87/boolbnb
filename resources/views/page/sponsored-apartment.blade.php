@@ -3,6 +3,9 @@
 {{-- Ricerca --}}
 @section('content-header')
   <div class="main-header">
+    <div class="navbar-wrapper">
+      @include('layouts.header')
+    </div>
     <div class="form-style">
       @guest
         <h1>Ciao, dove vuoi andare?</h1>

@@ -1,6 +1,9 @@
 @extends('layouts.home')
 
 @section('content-header')
+
+  @include('layouts.header')
+
   @include ('components.advanced-search')
 
   <div id="component-vue">

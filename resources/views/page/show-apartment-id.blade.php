@@ -2,6 +2,7 @@
 @section('content')
 
   {{-- Show apartment info --}}
+  @include('layouts.header')
   <div class="show-apartment mt-4">
     <div class="container">
       <div class="col-lg-6">

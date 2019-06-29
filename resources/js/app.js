@@ -66,13 +66,17 @@ function addApartmentComponent() {
     }
   });
 
-  new Vue({
-    el:"#apartment-component-wrapper"
-  });
+  if ($('#apartment-component-wrapper').length) {
+    new Vue({
+      el:"#apartment-component-wrapper"
+    });
+  }
 
-  new Vue({
-    el:"#sponsored-component-wrapper"
-  });
+  if ($('#sponsored-component-wrapper').length) {
+    new Vue({
+      el:"#sponsored-component-wrapper"
+    });
+  }
 }
 
 
@@ -328,6 +332,7 @@ function querySelected(spa,queryName){
 }
 
 function init() {
+  $('.alert').fadeOut(10000);
   //Se è presente il wrapper della mappa, raccoglie i dati per popolarlo.
   if ($('#map').length){
     addMap();
@@ -409,6 +414,17 @@ function init() {
       $('.query-results').empty();
       $('.fa-times').addClass('d-none');
     }
+  });
+
+  $(function(e) {
+    $(window).scroll(function(e) {
+      if ($(".navbar").offset().top>=600) {
+        $('.navbar').addClass('original-header');
+      }
+      if ($(".navbar").offset().top<=600) {
+        $('.navbar').removeClass('original-header');
+      }
+    });
   });
 }
 

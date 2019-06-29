@@ -1,6 +1,7 @@
 @extends('layouts.home')
 @section('content')
-
+  @include('layouts.header')
+  
   <h1>User Apartments</h1>
 
   @include ('components.apartment-component')
