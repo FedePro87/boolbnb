@@ -19,16 +19,18 @@
   width: 34px;
 }
 
-#fake-upload-image {
-  cursor: pointer;
-  background: #FF5A5F;
-  color: white;
-  margin-top: 15px;
-  padding: 2px 10px;
-  border: none;
-  outline:none;
-  font-weight: 800;
-  border-radius: 4px;
+.add-image-wrapper{
+  height: 50px;
+  #fake-upload-image {
+    cursor: pointer;
+    background: #FF5A5F;
+    color: white;
+    padding: 2px 10px;
+    border: none;
+    outline:none;
+    font-weight: 800;
+    border-radius: 4px;
+  }
 }
 
 #upload-image {
@@ -61,7 +63,6 @@
       box-shadow: 2px 2px 3px #666;
       padding: 4px 7px;
       width: 100%;
-      margin-top: 20px;
       border: 1px solid #ccc;
       border-radius: 10px;
       &:focus{

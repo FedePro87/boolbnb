@@ -158,8 +158,6 @@ function search(searching,index) {
   getCoordinates(query,searching,index);
 }
 
-
-
 //Recupera le coordinate da mapbox.
 function getCoordinates(query,searching,index) {
   var outData = {
@@ -371,13 +369,13 @@ function init() {
 
     var img = document.createElement("img");
     $(img).addClass("changeImage");
-    $(img).css("width","100px");
+    $(img).css("width","400px");
     var reader = new FileReader();
     reader.onloadend = function() {
       img.src = reader.result;
     }
     reader.readAsDataURL(file);
-    $("#fake-upload-image").after(img);
+    $(".add-image-wrapper").after(img);
   });
 
   //Quando viene cliccato uno dei risultati della ricerca nella home, viene chiamata la funzione querySelected()
