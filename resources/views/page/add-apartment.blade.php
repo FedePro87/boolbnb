@@ -5,12 +5,12 @@
     <form enctype="multipart/form-data" class="" action="{{route('save')}}" method="post">
       @csrf
 
-      <label for="title"><h2>Title</h2></label>
-      <br>
-      <input type="text" name="title" value="">
-      <br>
+      <div class="container title-container d-flex">
+        <label for="title"><h2>Title</h2></label>
+        <br>
+        <input class="w-75"type="text" name="title" value="">
+        <br>
 
-      <div>
         <label id="fake-upload-image" for="image"><h2>Add Image</h2></label>
         <br>
         <input type="file" name="image" id="upload-image">
