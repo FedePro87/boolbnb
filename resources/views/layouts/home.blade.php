@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <link rel="icon" sizes="192x192" href="https://a0.muscache.com/airbnb/static/icons/android-icon-192x192-c0465f9f0380893768972a31a614b670.png">
 
   {{-- ADD MY STYLE --}}
   <link rel="stylesheet" href="{{ mix('css/app.css') }}">

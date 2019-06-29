@@ -175,12 +175,11 @@ class ApartmentController extends Controller
 
     $inputAddress=$request->input('address');
 
-    $positionData = $this->callTomTomApi('https://api.tomtom.com/search/2/geocode/' . $inputAddress . '.JSON',['key'=> "xrIKVZTiqc6NhEvGHRbxYYpsyoLoR2wD"]);
+    $positionData = $this->callTomTomApi('https://api.tomtom.com/search/2/geocode/' . $inputAddress . '.JSON',['key'=> "xrIKVZTiqc6NhEvGHRbxYYpsyoLoR2wD",'minFuzzyLevel'=>4,'maxFuzzyLevel'=>4,'limit'=>100],$inputAddress);
 
     if (!$positionData) {
-      return redirect()->back()->withErrors(['Inserisci un indirizzo valido! Il menù di scorrimento è fatto apposta!']);
+      return redirect()->back()->withErrors(['Inserisci un indirizzo valido! Puoi utilizzare il menu di scorrimento per aiutarti']);
     } else {
-      // code...
       $lat=$positionData->lat;
       $lng=$positionData->lon;
       $apartment->lat=$lat;
@@ -200,18 +199,36 @@ class ApartmentController extends Controller
     }
   }
 
-  private function callTomTomAPI($url, $data){
+  private function callTomTomAPI($url, $data, $inputAddress){
     $client = new \GuzzleHttp\Client();
     $response = $client->get($url, ["query" => $data]);
 
     $incData=json_decode($response->getBody());
 
     try {
-      $result=$incData->results[0]->position;
+      $results= $incData->results;
+      $index= $this->compareInputAddress($results,$inputAddress);
+      $result= $incData->results[$index]->position;
     } catch (\Exception $e) {
       return false;
     }
 
     return $result;
+  }
+
+  private function compareInputAddress($results,$inputAddress){
+    $index= -1;
+    foreach ($results as $key => $result) {
+      if ($result->type=="Geography") {
+        if(strpos($inputAddress,$result->address->municipality)!==false){
+          return $key;
+        }
+      } else if($result->type=="Cross Street" || $result->type=="Street"){
+        if($inputAddress === $result->address->streetName){
+          return $key;
+        }
+      }
+    }
+    return $index;
   }
 }

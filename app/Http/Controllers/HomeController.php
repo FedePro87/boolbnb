@@ -80,39 +80,39 @@ class HomeController extends Controller
     }
 
     $queryApartments = Apartment::select('apartments.*')
-      ->selectRaw('( 3959 * acos( cos( radians(?) ) *
-                           cos( radians( lat ) )
-                           * cos( radians( lng ) - radians(?)
-                           ) + sin( radians(?) ) *
-                           sin( radians( lat ) ) )
-                         ) AS distance', [$lat, $lon, $lat])
-      ->havingRaw("distance < ?", [$maxDistance])
-      ->orderBy('distance','ASC');
+    ->selectRaw('( 3959 * acos( cos( radians(?) ) *
+    cos( radians( lat ) )
+    * cos( radians( lng ) - radians(?)
+    ) + sin( radians(?) ) *
+    sin( radians( lat ) ) )
+    ) AS distance', [$lat, $lon, $lat])
+    ->havingRaw("distance < ?", [$maxDistance])
+    ->orderBy('distance','ASC');
 
-      if ($numberOfRooms!=null && $numberOfRooms!="*") {
-        $queryApartments= $queryApartments->where('number_of_rooms',$numberOfRooms);
-      }
+    if ($numberOfRooms!=null && $numberOfRooms!="*") {
+      $queryApartments= $queryApartments->where('number_of_rooms',$numberOfRooms);
+    }
 
-      if ($bedrooms!=null && $bedrooms!="*") {
-        $queryApartments= $queryApartments->where('bedrooms',$bedrooms);
-      }
+    if ($bedrooms!=null && $bedrooms!="*") {
+      $queryApartments= $queryApartments->where('bedrooms',$bedrooms);
+    }
 
-      if ($queryServices!=null) {
-        foreach($queryServices as $service){
-          $queryApartments = $queryApartments->whereHas('services', function($q)use($service){
-            $q->where('service_id', $service); //this refers id field from services table
-          });
-        }
-      }
-
-      $queryApartments= $queryApartments->get();
-
-      if ($advancedSearch) {
-        return json_encode($queryApartments);
-      } else if ($bedrooms!==null&&$numberOfRooms!==null) {
-        return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','numberOfRooms','bedrooms','queryServices'));;
-      } else {
-        return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance'));;
+    if ($queryServices!=null) {
+      foreach($queryServices as $service){
+        $queryApartments = $queryApartments->whereHas('services', function($q)use($service){
+          $q->where('service_id', $service); //this refers id field from services table
+        });
       }
     }
+
+    $queryApartments= $queryApartments->get();
+
+    if ($advancedSearch) {
+      return json_encode($queryApartments);
+    } else if ($bedrooms!==null&&$numberOfRooms!==null) {
+      return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','numberOfRooms','bedrooms','queryServices'));;
+    } else {
+      return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance'));;
+    }
   }
+}

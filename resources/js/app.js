@@ -122,11 +122,12 @@ function getCoordinates(query,searching) {
 
         //Se stiamo effettuando la ricerca avanzata(spa) ma stiamo solo inserendo del testo nell'input, effettua la ricerca eppure allo stesso tempo non fa sparire i risultati che escono sotto. Questo significa che non abbiamo selezionato i risultati di sotto e non esiste un index, dunque pialliamo i risultati che escono sotto.
         if (searching=="spa") {
-          if (index!=null) {
-            $('.query-results').text("");
-          }
+          // if (index!=null) {
+          //   $('.query-results').text("");
+          // }
 
           //Se stiamo ancora scrivendo, prende per buono il primo risultato ed effettua la ricerca nel database.
+          //Inverto gli indici delle coordinate perché arrivano già inverti
           var myQuery = resultsArray[0];
           var myCoordinates = myQuery['center'];
           var lat = myCoordinates[1];
@@ -371,10 +372,12 @@ function init() {
     querySelected(true,queryName);
   });
 
+  //Quando si clicca sulla x all'interno dell'input dell'indirizzo, pialla il testo.
   $(document).on('click','.fa-times', function(){
     $('.address-search').val("");
   });
 
+  //Quando si clicca all'esterno dell'input di ricerca (tranne che sulla x), scompaiono i risultati di ricerca.
   $(document).click(function(event) {
     var target = $(event.target);
     if(!target.closest('.address-search').length &&
