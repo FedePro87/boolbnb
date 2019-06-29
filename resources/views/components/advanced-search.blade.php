@@ -1,10 +1,10 @@
 <script type="text/x-template" id="advanced-search">
   <div class="d-flex">
-    <div>
-      <div class="form-group">
-        <input v-model="latComp" type="hidden" name="lat">
-        <input v-model="lonComp" type="hidden" name="lon">
-        <input v-on:keyup="pageRealTimeRefresh" class="address-search-spa" type="text" name="address" value="{{$address}}" placeholder="Insert address...">
+    <div class="form-group address-search-wrapper">
+      <input v-model="latComp" type="hidden" name="lat">
+      <input v-model="lonComp" type="hidden" name="lon">
+      <div class="close-results-wrapper">
+        <input v-on:keyup="pageRealTimeRefresh" class="address-search-spa" type="text" name="address" value="{{$address}}" placeholder="Insert address..."><i class="fas fa-times d-none"></i>
       </div>
       <div class="query-results"></div>
     </div>

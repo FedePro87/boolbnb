@@ -49,8 +49,25 @@
 
 .address-search-wrapper{
   position: relative;
+  .query-results{
+    z-index: 1000;
+  }
   .close-results-wrapper{
     position: relative;
+    .address-search,.address-search-spa{
+      position: relative;
+      border: none;
+      height: 40px;
+      box-shadow: 2px 2px 3px #666;
+      padding: 4px 7px;
+      width: 100%;
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      &:focus{
+        outline:none;
+      }
+    }
     .fa-times{
       position: absolute;
       right: 20px;

@@ -22,11 +22,20 @@
   <script src="{{ asset('tomtom-sdk/tomtom.min.js')}}" type="text/javascript"></script>
   <script src="{{ asset('dropin.min.js')}}" type="text/javascript"></script>
 
-  <script id="apartment-template" type="text/x-handlebars-template">
-    <div class="apartment">
-      <img src="/images/@{{image}}" alt="" style="width:100px">
-      <h4>@{{title}}</h4>
-      <p>@{{description}}</p>
+  <script id="hand-apartment-template" type="text/x-handlebars-template">
+    <div class="apartment col-lg-3">
+      <div class="apartment-wrapper">
+        <a href="/show/@{{id}}">
+        <div>
+          <img src="/images/@{{image}}" class="img-fluid"/>
+        </div>
+
+        <div class="content-apartment">
+          <span class="description">@{{description}}</span><br>
+          <span class="address">@{{address}}</span><br>
+          <span class="visuals">@{{visualized}} visualizzazioni</span><br>
+        </div>
+      </div>
     </div>
   </script>
 </head>

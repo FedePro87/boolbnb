@@ -108,6 +108,13 @@ class HomeController extends Controller
     $queryApartments= $queryApartments->get();
 
     if ($advancedSearch) {
+      foreach ($queryApartments as $queryApartment) {
+        $howMany= $queryApartment->visuals->count();
+        $queryApartment->visualized = $howMany;
+        // dd($visuals);
+        // $queryApartment->visuals = '0';
+        // dd($queryApartment);
+      }
       return json_encode($queryApartments);
     } else if ($bedrooms!==null&&$numberOfRooms!==null) {
       return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','numberOfRooms','bedrooms','queryServices'));;

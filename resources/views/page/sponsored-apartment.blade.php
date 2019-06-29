@@ -18,7 +18,7 @@
           <input type="hidden" name="lon">
           <input type="hidden" name="advancedSearch" value="0">
           <div class="close-results-wrapper">
-            <input class="address-search" type="text" name="address" value="" placeholder="Insert address..."><i class="fas fa-times d-none"></i></input>
+            <input class="address-search" type="text" name="address" value="" placeholder="Insert address..."><i class="fas fa-times d-none"></i>
           </div>
           <div class="query-results"></div>
         </div>

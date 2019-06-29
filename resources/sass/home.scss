@@ -20,20 +20,5 @@
     h1{
       font-weight: bold;
     }
-
-    .address-search{
-      position: relative;
-      border: none;
-      height: 40px;
-      box-shadow: 2px 2px 3px #666;
-      padding: 4px 7px;
-      width: 100%;
-      margin-top: 20px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      &:focus{
-        outline:none;
-      }
-    }
   }
 }

@@ -59,10 +59,14 @@
       <input type="text" name="square_meters" value="{{ old('square_meters')}}">
       <br>
 
-      <label for="address"><h2>Address</h2></label>
-      <input class="address-search" type="text" name="address">
-      <div class="query-results"></div>
-      <br>
+      <div class="address-search-wrapper col-lg-6">
+        <label for="address"><h2>Address</h2></label>
+        <div class="close-results-wrapper">
+          <input class="address-search" type="text" name="address"><i class="fas fa-times d-none"></i>
+        </div>
+        <div class="query-results"></div>
+        <br>
+      </div>
 
       <div class="checkbox-cont">
         <label for="services"><h2>services</h2></label>

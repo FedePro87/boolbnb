@@ -24,19 +24,16 @@
 @section('content')
   <h1>Risultati ricerca:</h1>
 
+  @include ('components.apartment-component')
 
-  <div id="query-apartments">
+  <div id="apartment-component-wrapper" class="d-flex">
 
     @if ($queryApartments->count()==0)
       <h1>Non ci sono risultati!</h1>
     @endif
 
     @foreach ($queryApartments as $apartment)
-      <div>
-        <img src="{{asset('images/' . $apartment->image)}}" alt="" style="width:100px">
-        <h4>{{$apartment->title}}</h4>
-        <p>{{$apartment->description}}</p>
-      </div>
+      <apartment-component description="{{$apartment->title}}" image={{$apartment->image}} alt-image="{{asset('images/' . $apartment->image)}}" address="{{$apartment->address}}" v-bind:visuals="{{$apartment->visuals->count()}}" show-index="{{route('show',$apartment->id)}}"></apartment-component>
     @endforeach
   </div>
 
