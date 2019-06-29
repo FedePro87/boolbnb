@@ -47,6 +47,10 @@
   outline:none;
   font-weight: 800;
   border-radius: 4px;
+  &:hover{
+    text-decoration: none;
+    color: white;
+  }
 }
 
 .address-search-wrapper{

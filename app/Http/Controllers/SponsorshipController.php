@@ -10,15 +10,15 @@ use Braintree_Transaction;
 class SponsorshipController extends Controller
 {
   public function process($amount, $apartmentId, $sponsorshipId, Request $request)
-{
+  {
     $payload = $request->input('payload', false);
     $nonce = $payload['nonce'];
     $status = Braintree_Transaction::sale([
-	  'amount' => $amount,
-  	'paymentMethodNonce' => $nonce,
-	  'options' => [
-	    'submitForSettlement' => True
-	  ]
+      'amount' => $amount,
+      'paymentMethodNonce' => $nonce,
+      'options' => [
+        'submitForSettlement' => True
+      ]
     ]);
 
     if($status->success){
@@ -27,13 +27,13 @@ class SponsorshipController extends Controller
     }
 
     return response()->json($status);
-}
+  }
 
-    public function showSponsorshipForm($id){
+  public function showSponsorshipForm($id){
 
-      $apartment = Apartment::findOrFail($id);
-      $sponsorships = Sponsorship::all();
+    $apartment = Apartment::findOrFail($id);
+    $sponsorships = Sponsorship::all();
 
-      return view('page.addSponsorship', compact('sponsorships', 'apartment'));
-    }
+    return view('page.addSponsorship', compact('sponsorships', 'apartment'));
+  }
 }

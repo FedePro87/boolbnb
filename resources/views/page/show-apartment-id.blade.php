@@ -5,19 +5,31 @@
   @include('layouts.header')
   <div class="show-apartment mt-4">
     <div class="container">
-      <div class="col-lg-6">
-        <div class="image-title-wrapper">
-          <img class="img-fluid"
-          @if(file_exists(public_path('images/' . $apartment->image)))
-            src="{{asset('images/' . $apartment->image)}}"
-          @else
-            src="{{$apartment->image}}"
-          @endif
-          >
-          <h4 class="image-title">{{$apartment->title}}</h4>
+      <div class="row">
+
+        <div class="col-lg-6">
+          <div class="image-title-wrapper">
+            <img class="img-fluid"
+            @if(file_exists(public_path('images/' . $apartment->image)))
+              src="{{asset('images/' . $apartment->image)}}"
+            @else
+              src="{{$apartment->image}}"
+            @endif
+            >
+            <h4 class="image-title">{{$apartment->title}}</h4>
+          </div>
         </div>
+
+        @if(Auth::user()!==null)
+          @if($apartment->user_id==Auth::user()->id)
+            <div class="col-lg-6 d-flex align-items-center justify-content-center">
+              <a class="boolbnb-btn" href="{{route('showSponsorshipForm',$apartment->id)}}">Sponsorizza il tuo appartamento!</a>
+            </div>
+          @endif
+        @endif
       </div>
     </div>
+
     <div class="container mt-4">
       <div class="row">
         <div class="col-lg-6">
