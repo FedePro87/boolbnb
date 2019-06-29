@@ -51,28 +51,45 @@
         {{-- END MAP SECTION --}}
 
         {{-- Contact form --}}
+        @if(Auth::user()!==null)
+          @if($apartment->user_id!=Auth::user()->id)
+            <form class="create col-lg-6" action="{{route('create-message',$apartment->id)}}" method="post">
+              <div class="d-flex justify-content-center align-items-center">
+                <div class="message-form-wrapper">
+                  @csrf
+                  <h3>Scrivi al proprietario</h3><br>
 
-        <form class="create col-lg-6" action="{{route('create-message',$apartment->id)}}" method="post">
-          <div class="d-flex justify-content-center align-items-center">
-            <div class="message-form-wrapper">
-              @csrf
-              <h3>Scrivi al proprietario</h3><br>
+                  @guest
+                    <label for="email">indirizzo mail</label><br>
+                    <input type="text" name="email" value=""><br>
+                  @endguest
 
-              @guest
-                <label for="email">indirizzo mail</label><br>
-                <input type="text" name="email" value=""><br>
-              @endguest
+                  <label for="title">Oggetto</label><br>
+                  <input type="text" name="title" value="Oggetto della mail"><br>
 
-              <label for="title">Oggetto</label><br>
-              <input type="text" name="title" value="Oggetto della mail"><br>
+                  <label for="content">Testo della Mail</label><br>
+                  <textarea name="content" rows="10" cols="30"></textarea><br>
 
-              <label for="content">Testo della Mail</label><br>
-              <textarea name="content" rows="10" cols="30"></textarea><br>
-
-              <button type="submit" name="button">Send Mail</button>
+                  <button type="submit" name="button">Send Mail</button>
+                </div>
+              </div>
+            </form>
+          @else
+            <div class="col-lg-6 overflow-auto messages">
+              @if ($apartment->messages->count()==0)
+                <h1>Non hai ricevuto messaggi per questo appartamento!</h1>
+              @else
+                @foreach ($apartment->messages as $message)
+                  <div class="border">
+                    <h5>Titolo messaggio: {{$message->title}}</h5>
+                    <h5>Contenuto: {{$message->content}}</h5>
+                    <h5>Inviato da: <a href="" data-mail={{$message->email}} data-title={{$apartment->title}} class="emailLink">{{$message->email}}</a></h5>
+                  </div>
+                @endforeach
+              @endif
             </div>
-          </div>
-        </form>
+          @endif
+        @endif
       </div>
     </div>
 

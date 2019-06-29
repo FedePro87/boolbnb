@@ -101,19 +101,11 @@ class ApartmentController extends Controller
       ->whereYear('created_at', '=', $currentYear)
       ->get();
 
-      if(isset($data['services'])){
-        foreach($data['services'] as $service){
-          $apartments = $apartments->whereHas('services', function($q)use($service){
-
-            $q->where('service_id', $service); //this refers id field from services table
-
-          });
-        }
-
-        return $statsArray;
-      }
+      $statsArray[]=$statsData->count();
     }
-  }
+
+    return $statsArray;
+  }  
 
   public function showSponsored(){
     $sponsoreds=[];

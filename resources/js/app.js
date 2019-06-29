@@ -79,8 +79,6 @@ function addApartmentComponent() {
   }
 }
 
-
-
 function addMap() {
   // Qui viene impostata una variabile che rappresenta un array. Rispettivamente ci sono la latitudine e la longitudine. Questi dati possono essere recuperati passando nell'url della show la query o in alternativa nascondendo i dati che ci servono da qualche parte e recuperandoli con jquery.
   var lat=$('#map').data('lat');
@@ -425,6 +423,13 @@ function init() {
         $('.navbar').removeClass('original-header');
       }
     });
+  });
+
+  $('.emailLink').on('click', function (event) {
+    event.preventDefault();
+    url = 'mailto:' + $(this).data('mail') + '?subject=Risposta al messaggio su BoolBnB per appartamento ' + "'" + $(this).data('title') + "'";
+    var win = window.open(url, '_blank');
+    win.focus();
   });
 }
 
