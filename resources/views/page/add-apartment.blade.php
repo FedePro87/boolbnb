@@ -5,6 +5,7 @@
     <form enctype="multipart/form-data" class="" action="{{route('save')}}" method="post">
       @csrf
 
+
       <div class="container title-container d-flex">
         <label for="title"><h2>Title</h2></label>
         <br>
@@ -19,11 +20,11 @@
 
       <label for="description"><h2>Description</h2></label>
       <br>
-      <textarea name="description" rows="8" cols="80"></textarea>
+      <textarea name="description" rows="8" cols="80">{{ old('description')}}</textarea>
       <br>
 
       <label for="price"><h2>Price</h2></label>
-      <input type="text" name="price">
+      <input type="text" name="price" value="{{ old('price')}}">
       <br>
 
       <label for="number_of_rooms"><h2>Rooms</h2></label>
@@ -56,7 +57,7 @@
       </select><br>
 
       <label for="square_meters"><h2>Square Meters</h2></label>
-      <input type="text" name="square_meters">
+      <input type="text" name="square_meters" value="{{ old('square_meters')}}">
       <br>
 
       <label for="address"><h2>Address</h2></label>
@@ -74,7 +75,7 @@
       </div>
       <br>
 
-      <button type="submit" name="button">Save New Apartment</button>
+      <button id="save-apartment" type="submit" name="button">Save New Apartment</button>
 
     </form>
   @endauth

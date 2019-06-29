@@ -33,7 +33,6 @@
 
   @include('layouts.header')
 
-  @yield('content-header')
 
   {{-- ERROR CONTROL --}}
   @if ($errors->any())
@@ -58,6 +57,7 @@
 
   {{-- END ERROR CONTROL --}}
 
+  @yield('content-header')
 
 
   @yield('content')

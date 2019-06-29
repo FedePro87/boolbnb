@@ -7,17 +7,13 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-//fontawesome
+//Font Awesome
 @import '~@fortawesome/fontawesome-free/css/all.min.css';
-
 
 @import 'header';
 @import 'footer';
 @import 'home';
 @import 'showApartament';
-
-
-
 
 #airbnb-logo{
   width: 34px;
@@ -36,9 +32,9 @@
 }
 
 #upload-image {
-   opacity: 0;
-   position: absolute;
-   z-index: -1;
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
 }
 
 .boolbnb-btn{
@@ -51,6 +47,31 @@
   border-radius: 4px;
 }
 
+.address-search-wrapper{
+  position: relative;
+  .close-results-wrapper{
+    position: relative;
+    .fa-times{
+      position: absolute;
+      right: 20px;
+      bottom: 15px;
+      cursor: pointer;
+    }
+  }
+  .query-results{
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    border-radius: 0px 0px 4px 4px;
+    .query-selector{
+      padding: 5px;
+      &:hover{
+        background-color: #C7C7C7;
+      }
+    }
+  }
+}
+
 #map{
   height: 500px;
   width: 500px;
@@ -58,7 +79,7 @@
 
 .apartment{
   transition: all .2s ease-in-out;
-   &:hover { transform: scale(1.1); }
+  &:hover { transform: scale(1.1); }
 
   box-shadow:10px 10px 17px -7px rgba(0,0,0,0.25);
   margin: 50px;
@@ -107,8 +128,6 @@ canvas{
   width:1000px;
   height:700px;
 }
-
-
 
 .query-selector,.query-selector-spa{
   cursor: pointer;

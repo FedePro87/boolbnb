@@ -145,35 +145,9 @@ class ApartmentController extends Controller
         }
       }
     }
-    
+
 
     return view('page.sponsored-apartment', compact('sponsoreds'));
-  }
-
-  public function search(Request $request){
-
-    $title = $request -> address;
-    $services = $request-> services;
-    $data=$request->all();
-    $apartments= new Apartment;
-
-    if (isset($data['address'])) {
-      $apartments = $apartments ->where('address', 'LIKE', '%' . $title . '%');
-    }
-
-    if(isset($data['services'])){
-      foreach($data['services'] as $service){
-        $apartments = $apartments->whereHas('services', function($q)use($service){
-          $q->where('service_id', $service); //this refers id field from services table
-        });
-      }
-    }
-
-    $apartments = $apartments ->get();
-
-    $services = Service::all();
-
-    return view('page.search', compact( 'services','apartments'));
   }
 
   // Creazione nuovo appartamento - tutto questa roba andrà spostata nell'HomeController
@@ -184,6 +158,7 @@ class ApartmentController extends Controller
 
   function saveNewApartment(NewApartmentRequest $request){
     $validateData = $request -> validated();
+    $request->flash();
 
     $apartment = Apartment::make($validateData);
     $inputAuthor= Auth::user()->firstname;
@@ -199,30 +174,30 @@ class ApartmentController extends Controller
     }
 
     $inputAddress=$request->input('address');
-    // $geocoder = new \OpenCage\Geocoder\Geocoder('7a5d76fa6dcf4bc8ad7ad4dce1115b50');
-    // $result = $geocoder->geocode($inputAddress);
-    // $lat=$result['results'][0]['geometry']['lat'];
-    // $lng=$result['results'][0]['geometry']['lng'];
-    // $apartment->lat=$lat;
-    // $apartment->lng=$lng;
 
     $positionData = $this->callTomTomApi('https://api.tomtom.com/search/2/geocode/' . $inputAddress . '.JSON',['key'=> "xrIKVZTiqc6NhEvGHRbxYYpsyoLoR2wD"]);
-    $lat=$positionData->lat;
-    $lng=$positionData->lon;
-    $apartment->lat=$lat;
-    $apartment->lng=$lng;
-    $apartment->save();
 
-    if ($request->input('services')!==null) {
-      $selectedServices = $request->input('services');
-      $services = Service::findOrFail($selectedServices);
+    if (!$positionData) {
+      return redirect()->back()->withErrors(['Inserisci un indirizzo valido! Il menù di scorrimento è fatto apposta!']);
+    } else {
+      // code...
+      $lat=$positionData->lat;
+      $lng=$positionData->lon;
+      $apartment->lat=$lat;
+      $apartment->lng=$lng;
+      $apartment->save();
 
-      foreach ($services as $service) {
-        $apartment->services()->attach($service);
+      if ($request->input('services')!==null) {
+        $selectedServices = $request->input('services');
+        $services = Service::findOrFail($selectedServices);
+
+        foreach ($services as $service) {
+          $apartment->services()->attach($service);
+        }
       }
-    }
 
-    return redirect('/');
+      return redirect('/')->withSuccess('Appartamento inserito!');
+    }
   }
 
   private function callTomTomAPI($url, $data){
@@ -230,7 +205,12 @@ class ApartmentController extends Controller
     $response = $client->get($url, ["query" => $data]);
 
     $incData=json_decode($response->getBody());
-    $result=$incData->results[0]->position;
+
+    try {
+      $result=$incData->results[0]->position;
+    } catch (\Exception $e) {
+      return false;
+    }
 
     return $result;
   }

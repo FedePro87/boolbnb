@@ -1,32 +1,33 @@
 @extends('layouts.home')
 
+{{-- Ricerca --}}
+@section('content-header')
+  <div class="main-header">
+    <div class="form-style">
+      @guest
+        <h1>Ciao, dove vuoi andare?</h1>
 
-  {{-- Ricerca --}}
-<div class="main-header">
-  @section('content-header')
-  <div class="form-style">
-    @guest
-      <h1>Ciao, dove vuoi andare?</h1>
+      @endguest
+      @if(Auth::user()!==null)
+        <h1>Ciao {{ Auth::user()->firstname }}, dove vorresti andare?</h1>
 
-    @endguest
-    @if(Auth::user()!==null)
-      <h1>Ciao {{ Auth::user()->firstname }}, dove vorresti andare?</h1>
+      @endif
+      <form class="address-search-wrapper" action="{{route('basic-search')}}" method="get">
+        <div class="form-group">
+          <input type="hidden" name="lat">
+          <input type="hidden" name="lon">
+          <input type="hidden" name="advancedSearch" value="0">
+          <div class="close-results-wrapper">
+            <input class="address-search" type="text" name="address" value="" placeholder="Insert address..."><i class="fas fa-times d-none"></i></input>
+          </div>
+          <div class="query-results"></div>
+        </div>
 
-    @endif
-  <form action="{{route('basic-search')}}" method="get">
-    <div class="form-group">
-      <input type="hidden" name="lat">
-      <input type="hidden" name="lon">
-      <input type="hidden" name="advancedSearch" value="0">
-      <input class="address-search" type="text" name="address" value="" placeholder="Insert address...">
+
+        <input class="boolbnb-btn" type="submit" name="" value="SEARCH">
+      </form>
     </div>
-
-    <div class="query-results"></div>
-
-    <input class="boolbnb-btn" type="submit" name="" value="SEARCH">
-  </form>
- </div>
-</div>
+  </div>
 @stop
 
 @section('content')
