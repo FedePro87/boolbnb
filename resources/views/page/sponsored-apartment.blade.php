@@ -12,7 +12,7 @@
         <h1>Ciao {{ Auth::user()->firstname }}, dove vorresti andare?</h1>
 
       @endif
-      <form class="address-search-wrapper" action="{{route('basic-search')}}" method="get">
+      <form class="address-search-wrapper" action="{{route('apartment-search')}}" method="get">
         <div class="form-group">
           <input type="hidden" name="lat">
           <input type="hidden" name="lon">

@@ -26,60 +26,64 @@
     <div class="apartment col-lg-3">
       <div class="apartment-wrapper">
         <a href="/show/@{{id}}">
-        <div>
-          <img src="/images/@{{image}}" class="img-fluid"/>
-        </div>
+          <div>
+            @if (file_exists(public_path('/images/@{{image}}')))
+            <img src='/images/@{{image}}' class="img-fluid"/>
+            @else
+            <img src='@{{image}}' class="img-fluid">
+            @endif
+          </div>
 
-        <div class="content-apartment">
-          <span class="description">@{{description}}</span><br>
-          <span class="address">@{{address}}</span><br>
-          <span class="visuals">@{{visualized}} visualizzazioni</span><br>
+          <div class="content-apartment">
+            <span class="description">@{{title}}</span><br>
+            <span class="address">@{{address}}</span><br>
+            <span class="visuals">@{{visualized}} visualizzazioni</span><br>
+          </div>
         </div>
       </div>
-    </div>
-  </script>
-</head>
-<body>
+    </script>
+  </head>
+  <body>
 
-  @include('layouts.header')
+    @include('layouts.header')
 
 
-  {{-- ERROR CONTROL --}}
-  @if ($errors->any())
-    <div class="alert alert-danger">
-      <ul>
-        @foreach($errors->all() as $error)
-          <li>{{$error}}</li>
-        @endforeach
-      </ul>
-    </div>
-  @endif
-
-  @if(session('success'))
-    <div class="alert alert-success">
-      <div class="container">
-
-        {{session ('success')}}
-
+    {{-- ERROR CONTROL --}}
+    @if ($errors->any())
+      <div class="alert alert-danger">
+        <ul>
+          @foreach($errors->all() as $error)
+            <li>{{$error}}</li>
+          @endforeach
+        </ul>
       </div>
-    </div>
-  @endif
+    @endif
 
-  {{-- END ERROR CONTROL --}}
+    @if(session('success'))
+      <div class="alert alert-success">
+        <div class="container">
 
-  @yield('content-header')
+          {{session ('success')}}
 
+        </div>
+      </div>
+    @endif
 
-  @yield('content')
+    {{-- END ERROR CONTROL --}}
 
-
-
-
-  <footer>
-    <h5>It's like Airbnb but made with much more love</h5>
-  </footer>
-
+    @yield('content-header')
 
 
-</body>
-</html>
+    @yield('content')
+
+
+
+
+    <footer>
+      <h5>It's like Airbnb but made with much more love</h5>
+    </footer>
+
+
+
+  </body>
+  </html>

@@ -22,9 +22,23 @@
 @endsection
 
 @section('content')
+  @include ('components.apartment-component')
+
+  <h1>Appartamenti in evidenza:</h1>
+
+  <div id="sponsored-component-wrapper" class="d-flex flex-wrap">
+
+    @if (count($sponsoredApartments)==0)
+      <h1>Non ci sono appartamenti sponsorizzati</h1>
+    @endif
+
+    @foreach ($sponsoredApartments as $key => $sponsoredApartment)
+      <apartment-component description="{{$sponsoredApartment->title}}" image={{$sponsoredApartment->image}} alt-image="{{asset('images/' . $sponsoredApartment->image)}}" address="{{$sponsoredApartment->address}}" v-bind:visuals="{{$sponsoredApartment->visuals->count()}}" show-index="{{route('show',$sponsoredApartment->id)}}"></apartment-component>
+    @endforeach
+  </div>
+
   <h1>Risultati ricerca:</h1>
 
-  @include ('components.apartment-component')
 
   <div id="apartment-component-wrapper" class="d-flex">
 

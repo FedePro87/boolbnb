@@ -1,6 +1,6 @@
 <script type="text/x-template" id="advanced-search">
-  <div class="d-flex">
-    <div class="form-group address-search-wrapper">
+  <div class="d-flex flex-wrap">
+    <div class="form-group address-search-wrapper col-lg-6">
       <input v-model="latComp" type="hidden" name="lat">
       <input v-model="lonComp" type="hidden" name="lon">
       <div class="close-results-wrapper">
@@ -9,7 +9,7 @@
       <div class="query-results"></div>
     </div>
 
-    <div>
+    <div class="col-lg-2 p-3">
       <label for="number_of_rooms"><h2>Rooms</h2></label>
       <select @change="optionSelected" name="number_of_rooms">
         @for ($i=0; $i<=10; $i++)
@@ -34,7 +34,7 @@
       </select><br>
     </div>
 
-    <div>
+    <div class="col-lg-2 p-3">
       <label for="bedrooms"><h2>Bedrooms</h2></label>
       <select @change="optionSelected" name="bedrooms">
         @for ($i=0; $i<=10; $i++)
@@ -59,7 +59,7 @@
       </select><br>
     </div>
 
-    <div class="ml-4">
+    <div class="col-lg-2 p-3">
       <label for="radius"><h2>Distanza</h2></label>
       <select @change="optionSelected" name="radius">
         @for ($i=1; $i<=5; $i++)
@@ -72,11 +72,11 @@
       </select><br>
     </div>
 
-    <div>
+    <div class="col-lg-6">
+      <label for="service">Services</label><br>
       <div class="d-flex">
-        <label for="service">Services</label><br>
         @foreach ($services as $service)
-        <input @change="optionSelected" type="checkbox" name="services[]" value="{{$service->id}}"
+        <label><input class="m-3 text-center" @change="optionSelected" type="checkbox" name="services[]" value="{{$service->id}}"
         @isset($queryServices)
         @foreach ($queryServices as $queryService)
         @if ($queryService==$service->id)
@@ -84,7 +84,7 @@
         @endif
         @endforeach
         @endisset
-        ><label>{{$service->name}}</label><br>
+        >{{$service->name}}</label><br>
         @endforeach
       </div>
     </div>

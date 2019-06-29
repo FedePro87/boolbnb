@@ -146,8 +146,72 @@ class ApartmentController extends Controller
       }
     }
 
-
     return view('page.sponsored-apartment', compact('sponsoreds'));
+  }
+
+  public function apartmentSearch(Request $request){
+    $max=6;
+    $sponsoreds= $this->showSponsored()->sponsoreds;
+    $randIndex = array_rand($sponsoreds, $max);
+
+    for ($i=0; $i < $max; $i++) {
+      $sponsoredApartments[]= $sponsoreds[$randIndex[$i]];
+    }
+
+    $services=Service::all();
+    $advancedSearch=$request['advancedSearch'];
+    $address = $request['address'];
+    $numberOfRooms=$request['number_of_rooms'];
+    $bedrooms=$request['bedrooms'];
+    $queryServices=$request['services'];
+    $lat= $request['lat'];
+    $lon= $request['lon'];
+    $maxDistance= 20;
+
+    if ($request['radius']!==null) {
+      $maxDistance=$request['radius'];
+    }
+
+    $queryApartments = Apartment::select('apartments.*')
+    ->selectRaw('( 3959 * acos( cos( radians(?) ) *
+    cos( radians( lat ) )
+    * cos( radians( lng ) - radians(?)
+    ) + sin( radians(?) ) *
+    sin( radians( lat ) ) )
+    ) AS distance', [$lat, $lon, $lat])
+    ->havingRaw("distance < ?", [$maxDistance])
+    ->orderBy('distance','ASC');
+
+    if ($numberOfRooms!=null && $numberOfRooms!="*") {
+      $queryApartments= $queryApartments->where('number_of_rooms',$numberOfRooms);
+    }
+
+    if ($bedrooms!=null && $bedrooms!="*") {
+      $queryApartments= $queryApartments->where('bedrooms',$bedrooms);
+    }
+
+    if ($queryServices!=null) {
+      foreach($queryServices as $service){
+        $queryApartments = $queryApartments->whereHas('services', function($q)use($service){
+          $q->where('service_id', $service); //this refers id field from services table
+        });
+      }
+    }
+
+    $queryApartments= $queryApartments->get();
+    // dd($queryApartments);
+
+    if ($advancedSearch) {
+      foreach ($queryApartments as $queryApartment) {
+        $howMany= $queryApartment->visuals->count();
+        $queryApartment->visualized = $howMany;
+      }
+      return json_encode($queryApartments);
+    } else if ($bedrooms!==null&&$numberOfRooms!==null) {
+      return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','numberOfRooms','bedrooms','queryServices','sponsoredApartments'));;
+    } else {
+      return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','sponsoredApartments'));;
+    }
   }
 
   // Creazione nuovo appartamento - tutto questa roba andrà spostata nell'HomeController

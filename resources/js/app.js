@@ -69,7 +69,13 @@ function addApartmentComponent() {
   new Vue({
     el:"#apartment-component-wrapper"
   });
+
+  new Vue({
+    el:"#sponsored-component-wrapper"
+  });
 }
+
+
 
 function addMap() {
   // Qui viene impostata una variabile che rappresenta un array. Rispettivamente ci sono la latitudine e la longitudine. Questi dati possono essere recuperati passando nell'url della show la query o in alternativa nascondendo i dati che ci servono da qualche parte e recuperandoli con jquery.
@@ -178,7 +184,6 @@ function getCoordinates(query,searching,index) {
 
           if (searching=="spa") {
             $(newP).addClass('query-selector-spa');
-            console.log('ciao');
           } else {
             $(newP).addClass('query-selector');
           }
@@ -279,16 +284,13 @@ function apartmentsDatabaseSearch(lat,lon,rooms,bedrooms,radius,services) {
 //Quando viene schiacciato un tasto, chiamiamo search impostando true.
 function addressRealTimeSearch() {
   search(false);
-  console.log('arrrrrrrrr');
 
   $('.address-search').click(function() {
-    console.log('click su home');
     search(true);
     $('.fa-times').removeClass('d-none');
   });
 
   $('.address-search-spa').click(function() {
-    console.log('click su adv');
     search('spa');
     $('.fa-times').removeClass('d-none');
   });
