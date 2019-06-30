@@ -14,6 +14,7 @@
 @import 'footer';
 @import 'home';
 @import 'showApartament';
+@import 'addApartment';
 
 #airbnb-logo{
   width: 34px;
@@ -23,7 +24,6 @@
   cursor: pointer;
   background: #FF5A5F;
   color: white;
-  margin-top: 15px;
   padding: 2px 10px;
   border: none;
   outline:none;
@@ -47,30 +47,34 @@
   border-radius: 4px;
 }
 
-.address-search-wrapper{
-  position: relative;
-  .close-results-wrapper{
+
+
+  .address-search-wrapper{
     position: relative;
-    .fa-times{
-      position: absolute;
-      right: 20px;
-      bottom: 15px;
-      cursor: pointer;
+    .close-results-wrapper{
+      position: relative;
+      .fa-times{
+        position: absolute;
+        right: 20px;
+        bottom: 15px;
+        cursor: pointer;
+      }
     }
-  }
-  .query-results{
-    position: absolute;
-    background-color: rgb(255, 255, 255);
-    width: 100%;
-    border-radius: 0px 0px 4px 4px;
-    .query-selector{
-      padding: 5px;
-      &:hover{
-        background-color: #C7C7C7;
+
+    .query-results{
+      position: absolute;
+      background-color: rgb(255, 255, 255);
+      width: 100%;
+      border-radius: 0px 0px 4px 4px;
+      .query-selector{
+        padding: 5px;
+        &:hover{
+          background-color: #C7C7C7;
+        }
       }
     }
   }
-}
+
 
 #map{
   height: 500px;
@@ -131,4 +135,8 @@ canvas{
 
 .query-selector,.query-selector-spa{
   cursor: pointer;
+}
+
+label{
+  margin-bottom: 0 !important;
 }
