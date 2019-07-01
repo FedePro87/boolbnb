@@ -314,7 +314,10 @@ function addressRealTimeSearch() {
   });
 }
 
-//Viene chiamata quando si schiacciano i risultati, sia nella home che nella ricerca in tempo reale. Quando accade, viene piallato il contenuto in cui c'erano i risultati. Se stiamo facendo la spa (single page app), chiamiamo search passandogli il termine stesso. Il testo dell'input viene impostato alla voce che abbiamo selezionato.
+//Viene chiamata quando si schiacciano i risultati, sia nella home che nella ricerca in tempo reale.
+//Quando accade, viene piallato il contenuto in cui c'erano i risultati.
+//Se stiamo facendo la spa (single page app), chiamiamo search passandogli il termine stesso.
+//Il testo dell'input viene impostato alla voce che abbiamo selezionato.
 function querySelected(spa,queryName){
   $('.query-results').text("");
 

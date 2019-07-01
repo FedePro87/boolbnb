@@ -4,6 +4,23 @@
   {{-- Show apartment info --}}
   @include('layouts.header')
   <div class="show-apartment mt-4">
+<<<<<<< HEAD
+    <div class="apartament-container">
+
+    <div class="container-img">
+        <div class="image-title-wrapper "col-lg-6"">
+          <img class="img-fluid"
+          @if(file_exists(public_path('images/' . $apartment->image)))
+            src="{{asset('images/' . $apartment->image)}}"
+          @else
+            src="{{$apartment->image}}"
+          @endif
+          >
+          <h2 class="image-title">{{$apartment->title}}</h2>
+        </div>
+    </div>
+  </div>
+=======
     <div class="container">
       <div class="row">
 
@@ -29,28 +46,37 @@
         @endif
       </div>
     </div>
+>>>>>>> origin/master
 
     <div class="container mt-4">
       <div class="row">
-        <div class="col-lg-6">
-          <h5>Costo per notte: {{$apartment->price}}€</h5>
+        <div class="col-lg-12">
+          <h3 class="text-right">Costo per notte: {{$apartment->price}}€</h3>
+          <hr>
           <p>{{$apartment->description}}</p>
         </div>
 
-        <div class="col-lg-6">
-          <ol class="text-center list-unstyled">
-            <li>Numero di stanze: {{$apartment->number_of_rooms}}</li>
-            <li>Numero di posti letto: {{$apartment->bedrooms}}</li>
-            <li>Numero di bagni: {{$apartment->bathrooms}}</li>
-            <li>Metri quadrati: {{$apartment->square_meters}}</li>
-            <li>Indirizzo: {{$apartment->address}}</li>
+        <div class="info-apartment col-lg-12">
+
+          <h2>Dotazione dell'appartamento</h2>
+<br>
+          <ol class="text-center list-unstyled d-flex justify-content-around">
+            <li><i class="fas fa-door-open"></i><br> {{$apartment->number_of_rooms}}</li>
+            <li><i class="fas fa-bed"></i><br> {{$apartment->bedrooms}}</li>
+            <li><i class="fas fa-toilet"></i><br> {{$apartment->bathrooms}}</li>
+            <li><i class="fas fa-ruler-combined"></i><br> {{$apartment->square_meters}}</li>
+            <li><i class="fas fa-map-marked-alt"></i><br>{{$apartment->address}}</li>
           </ol>
 
-          <ul class="text-center list-unstyled">
+          <h2>Servizi</h2>
+<br>
+
+          <ul class="text-center list-unstyled d-flex">
             @foreach ($apartment->services as $service)
-              <li>{{$service->name}}</li>
+              <li class="mx-2">{{$service->name}}</li>
             @endforeach
           </ul>
+
         </div>
       </div>
     </div>
