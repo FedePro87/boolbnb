@@ -120,7 +120,7 @@
           @else
             <div class="col-lg-6 overflow-auto messages">
               @if ($apartment->messages->count()==0)
-                <h1>Non hai ricevuto messaggi per questo appartamento!</h1>
+                <h3 class="text-center">Non hai ricevuto messaggi per questo appartamento!</h3>
               @else
                 @foreach ($apartment->messages as $message)
                   <div class="border">
@@ -136,15 +136,23 @@
       </div>
     </div>
 
+    <hr style="width:80%">
+
     {{-- END Contact form --}}
 
     @if(Auth::user()!==null)
       @if($apartment->user_id==Auth::user()->id)
-        <div>
-          <h1>Visualizzazioni totali: {{$apartment->visuals->count()}}</h1>
-          <h1>Messaggi totali: {{$apartment->messages->count()}}</h1>
+        <div class="chart-visual">
+          <h3 class="text-center">Visualizzazioni totali: {{$apartment->visuals->count()}}</h3>
+          <h3 class="text-center">Messaggi totali: {{$apartment->messages->count()}}</h3>
+          <div class="">
+
           <canvas id="visualsChart" data-stats={{$visualsData}} data-months={{$months}}></canvas>
+          </div>
+          <div class="">
+
           <canvas id="messagesChart" data-stats={{$messagesData}} data-months={{$months}}></canvas>
+          </div>
         </div>
       @endif
     @endif

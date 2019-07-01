@@ -68,10 +68,15 @@
 
     }
   }
-}
 
+  .chart-visual{
+    padding: 50px 0;
 
-canvas{
-  width:1000px;
-  height:700px;
+    canvas{
+      width:60%;
+      height:auto;
+      margin:auto;
+      padding: 25px;
+    }
+  }
 }

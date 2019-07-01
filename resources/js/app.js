@@ -111,8 +111,8 @@ function addStatsCharts(ctx,chartLabel) {
       datasets: [{
         label: chartLabel,
         data: stats,
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: ' #FF5A5F',
+        borderColor: ' #FF5A5F',
         borderWidth: 1
       }]
     },
