@@ -3,6 +3,9 @@
 {{-- Ricerca --}}
 @section('content-header')
   <div class="main-header">
+    <div class="navbar-wrapper">
+      @include('layouts.header')
+    </div>
     <div class="form-style">
       @guest
         <h1>Ciao, dove vuoi andare?</h1>
@@ -12,13 +15,13 @@
         <h1>Ciao {{ Auth::user()->firstname }}, dove vorresti andare?</h1>
 
       @endif
-      <form class="address-search-wrapper" action="{{route('basic-search')}}" method="get">
+      <form class="address-search-wrapper" action="{{route('apartment-search')}}" method="get">
         <div class="form-group">
           <input type="hidden" name="lat">
           <input type="hidden" name="lon">
           <input type="hidden" name="advancedSearch" value="0">
           <div class="close-results-wrapper">
-            <input class="address-search" type="text" name="address" value="" placeholder="Insert address..."><i class="fas fa-times d-none"></i></input>
+            <input class="address-search" type="text" name="address" value="" placeholder="Insert address..."><i class="fas fa-times d-none"></i>
           </div>
           <div class="query-results"></div>
         </div>

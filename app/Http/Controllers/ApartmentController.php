@@ -101,19 +101,11 @@ class ApartmentController extends Controller
       ->whereYear('created_at', '=', $currentYear)
       ->get();
 
-      if(isset($data['services'])){
-        foreach($data['services'] as $service){
-          $apartments = $apartments->whereHas('services', function($q)use($service){
-
-            $q->where('service_id', $service); //this refers id field from services table
-
-          });
-        }
-
-        return $statsArray;
-      }
+      $statsArray[]=$statsData->count();
     }
-  }
+
+    return $statsArray;
+  }  
 
   public function showSponsored(){
     $sponsoreds=[];
@@ -146,8 +138,73 @@ class ApartmentController extends Controller
       }
     }
 
-
     return view('page.sponsored-apartment', compact('sponsoreds'));
+  }
+
+  public function apartmentSearch(Request $request){
+    $max=6;
+    $sponsoreds= $this->showSponsored()->sponsoreds;
+    $randIndex = array_rand($sponsoreds, $max);
+
+    for ($i=0; $i < $max; $i++) {
+      $sponsoredApartments[]= $sponsoreds[$randIndex[$i]];
+    }
+
+    $services=Service::all();
+    $advancedSearch=$request['advancedSearch'];
+    $address = $request['address'];
+    $numberOfRooms=$request['number_of_rooms'];
+    $bedrooms=$request['bedrooms'];
+    $queryServices=$request['services'];
+    $lat= $request['lat'];
+    $lon= $request['lon'];
+    $maxDistance= 20;
+
+    if ($request['radius']!==null) {
+      $maxDistance=$request['radius'];
+    }
+
+    $queryApartments = Apartment::select('apartments.*')
+    ->selectRaw('( 3959 * acos( cos( radians(?) ) *
+    cos( radians( lat ) )
+    * cos( radians( lng ) - radians(?)
+    ) + sin( radians(?) ) *
+    sin( radians( lat ) ) )
+    ) AS distance', [$lat, $lon, $lat])
+    ->havingRaw("distance < ?", [$maxDistance])
+    ->orderBy('distance','ASC');
+
+    if ($numberOfRooms!=null && $numberOfRooms!="*") {
+      $queryApartments= $queryApartments->where('number_of_rooms',$numberOfRooms);
+    }
+
+    if ($bedrooms!=null && $bedrooms!="*") {
+      $queryApartments= $queryApartments->where('bedrooms',$bedrooms);
+    }
+
+    if ($queryServices!=null) {
+      foreach($queryServices as $service){
+        $queryApartments = $queryApartments->whereHas('services', function($q)use($service){
+          $q->where('service_id', $service); //this refers id field from services table
+        });
+      }
+    }
+
+    $queryApartments= $queryApartments->get();
+    // dd($queryApartments);
+
+    if ($advancedSearch) {
+      foreach ($queryApartments as $queryApartment) {
+        $howMany= $queryApartment->visuals->count();
+        $queryApartment->visualized = $howMany;
+      }
+      return json_encode($queryApartments);
+    } else if ($bedrooms!==null&&$numberOfRooms!==null) {
+      return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','numberOfRooms','bedrooms','queryServices','sponsoredApartments'));
+    } else {
+      return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','sponsoredApartments'));
+
+    }
   }
 
   // Creazione nuovo appartamento - tutto questa roba andrà spostata nell'HomeController
@@ -175,12 +232,11 @@ class ApartmentController extends Controller
 
     $inputAddress=$request->input('address');
 
-    $positionData = $this->callTomTomApi('https://api.tomtom.com/search/2/geocode/' . $inputAddress . '.JSON',['key'=> "xrIKVZTiqc6NhEvGHRbxYYpsyoLoR2wD"]);
+    $positionData = $this->callTomTomApi('https://api.tomtom.com/search/2/geocode/' . $inputAddress . '.JSON',['key'=> "xrIKVZTiqc6NhEvGHRbxYYpsyoLoR2wD",'minFuzzyLevel'=>4,'maxFuzzyLevel'=>4,'limit'=>100],$inputAddress);
 
     if (!$positionData) {
-      return redirect()->back()->withErrors(['Inserisci un indirizzo valido! Il menù di scorrimento è fatto apposta!']);
+      return redirect()->back()->withErrors(['Inserisci un indirizzo valido! Puoi utilizzare il menu di scorrimento per aiutarti']);
     } else {
-      // code...
       $lat=$positionData->lat;
       $lng=$positionData->lon;
       $apartment->lat=$lat;
@@ -200,18 +256,36 @@ class ApartmentController extends Controller
     }
   }
 
-  private function callTomTomAPI($url, $data){
+  private function callTomTomAPI($url, $data, $inputAddress){
     $client = new \GuzzleHttp\Client();
     $response = $client->get($url, ["query" => $data]);
 
     $incData=json_decode($response->getBody());
 
     try {
-      $result=$incData->results[0]->position;
+      $results= $incData->results;
+      $index= $this->compareInputAddress($results,$inputAddress);
+      $result= $incData->results[$index]->position;
     } catch (\Exception $e) {
       return false;
     }
 
     return $result;
+  }
+
+  private function compareInputAddress($results,$inputAddress){
+    $index= -1;
+    foreach ($results as $key => $result) {
+      if ($result->type=="Geography") {
+        if(strpos($inputAddress,$result->address->municipality)!==false){
+          return $key;
+        }
+      } else if($result->type=="Cross Street" || $result->type=="Street"){
+        if($inputAddress === $result->address->streetName){
+          return $key;
+        }
+      }
+    }
+    return $index;
   }
 }

@@ -2,7 +2,9 @@
 @section('content')
 
 <div class="add-sponsorship">
-
+  @include('layouts.header')
+  <h2>Sponsorizza la stanza '{{$apartment->title}}'</h2>
+  <h4>Scegli la modalità di sponsorizzazione:</h4>
   @foreach ($sponsorships as $sponsorship)
     <input type="radio" data-sponsorship-id="{{$sponsorship->id}}" name="sponsorship" value="{{$sponsorship->amount}}" @if($sponsorship->id==1)checked="checked"@endif>
       {{$sponsorship->amount}} € per @php echo(floor($sponsorship->duration / 60));@endphp ore di sponsorizzazione.
@@ -13,7 +15,7 @@
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
           <div id="dropin-container"></div>
-          <button id="submit-button">Procedi al pagamento</button>
+          <button id="submit-button" class="boolbnb-btn">Procedi al pagamento</button>
         </div>
       </div>
    </div>
@@ -37,10 +39,10 @@
 
          $.get(url, {payload}, function (response) {
            if (response.success) {
-             alert('Payment successfull!');
+             alert('Pagamento riuscito!');
              window.location.href='/';
            } else {
-             alert('Payment failed');
+             alert('Pagamento rifiutato');
            }
          }, 'json');
        });

@@ -34,7 +34,7 @@ class NewApartmentRequest extends FormRequest
             'square_meters'=> 'required',
             'address'=> 'required',
             'image'=> 'required',
-            'services'=>'required'
+            'services'=>''
         ];
     }
 }
