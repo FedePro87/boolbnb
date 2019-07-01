@@ -4,23 +4,6 @@
   {{-- Show apartment info --}}
   @include('layouts.header')
   <div class="show-apartment mt-4">
-<<<<<<< HEAD
-    <div class="apartament-container">
-
-    <div class="container-img">
-        <div class="image-title-wrapper "col-lg-6"">
-          <img class="img-fluid"
-          @if(file_exists(public_path('images/' . $apartment->image)))
-            src="{{asset('images/' . $apartment->image)}}"
-          @else
-            src="{{$apartment->image}}"
-          @endif
-          >
-          <h2 class="image-title">{{$apartment->title}}</h2>
-        </div>
-    </div>
-  </div>
-=======
     <div class="container">
       <div class="row">
 
@@ -46,7 +29,6 @@
         @endif
       </div>
     </div>
->>>>>>> origin/master
 
     <div class="container mt-4">
       <div class="row">

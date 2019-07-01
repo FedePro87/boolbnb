@@ -43,12 +43,6 @@
   }
 }
 
-#upload-image {
-  opacity: 0;
-  position: absolute;
-  z-index: -1;
-}
-
 .boolbnb-btn{
   background: #FF5A5F;
   color: white;
@@ -63,18 +57,6 @@
   }
 }
 
-
-
-  .address-search-wrapper{
-    position: relative;
-    .close-results-wrapper{
-      position: relative;
-      .fa-times{
-        position: absolute;
-        right: 20px;
-        bottom: 15px;
-        cursor: pointer;
-      }
 .address-search-wrapper{
   position: relative;
   .query-results{
@@ -100,7 +82,6 @@
       right: 20px;
       bottom: 15px;
       cursor: pointer;
-
     }
 
     .query-results{
@@ -116,16 +97,16 @@
       }
     }
   }
-
-
-#map{
-  height: 500px;
-  width: 500px;
+  
+  
+  #map{
+    height: 500px;
+    width: 500px;
+  }
 }
-}
-
+  
 .apartment{
-
+  
   box-shadow:10px 10px 17px -7px rgba(0,0,0,0.25);
   margin: 50px;
   padding-right: 0;
@@ -158,32 +139,32 @@
         }
 
 
+        }
       }
     }
   }
-}
 
-.show-apartment{
-  .image-title-wrapper{
-    position: relative;
-    .image-title{
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      color: white;
+  .show-apartment{
+    .image-title-wrapper{
+      position: relative;
+      .image-title{
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        color: white;
+      }
     }
   }
-}
 
-canvas{
-  width:1000px;
-  height:700px;
-}
+  canvas{
+    width:1000px;
+    height:700px;
+  }
 
-.query-selector,.query-selector-spa{
-  cursor: pointer;
-}
+  .query-selector,.query-selector-spa{
+    cursor: pointer;
+  }
 
-label{
-  margin-bottom: 0 !important;
-}
+  label{
+    margin-bottom: 0 !important;
+  }
