@@ -3,10 +3,15 @@
 
   {{-- Show apartment info --}}
   @include('layouts.header')
+<<<<<<< HEAD
 
 
   <div class="show-apartment py-5">
     <div class="container head">
+=======
+  <div class="show-apartment mt-4">
+    <div class="container">
+>>>>>>> origin/master
       <div class="row">
 
         <div class="col-lg-9">
