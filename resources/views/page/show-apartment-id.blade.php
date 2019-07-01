@@ -3,15 +3,11 @@
 
   {{-- Show apartment info --}}
   @include('layouts.header')
-<<<<<<< HEAD
 
 
   <div class="show-apartment py-5">
     <div class="container head">
-=======
-  <div class="show-apartment mt-4">
-    <div class="container">
->>>>>>> origin/master
+
       <div class="row">
 
         <div class="col-lg-9">
@@ -32,7 +28,7 @@
 
         @if(Auth::user()!==null)
           @if($apartment->user_id==Auth::user()->id)
-            <div class="col-lg-3 d-flex align-items-center justify-content-center">
+            <div class="col-lg-3 d-flex align-items-start justify-content-center">
               <a class="boolbnb-btn" href="{{route('showSponsorshipForm',$apartment->id)}}">Sponsorizza il tuo appartamento!</a>
             </div>
           @endif
