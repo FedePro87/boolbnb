@@ -3,89 +3,93 @@
 
   {{-- Show apartment info --}}
   @include('layouts.header')
-  <div class="show-apartment mt-4">
-<<<<<<< HEAD
-    <div class="apartament-container">
 
-    <div class="container-img">
-        <div class="image-title-wrapper "col-lg-6"">
-          <img class="img-fluid"
-          @if(file_exists(public_path('images/' . $apartment->image)))
-            src="{{asset('images/' . $apartment->image)}}"
-          @else
-            src="{{$apartment->image}}"
-          @endif
-          >
-          <h2 class="image-title">{{$apartment->title}}</h2>
-        </div>
-    </div>
-  </div>
-=======
-    <div class="container">
+
+  <div class="show-apartment py-5">
+    <div class="container head">
       <div class="row">
 
-        <div class="col-lg-6">
+        <div class="col-lg-9">
           <div class="image-title-wrapper">
-            <img class="img-fluid"
+            <img class="picture"
             @if(file_exists(public_path('images/' . $apartment->image)))
               src="{{asset('images/' . $apartment->image)}}"
             @else
               src="{{$apartment->image}}"
             @endif
             >
+
+            <div class="bg-title">
             <h4 class="image-title">{{$apartment->title}}</h4>
+            </div>
           </div>
         </div>
 
         @if(Auth::user()!==null)
           @if($apartment->user_id==Auth::user()->id)
-            <div class="col-lg-6 d-flex align-items-center justify-content-center">
+            <div class="col-lg-3 d-flex align-items-center justify-content-center">
               <a class="boolbnb-btn" href="{{route('showSponsorshipForm',$apartment->id)}}">Sponsorizza il tuo appartamento!</a>
             </div>
           @endif
         @endif
       </div>
     </div>
->>>>>>> origin/master
 
     <div class="container mt-4">
       <div class="row">
-        <div class="col-lg-12">
-          <h3 class="text-right">Costo per notte: {{$apartment->price}}€</h3>
-          <hr>
+
+          <div class="upper-section d-flex col-lg-12 align-items-center justify-content-between">
+
+            <div class="price">
+             <h3 class="text-right">{{$apartment->price}}€ </h3> <small> per notte</small>
+            </div>
+            <div class="address-name">
+
+              <i class="fas fa-map-marked-alt fa-3x mr-3"></i>
+              <span>{{$apartment->address}}</span>
+            </div>
+          </div>
+          <hr style="width: 100%">
+        <div class="col-lg-7 my-4">
+
           <p>{{$apartment->description}}</p>
         </div>
 
-        <div class="info-apartment col-lg-12">
+        <div class="info-apartment col-lg-4 p-3 offset-lg-1">
 
-          <h2>Dotazione dell'appartamento</h2>
 <br>
-          <ol class="text-center list-unstyled d-flex justify-content-around">
-            <li><i class="fas fa-door-open"></i><br> {{$apartment->number_of_rooms}}</li>
-            <li><i class="fas fa-bed"></i><br> {{$apartment->bedrooms}}</li>
-            <li><i class="fas fa-toilet"></i><br> {{$apartment->bathrooms}}</li>
-            <li><i class="fas fa-ruler-combined"></i><br> {{$apartment->square_meters}}</li>
-            <li><i class="fas fa-map-marked-alt"></i><br>{{$apartment->address}}</li>
+          <ol class="text-center list-unstyled d-flex flex-start">
+            <li><i class="fas fa-door-open fa-2x"></i><br> {{$apartment->number_of_rooms}} stanze</li>
+            <li><i class="fas fa-bed fa-2x"></i><br> {{$apartment->bedrooms}} letti</li>
+            <li><i class="fas fa-toilet fa-2x"></i><br> {{$apartment->bathrooms}} bagni</li>
+            <li><i class="fas fa-ruler-combined fa-2x"></i><br> {{$apartment->square_meters}} mq</li>
           </ol>
 
-          <h2>Servizi</h2>
-<br>
-
-          <ul class="text-center list-unstyled d-flex">
-            @foreach ($apartment->services as $service)
-              <li class="mx-2">{{$service->name}}</li>
-            @endforeach
-          </ul>
 
         </div>
+        <div class="servizi">
+
+        <h2>Servizi</h2>
+        <br>
+
+        <ul>
+          @foreach ($apartment->services as $service)
+            <li class="mx-2">{{$service->name}}</li>
+          @endforeach
+        </ul>
+      </div>
       </div>
     </div>
+    <hr style="width:80%">
     {{-- END Show apartment info --}}
 
     {{-- MAP SECTION --}}
     <div class="container mt-4">
       <div class="row">
+
         <div class="col-lg-6" data-lat={{$apartment->lat}} data-lng={{$apartment->lng}} id='map'></div>
+
+
         {{-- END MAP SECTION --}}
 
         {{-- Contact form --}}
@@ -103,12 +107,12 @@
                   @endguest
 
                   <label for="title">Oggetto</label><br>
-                  <input type="text" name="title" value="Oggetto della mail"><br>
+                  <input type="text" name="title" value=""><br>
 
                   <label for="content">Testo della Mail</label><br>
                   <textarea name="content" rows="10" cols="30"></textarea><br>
 
-                  <button type="submit" name="button">Send Mail</button>
+                  <button type="submit" class="boolbnb-btn" name="button">Send Mail</button>
                 </div>
               </div>
             </form>
