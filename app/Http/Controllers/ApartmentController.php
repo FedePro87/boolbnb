@@ -105,7 +105,7 @@ class ApartmentController extends Controller
     }
 
     return $statsArray;
-  }  
+  }
 
   public function showSponsored(){
     $sponsoreds=[];
@@ -231,8 +231,9 @@ class ApartmentController extends Controller
     }
 
     $inputAddress=$request->input('address');
+    $lang = strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
 
-    $positionData = $this->callTomTomApi('https://api.tomtom.com/search/2/geocode/' . $inputAddress . '.JSON',['key'=> "xrIKVZTiqc6NhEvGHRbxYYpsyoLoR2wD",'minFuzzyLevel'=>4,'maxFuzzyLevel'=>4,'limit'=>100],$inputAddress);
+    $positionData = $this->callTomTomApi('https://api.tomtom.com/search/2/geocode/' . $inputAddress . '.JSON',['key'=> "xrIKVZTiqc6NhEvGHRbxYYpsyoLoR2wD",'minFuzzyLevel'=>4,'maxFuzzyLevel'=>4,'limit'=>100,'countrySet'=>$lang],$inputAddress);
 
     if (!$positionData) {
       return redirect()->back()->withErrors(['Inserisci un indirizzo valido! Puoi utilizzare il menu di scorrimento per aiutarti']);
