@@ -32,11 +32,28 @@
             <input type="text" name="price" value="{{ old('price')}}">
           </div>
         </div>
+
         <br>
 
-        {{-- ROOMS --}}
+        <div class="square-address-container d-flex flex-column col-lg-12">
+
+          <div class="square_meters">
+            <label for="square_meters">Square Meters</label>
+            <br>
+            <input type="text" name="square_meters" value="{{ old('square_meters')}}">
+          </div>
+          <div class="address position-relative">
+            <label for="address">Address</label>
+            <br>
+            <input class=" address-search" type="text" name="address">
+            <div class="query-results position-absolute bg-light"></div>
+          </div>
+
+        </div>
+        <br>
         <div class="container-select d-flex">
-          <div class="rooms mr-5 d-flex flex-column align-item-center">
+          {{-- ROOMS --}}
+          <div class="rooms mr-5 d-flex flex-column">
             <label for="number_of_rooms">Rooms</label><br>
             <select name="number_of_rooms">
 
@@ -50,8 +67,8 @@
           </div>
           <br>
 
-        {{-- BATHROOMS --}}
-          <div class="bathrooms mr-5 d-flex flex-column align-item-center">
+          {{-- BATHROOMS --}}
+          <div class="bathrooms mr-5 d-flex flex-column">
             <label for="bathrooms">Bathrooms</label><br>
             <select name="bathrooms">
 
@@ -65,8 +82,8 @@
           </div>
           <br>
 
-        {{-- BEDROOMS --}}
-          <div class="bedrooms mr-5 d-flex flex-column align-item-center">
+          {{-- BEDROOMS --}}
+          <div class="bedrooms mr-5 d-flex flex-column">
             <label for="bedrooms">Bedrooms</label><br>
             <select name="bedrooms">
               @for ($i=1; $i<=10; $i++)
@@ -77,23 +94,9 @@
             </select>
           </div>
         </div>
-
-
-        <br>
-        <div class="square-address-container d-flex align-items-center">
-
-          <label for="square_meters">Square Meters</label>
-          <br>
-          <input  class="mx-2" type="text" name="square_meters" value="{{ old('square_meters')}}">
-
-          <label for="address">Address</label>
-          <input class="mx-2 address-search" type="text" name="address">
-          <div class="query-results position-absolute bg-light"></div>
-
-        </div>
         <br>
 
-        <div class="checkbox-cont">
+        <div class="checkbox-cont col-lg-12">
           <label for="services">services</label>
           <br>
           @foreach ($services as $service)

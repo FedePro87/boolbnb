@@ -1,11 +1,16 @@
 input,textarea{
   border-radius: 5px;
   border:1px solid grey;
-  
+}
+
 .my-container{
-  height: 100wh;
+  height: 100vh;
   background: white;
 
+  input[file]{
+    background: #FF5A5F;
+    
+  }
   select{
     background: #FF5A5F;
     color:white;
@@ -13,8 +18,13 @@ input,textarea{
     border:none;
     padding: 3px;
     max-width: 45px;
+    margin: auto;
   }
 
+  .rooms,.bathrooms,.bedrooms{
+    width:75px;
+    text-align: center;
+  }
 
   button{
     background: #FF5A5F;
