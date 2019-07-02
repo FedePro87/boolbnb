@@ -7,24 +7,132 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+//Font Awesome
+@import '~@fortawesome/fontawesome-free/css/all.min.css';
+
+@import 'header';
+@import 'footer';
+@import 'home';
+@import 'showApartament';
+@import 'addApartment';
+
 #airbnb-logo{
   width: 34px;
 }
 
-#map{
-  height: 500px;
-  width: 500px;
+
+.add-image-wrapper{
+  height: 50px;
+  #fake-upload-image {
+    cursor: pointer;
+    background: #FF5A5F;
+    color: white;
+    padding: 2px 10px;
+    border: none;
+    outline:none;
+    font-weight: 800;
+    border-radius: 4px;
+  }
 }
 
-canvas{
-  width:1000px;
-  height:700px;
+.boolbnb-btn{
+  background: #FF5A5F;
+  color: white;
+  padding: 10px 22px;
+  border: none;
+  outline:none;
+  font-weight: 800;
+  border-radius: 4px;
+  font-size: 14px;
+  &:hover{
+    text-decoration: none;
+    color: white;
+  }
+}
+.address-search-wrapper{
+  position: relative;
+  .query-results{
+    z-index: 1000;
+  }
+  .close-results-wrapper{
+    position: relative;
+    .address-search,.address-search-spa{
+      position: relative;
+      border: none;
+      height: 40px;
+      box-shadow:2px 2px 5px rgba(0, 0, 0, 0.08);
+      padding: 4px 7px;
+      width: 100%;
+      border-radius: 10px;
+      &:focus{
+        outline:none;
+      }
+    }
+    .fa-times{
+      position: absolute;
+      right: 20px;
+      bottom: 15px;
+      cursor: pointer;
+    }
+    .query-results{
+      position: absolute;
+      background-color: rgb(255, 255, 255);
+      width: 100%;
+      border-radius: 0px 0px 4px 4px;
+      .query-selector{
+        padding: 5px;
+        &:hover{
+          background-color: #C7C7C7;
+        }
+      }
+    }
+  }
+
+
+  #map{
+    height: 500px;
+    width: 500px;
+  }
 }
 
-.address-search{
-  width:300px;
-}
+.apartment{
 
-.query-selector,.query-selector-spa{
-  cursor: pointer;
-}
+  box-shadow:10px 10px 17px -8px rgba(0, 0, 0, 0.10);
+  margin: 50px;
+  padding-right: 0;
+  padding-left: 0;
+  border-radius: 5px;
+  transition: all .2s ease-in-out;
+    &:hover {
+     transform: scale(1.1);
+    }
+  .apartment-wrapper{
+    cursor: pointer;
+    a{
+      text-decoration: none;
+      color: black;
+      img{
+        border-radius: 5px 5px 0 0;
+      }
+      .content-apartment{
+        padding: 15px;
+        color: grey;
+        .description{
+          font-weight: bolder;
+          color: black;
+          font-size: 16px;
+        }
+
+
+        }
+      }
+    }
+  }
+
+
+  .query-selector,.query-selector-spa{
+    cursor: pointer;
+  }
+  label{
+    margin-bottom: 0 !important;
+  }

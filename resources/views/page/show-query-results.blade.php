@@ -1,7 +1,8 @@
 @extends('layouts.home')
 
 @section('content-header')
-  <h1>Ricerca Avanzata</h1>
+
+  @include('layouts.header')
 
   @include ('components.advanced-search')
 
@@ -24,21 +25,32 @@
 @endsection
 
 @section('content')
+  @include ('components.apartment-component')
+
+  <h1>Appartamenti in evidenza:</h1>
+
+  <div id="sponsored-component-wrapper" class="d-flex flex-wrap">
+
+    @if (count($sponsoredApartments)==0)
+      <h1>Non ci sono appartamenti sponsorizzati</h1>
+    @endif
+
+    @foreach ($sponsoredApartments as $key => $sponsoredApartment)
+      <apartment-component description="{{$sponsoredApartment->title}}" image={{$sponsoredApartment->image}} alt-image="{{asset('images/' . $sponsoredApartment->image)}}" address="{{$sponsoredApartment->address}}" v-bind:visuals="{{$sponsoredApartment->visuals->count()}}" show-index="{{route('show',$sponsoredApartment->id)}}"></apartment-component>
+    @endforeach
+  </div>
+
   <h1>Risultati ricerca:</h1>
 
 
-  <div id="query-apartments">
+  <div id="apartment-component-wrapper" class="d-flex">
 
     @if ($queryApartments->count()==0)
       <h1>Non ci sono risultati!</h1>
     @endif
 
     @foreach ($queryApartments as $apartment)
-      <div>
-        <img src="{{asset('images/' . $apartment->image)}}" alt="" style="width:100px">
-        <h4>{{$apartment->title}}</h4>
-        <p>{{$apartment->description}}</p>
-      </div>
+      <apartment-component description="{{$apartment->title}}" image={{$apartment->image}} alt-image="{{asset('images/' . $apartment->image)}}" address="{{$apartment->address}}" v-bind:visuals="{{$apartment->visuals->count()}}" show-index="{{route('show',$apartment->id)}}"></apartment-component>
     @endforeach
   </div>
 

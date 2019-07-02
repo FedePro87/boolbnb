@@ -17,9 +17,8 @@ Auth::routes();
 
 Route::get('/logged', 'HomeController@index')->name('home');
 Route::get('/show/{id}', 'ApartmentController@show')->name('show');
-Route::get('/', 'ApartmentController@showSponsored')->name('show.sponsored');
-// Route::get('/search', 'ApartmentController@search')->name('search');
-Route::get('/search', 'HomeController@basicSearch')->name('basic-search');
+Route::get('/', 'ApartmentController@showSponsored')->name('show-sponsored');
+Route::get('/search', 'ApartmentController@apartmentSearch')->name('apartment-search');
 
 Route::get('/user/apartment/new', 'ApartmentController@createNewApartment')->name('create');
 Route::post('/user/apartment/save', 'ApartmentController@saveNewApartment')->name('save');
