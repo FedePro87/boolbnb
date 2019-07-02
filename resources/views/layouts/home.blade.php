@@ -65,12 +65,13 @@
       </div>
     @endif
     {{-- END ERROR CONTROL --}}
+
     @yield('content-header')
 
-    @yield('content')
+    <div class="bigContainer">
+      @yield('content')
+    </div>
 
-    <footer>
-      <h5>It's like Airbnb but made with much more love</h5>
-    </footer>
+    @include('layouts.footer')
   </body>
   </html>
