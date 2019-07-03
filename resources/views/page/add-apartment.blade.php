@@ -6,50 +6,54 @@
   <div class="container my-container">
   @auth
     <h1 class="text-center">Inserisci il nuovo appartamento</h1>
-    <form enctype="multipart/form-data" class="" action="{{route('save')}}" method="post">
+    <form enctype="multipart/form-data" class="form-add" action="{{route('save')}}" method="post">
       @csrf
 
 
-      <div class="container title-container align-items-center justify-content-between">
-        <label for="title">Title</label><br>
-        <input class="w-75"type="text" name="title" value=""><br>
-        <label class="mt-3" >Add image</label><br>
-        <input type="file" name="image" id="upload-image">
-      </div>
+          <div class="title-container">
+            <label for="title">Title</label><br>
+            <input class="w-75"type="text" name="title" value=""><br>
+          </div>
+          <div class="image-cont">
+
+            <label class="mt-3" >Add image</label><br>
+            <input type="file" name="image" id="upload-image">
+          </div>
 
       <br>
-        <div class="description-price-container p-0 col-12">
+        <div class="description-container">
 
-          <div class="col-lg-8 col-sm-12 col-12">
             <label for="description">Description</label>
             <br>
             <textarea name="description" class="col-lg-12 col-md-6">{{ old('description')}}</textarea>
-          </div>
 
-          <div class="col-lg-4 col-sm-12 col-12 align-items-center flex-column">
+
+        </div>
+
+
+          <div class="price-cont">
             <label for="price">Price</label>
             <br>
-            <input type="text" name="price" value="{{ old('price')}}">
+            <input type="number" name="price" value="{{ old('price')}}">
           </div>
-        </div>
 
         <br>
 
-        <div class="square-address-container d-flex flex-column col-lg-12">
+
 
           <div class="square_meters">
             <label for="square_meters">Square Meters</label>
             <br>
-            <input type="text" name="square_meters" value="{{ old('square_meters')}}">
+            <input type="number" name="square_meters" value="{{ old('square_meters')}}">
           </div>
-          <div class="address position-relative">
+
+          <div class="address position-relative mt-3">
             <label for="address">Address</label>
             <br>
             <input class=" address-search" type="text" name="address">
             <div class="query-results position-absolute bg-light"></div>
           </div>
 
-        </div>
         <br>
         <div class="container-select d-flex">
           {{-- ROOMS --}}
@@ -97,16 +101,18 @@
         <br>
 
         <div class="checkbox-cont col-lg-12">
-          <label for="services">services</label>
+          <label for="services">Services</label>
           <br>
           @foreach ($services as $service)
-            <input type="checkbox" name="services[]" value="{{$service->id}}">{{$service->name}}
+            <input class="service-input" type="checkbox" name="services[]" value="{{$service->id}}"><small>{{$service->name}}</small>
             <br>
           @endforeach
         </div>
         <br>
+         <div class="button-box">
 
-        <button id="save-apartment" type="submit" name="button">Save New Apartment</button>
+           <button id="save-apartment" type="submit" name="button">Save New Apartment</button>
+        </div>
 
       </div>
     </form>
