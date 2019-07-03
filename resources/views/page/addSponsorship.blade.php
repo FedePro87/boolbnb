@@ -1,19 +1,32 @@
 @extends('layouts.home')
 @section('content')
 
-<div class="add-sponsorship">
   @include('layouts.header')
-  <h2>Sponsorizza la stanza '{{$apartment->title}}'</h2>
+<div class="add-sponsorship">
+
+ <div class="price-block">
+
+  <h2 id="title">Sponsorizza la stanza '{{$apartment->title}}'</h2>
   <h4>Scegli la modalità di sponsorizzazione:</h4>
+
+  <div class="sponsorship-type">
+
   @foreach ($sponsorships as $sponsorship)
+    <div class="type">
+
     <input type="radio" data-sponsorship-id="{{$sponsorship->id}}" name="sponsorship" value="{{$sponsorship->amount}}" @if($sponsorship->id==1)checked="checked"@endif>
-      {{$sponsorship->amount}} € per @php echo(floor($sponsorship->duration / 60));@endphp ore di sponsorizzazione.
+      <strong>{{$sponsorship->amount}}</strong> € per @php echo(floor($sponsorship->duration / 60));@endphp ore di sponsorizzazione.
       </input><br>
+    </div>
   @endforeach
 
-  <div class="container">
+  </div>
+
+</div>
+
+  <div class="container payment-form">
       <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 col-md-offset-2 mx-auto my-5">
           <div id="dropin-container"></div>
           <button id="submit-button" class="boolbnb-btn">Procedi al pagamento</button>
         </div>
