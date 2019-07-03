@@ -6,7 +6,10 @@
     <div class="navbar-wrapper">
       @include('layouts.header')
     </div>
-    <div class="form-style">
+    <div class="bg-form-wrapper">
+
+
+    <div class="form-style col-lg-4 col-md-9">
       @guest
         <h1>Ciao, dove vuoi andare?</h1>
 
@@ -30,6 +33,8 @@
         <input class="boolbnb-btn" type="submit" name="" value="SEARCH">
       </form>
     </div>
+   </div>
+
   </div>
 @stop
 

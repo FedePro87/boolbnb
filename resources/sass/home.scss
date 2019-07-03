@@ -13,9 +13,7 @@
   z-index: 10;
 }
 
-.messages{
-  height: 500px;
-}
+
 
 .main-header{
   width: 100%;
@@ -53,13 +51,17 @@
       }
     }
   }
+
+  .bg-form-wrapper{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin: auto;
   .form-style{
-    width: 30%;
+
     background: white;
-    position: absolute;
-    left: 300px;
-    top: 50%;
-    transform: translateY(-50%);
+    margin: 10%;
+
     padding: 40px;
     border-radius: 5px;
     box-shadow: 10px 10px 24px 0px rgba(0,0,0,0.39);
@@ -67,5 +69,6 @@
     h1{
       font-weight: bold;
     }
+  }
   }
 }

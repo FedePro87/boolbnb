@@ -61,5 +61,7 @@ class HomeController extends Controller
     $message= Message::make($message);
     $message->apartment()->associate($apartment);
     $message->save();
+
+    return redirect()->route('show', ['id' => $id]);
   }
 }
