@@ -57,7 +57,7 @@
         <br>
         <ul>
           @foreach ($apartment->services as $service)
-            <li class="mx-2">{{$service->name}}</li>
+            <li class="mx-2">{{$service->name}} {!! $service->icon !!}</li>
           @endforeach
         </ul>
       </div>
