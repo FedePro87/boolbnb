@@ -232,14 +232,22 @@ class ApartmentController extends Controller
 
     $inputAddress=$request->input('address');
     $lang = strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+    $apiData =
+    [
+      "access_token"=>"pk.eyJ1IjoiYm9vbGVhbmdydXBwbzQiLCJhIjoiY2p4YnN5N3ltMDdkbjNzcGVsdW54eXFodCJ9.BP8Cf-t-evfHO22_kDFzbg",
+      "types"=>"place,address",
+      "autocomplete"=>true,
+      "limit"=>6
+    ];
 
-    $positionData = $this->callTomTomApi('https://api.tomtom.com/search/2/geocode/' . $inputAddress . '.JSON',['key'=> "xrIKVZTiqc6NhEvGHRbxYYpsyoLoR2wD",'minFuzzyLevel'=>4,'maxFuzzyLevel'=>4,'limit'=>100,'countrySet'=>$lang],$inputAddress);
+    $url='https://api.mapbox.com' . '/geocoding/v5/mapbox.places/' . $inputAddress . '.json';
+    $positionData = $this->callTomTomApi($url,$apiData,$inputAddress);
 
     if (!$positionData) {
       return redirect()->back()->withErrors(['Inserisci un indirizzo valido! Puoi utilizzare il menu di scorrimento per aiutarti']);
     } else {
-      $lat=$positionData->lat;
-      $lng=$positionData->lon;
+      $lat=$positionData[1];
+      $lng=$positionData[0];
       $apartment->lat=$lat;
       $apartment->lng=$lng;
       $apartment->save();
@@ -264,9 +272,9 @@ class ApartmentController extends Controller
     $incData=json_decode($response->getBody());
 
     try {
-      $results= $incData->results;
+      $results= $incData->features;
       $index= $this->compareInputAddress($results,$inputAddress);
-      $result= $incData->results[$index]->position;
+      $result= $incData->features[$index]->center;
     } catch (\Exception $e) {
       return false;
     }
@@ -277,14 +285,8 @@ class ApartmentController extends Controller
   private function compareInputAddress($results,$inputAddress){
     $index= -1;
     foreach ($results as $key => $result) {
-      if ($result->type=="Geography") {
-        if(strpos($inputAddress,$result->address->municipality)!==false){
-          return $key;
-        }
-      } else if($result->type=="Cross Street" || $result->type=="Street"){
-        if($inputAddress === $result->address->streetName){
-          return $key;
-        }
+      if ($result->place_name===$inputAddress) {
+        return $key;
       }
     }
     return $index;
