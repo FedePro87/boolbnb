@@ -142,7 +142,7 @@ class ApartmentController extends Controller
   }
 
   public function apartmentSearch(Request $request){
-    $max=6;
+    $max=4;
     $sponsoreds= $this->showSponsored()->sponsoreds;
     $randIndex = array_rand($sponsoreds, $max);
 

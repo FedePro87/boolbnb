@@ -1,5 +1,5 @@
 <script type="text/x-template" id="apartment-component">
-  <div class="apartment col-lg-3">
+  <div class="apartment col-lg-2">
     <div class="apartment-wrapper">
       <a :href="showIndex">
         <div>

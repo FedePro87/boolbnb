@@ -23,7 +23,7 @@
   <script src="{{ asset('dropin.min.js')}}" type="text/javascript"></script>
 
   <script id="hand-apartment-template" type="text/x-handlebars-template">
-    <div class="apartment col-lg-3">
+    <div class="apartment col-lg-2">
       <div class="apartment-wrapper">
         <a href="/show/@{{id}}">
           <div>
