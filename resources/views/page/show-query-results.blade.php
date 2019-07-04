@@ -54,7 +54,7 @@
       <div id="apartment-component-wrapper" class="d-flex flex-wrap justify-content-center">
 
         @if ($queryApartments->count()==0)
-          <h1>Non ci sono risultati!</h1>
+          <h1 class="text-center p-5">Non ci sono risultati!</h1>
         @endif
 
         @foreach ($queryApartments as $apartment)
