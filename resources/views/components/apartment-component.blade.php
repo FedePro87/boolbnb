@@ -11,6 +11,7 @@
           <span class="address">@{{address}}</span><br>
           <span v-if="visuals==1" class="">@{{visuals}} visualizzazione</span>
           <span v-else class="">@{{visuals}} visualizzazioni</span>
+          <!-- <span class="messages">@{{messages}} messaggi</span> -->
         </div>
       </a>
     </div>

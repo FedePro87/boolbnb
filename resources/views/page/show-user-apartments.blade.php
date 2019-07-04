@@ -2,7 +2,7 @@
 @section('content')
   @include('layouts.header')
 
-  <h1 class="text-center mt-5">User Apartments</h1>
+  <h1 class="text-center mt-5">I miei Appartamenti</h1>
 
   @include ('components.apartment-component')
 

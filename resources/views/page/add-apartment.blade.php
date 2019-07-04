@@ -109,7 +109,7 @@
           @endforeach
         </div>
         <br>
-         <div class="button-box">
+         <div class="button-box d-flex justify-content-center">
 
            <button id="save-apartment" type="submit" name="button">Save New Apartment</button>
         </div>
