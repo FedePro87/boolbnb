@@ -50,7 +50,7 @@
           <div class="address position-relative mt-3">
             <label for="address">Address</label>
             <br>
-            <input class=" address-search" type="text" name="address">
+            <input class="address-search" type="text" name="address">
             <div class="query-results position-absolute bg-light"></div>
           </div>
 
