@@ -67,12 +67,19 @@
 
 
     }
+    }
 
     .messages{
       height: auto;
-    }
+      margin: auto;
+        .border{
+          margin-bottom: 15px;
+          padding: 15px;
+        }
 
-  }
+      }
+
+
 
   .chart-visual{
     padding: 50px 0;

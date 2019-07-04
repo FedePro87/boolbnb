@@ -123,15 +123,15 @@
           @auth
             @if ($apartment->user_id==Auth::user()->id)
 
-            <div class="col-lg-6 overflow-auto messages">
+            <div class="messages">
               @if ($apartment->messages->count()==0)
                 <h3 class="text-center">Non hai ricevuto messaggi per questo appartamento!</h3>
               @endif
               @foreach ($apartment->messages as $message)
                 <div class="border">
-                  <h5>Titolo messaggio: {{$message->title}}</h5>
-                  <h5>Contenuto: {{$message->content}}</h5>
-                  <h5>Inviato da: <a href="" data-mail={{$message->email}} data-title={{$apartment->title}} class="emailLink">{{$message->email}}</a></h5>
+                  <p>Oggetto: {{$message->title}}</p>
+                  <h5>"{{$message->content}}"</h5>
+                  <span>Inviato da: <a href="" data-mail={{$message->email}} data-title={{$apartment->title}} class="emailLink">{{$message->email}}</a></span>
                 </div>
               @endforeach
             </div>
