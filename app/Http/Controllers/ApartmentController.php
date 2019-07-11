@@ -22,49 +22,39 @@ use Braintree_Gateway;
 
 class ApartmentController extends Controller
 {
+
+  //questa funzione salva le visual come prima, ci evita però di ripetere il codice negli if else della show.
+  public function saveVisual($apartment){
+    $visual= Visual::make();
+    $visual->apartment()->associate($apartment);
+    $visual->save();
+  }
+
   public function show($id, Request $request){
     $apartment = Apartment::findOrFail($id);
 
     //Controllo se ho l'array degli appartamenti visualizzati nella sessione corrente.
-    if($request->session()->has('visulized-ids')){
-      //Se esiste l'array, controllo che l'id dell'appartamento che sto visualizzando non sia presente (se è presente l'ho
-      // evidentemente già visualizzato)
-      if(!in_array($id, $request->session()->get('visulized-ids'))){
-        //Salvo nell'array della sessione che ho visualizzato l'appartamento.
-        $request->session()->push('visulized-ids', $id);
-        //Se l'utente che sta guardando è loggato...
-        if(Auth::user()!==null){
-          //Se non è l'utente a cui appartiente l'appartamento, lo conta come visualizzazione.
-          if(Auth::user()->id!==$apartment->user_id){
-            $visual= Visual::make();
-            $visual->apartment()->associate($apartment);
-            $visual->save();
-          }
-        }
-        //Se l'utente non è loggato, lo conta comunque come visualizzazione.
-        else {
-          $visual= Visual::make();
-          $visual->apartment()->associate($apartment);
-          $visual->save();
-        }
-      }
-    }
-    //Se non ho l'array degli appartamenti visualizzati, procedo alla sua creazione aggiungendo l'id del corrente appartamento.
-    // Dopo faccio il solito controllo sull'id dell'utente (se è loggato) per non contare come visualizzazione quella del proprietario.
-    else{
+    //E se esiste l'array, controllo che l'id dell'appartamento che sto visualizzando non sia presente (se è presente l'ho
+    // evidentemente già visualizzato)
+    if($request->session()->has('visulized-ids') && !in_array($id, $request->session()->get('visulized-ids')) ){
+
+      //Salvo nell'array della sessione che ho visualizzato l'appartamento.
       $request->session()->push('visulized-ids', $id);
-      if(Auth::user()!==null){
-        if(Auth::user()->id!==$apartment->user_id){
-          $visual= Visual::make();
-          $visual->apartment()->associate($apartment);
-          $visual->save();
-        }
-      } else {
-        $visual= Visual::make();
-        $visual->apartment()->associate($apartment);
-        $visual->save();
+
+      //Se l'utente che sta guardando è loggato...
+      //E Se non è l'utente a cui appartiente l'appartamento, lo conta come visualizzazione.
+
+      if(Auth::user()!==null && Auth::user()->id!==$apartment->user_id){
+        self::saveVisual($apartment);
       }
+    }else if(Auth::user()===null){
+      //Se non ho l'array degli appartamenti visualizzati, procedo alla sua creazione aggiungendo l'id del corrente appartamento.
+      // Dopo faccio il solito controllo sull'id dell'utente (se è loggato) per non contare come visualizzazione quella del proprietario.
+      $request->session()->push('visulized-ids', $id);
+        self::saveVisual($apartment);
     }
+
+
 
     $months = json_encode($this->getMonthsArray());
     $visualsData = json_encode($this->getStatsArray('visuals',$id));
