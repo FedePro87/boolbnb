@@ -160,7 +160,7 @@ class ApartmentController extends Controller
     $queryServices=$request['services'];
     $lat= $request['lat'];
     $lon= $request['lon'];
-    $maxDistance= 20;
+    $maxDistance= 200;
 
     if ($request['radius']!==null) {
       $maxDistance=$request['radius'];
@@ -193,7 +193,6 @@ class ApartmentController extends Controller
     }
 
     $queryApartments= $queryApartments->get();
-    // dd($queryApartments);
 
     foreach ($queryApartments as $queryApartment) {
       $howManyVisuals= $queryApartment->visuals->count();

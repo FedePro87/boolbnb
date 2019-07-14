@@ -26,13 +26,13 @@
 
   <h3 class="ml-5">Appartamenti in evidenza:</h3>
 
-    <div id="apartment-component-wrapper" class="d-flex flex-wrap justify-content-center">
+    <div id="apartment-component-wrapper" v-if="{{count($sponsoredApartments)}}>0" class="d-flex flex-wrap justify-content-center">
       @foreach ($sponsoredApartments as $sponsoredApartment)
         <div class="apartment col-lg-4">
-          <apartment-component v-if="{{count($sponsoredApartments)}}>0" :apartment="{{$sponsoredApartment}}"></apartment-component>
+          <apartment-component :apartment="{{$sponsoredApartment}}"></apartment-component>
         </div>
-        <h1 v-else>Non ci sono appartamenti sponsorizzati!</h1>
       @endforeach
+      <h1 v-if="{{count($sponsoredApartments)}}===0">Non ci sono appartamenti sponsorizzati!</h1>
     </div>
 
   <div class="result-box ml-5">

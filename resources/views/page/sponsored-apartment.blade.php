@@ -9,31 +9,24 @@
     <div class="bg-form-wrapper">
 
 
-    <div class="form-style col-lg-4 col-md-9">
-      @guest
-        <h1>Ciao, dove vuoi andare?</h1>
+      <div class="form-style col-lg-4 col-md-9">
+        @guest
+          <h1>Ciao, dove vuoi andare?</h1>
+        @endguest
+        @if(Auth::user()!==null)
+          <h1>Ciao {{ Auth::user()->firstname }}, dove vorresti andare?</h1>
+        @endif
 
-      @endguest
-      @if(Auth::user()!==null)
-        <h1>Ciao {{ Auth::user()->firstname }}, dove vorresti andare?</h1>
-
-      @endif
-
-      <form class="address-search-component-wrapper" action="{{route('apartment-search')}}" method="get">
-        <div class="form-group">
-          <input type="hidden" name="lat">
-          <input type="hidden" name="lon">
-          <input type="hidden" name="advancedSearch" value="0">
-          <div class="close-results-wrapper">
-            <input class="address-search" type="text" name="address" value="" placeholder="Insert address..."><i class="fas fa-times d-none"></i>
+        <form action="{{route('apartment-search')}}" method="get">
+          <div class="form-group">
+            <div id="address-search-component-wrapper">
+              <address-search-component></address-search-component>
+            </div>
           </div>
-          <div class="query-results"></div>
-        </div>
-
-        <input class="boolbnb-btn" type="submit" name="" value="SEARCH">
-      </form>
+          <input class="boolbnb-btn" type="submit" name="" value="SEARCH">
+        </form>
+      </div>
     </div>
-   </div>
 
   </div>
 @stop
@@ -41,10 +34,13 @@
 @section('content')
 
   <div class="container-fluid mt-5">
-    <div id="apartments-component-wrapper" class="d-flex flex-wrap justify-content-center">
+    <div id="apartments-component-wrapper" v-if="{{count($sponsoreds)}}>0" class="d-flex flex-wrap justify-content-center">
       @foreach ($sponsoreds as $sponsored)
-        <apartment-component description="{{$sponsored->title}}" image={{$sponsored->image}} alt-image="{{asset('images/' . $sponsored->image)}}" address="{{$sponsored->address}}" v-bind:visuals="{{$sponsored->visuals->count()}}" show-index="{{route('show',$sponsored->id)}}"></apartment-component>
+        <div class="apartment col-lg-4">
+          <apartment-component :apartment="{{$sponsored}}"></apartment-component>
+        </div>
       @endforeach
+      <h1 v-if="{{count($sponsoreds)}}===0">Non ci sono appartamenti sponsorizzati!</h1>
     </div>
   </div>
 

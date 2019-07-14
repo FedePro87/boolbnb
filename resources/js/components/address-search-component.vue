@@ -15,7 +15,10 @@
 
   export default {
     mounted(){
-
+      if (this.address==null) {
+        this.realTimeAddress="Roma, RM";
+      }
+      this.search(true);
     },
     components: {
 

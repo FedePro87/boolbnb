@@ -1,6 +1,6 @@
 <template>
   <div class="search-wrapper">
-    <div class="form-group address-search-wrapper search-bar">
+    <div class="address-search-wrapper search-bar">
       <input v-model="latComp" type="hidden" name="lat">
       <input v-model="lonComp" type="hidden" name="lon">
       <div class="close-results-wrapper">
@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div class="form-group address-search-wrapper search-bar row">
+    <div class="address-search-wrapper search-bar row">
       <div class="col-lg-2 p-3 m-4">
         <label for="number_of_rooms"><h2>Rooms</h2></label>
         <select @change="optionSelected" name="number_of_rooms">

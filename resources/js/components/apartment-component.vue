@@ -38,12 +38,6 @@ export default {
     }
   },
   props: {
-    // description: String,
-    // image: String,
-    // altImage: String,
-    // address: String,
-    // visuals: Number,
-    // showIndex: String
     apartment: Object
   },
   filters: {

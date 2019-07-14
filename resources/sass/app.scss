@@ -67,7 +67,7 @@ body{
 .address-search-wrapper{
   position: relative;
   .query-results{
-    z-index: 1000;
+    z-index: 500;
   }
   .close-results-wrapper{
     position: relative;
@@ -97,7 +97,7 @@ body{
     background-color: rgb(255, 255, 255);
     width: 100%;
     border-radius: 0px 0px 4px 4px;
-    z-index: 1000;
+    z-index: 500;
     .query-selector{
       padding: 5px;
       &:hover{
