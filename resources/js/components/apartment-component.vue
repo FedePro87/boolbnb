@@ -7,8 +7,8 @@
         <div class="content-apartment">
           <span class="description">{{apartment.description}}</span><br>
           <span class="address">{{apartment.address}}</span><br>
-          <span v-if="apartment.visualized==1">{{apartment.visualized}} visualizzazione</span>
-          <span v-else>{{apartment.visualized}} visualizzazioni</span>
+          <span v-if="apartment.visuals.length==1">{{apartment.visuals.length}} visualizzazione</span>
+          <span v-else>{{apartment.visuals.length}} visualizzazioni</span>
           <!-- <span class="messages">{{messages}} messaggi</span> -->
         </div>
       </a>

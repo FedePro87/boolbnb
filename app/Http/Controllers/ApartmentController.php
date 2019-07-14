@@ -134,6 +134,7 @@ class ApartmentController extends Controller
       // prima un pagamento di un tipo e poi di un altro
       foreach ($apartments as $apartment){
         if(!in_array($apartment, $sponsoreds)){
+          $apartment->visuals->count();
           $sponsoreds[]=$apartment;
         }
       }
@@ -160,10 +161,11 @@ class ApartmentController extends Controller
     $queryServices=$request['services'];
     $lat= $request['lat'];
     $lon= $request['lon'];
-    $maxDistance= 200;
+    //La formula ricerca in un raggio calcolato in miglia, dunque è opportuno effettuare il calcolo per convertire in km.
+    $maxDistance= 200/1.606;
 
     if ($request['radius']!==null) {
-      $maxDistance=$request['radius'];
+      $maxDistance=$request['radius']/1.606;
     }
 
     $queryApartments = Apartment::select('apartments.*')
@@ -175,6 +177,7 @@ class ApartmentController extends Controller
     ) AS distance', [$lat, $lon, $lat])
     ->havingRaw("distance < ?", [$maxDistance])
     ->orderBy('distance','ASC');
+
 
     if ($numberOfRooms!=null && $numberOfRooms!=0) {
       $queryApartments= $queryApartments->where('number_of_rooms',$numberOfRooms);
@@ -195,8 +198,7 @@ class ApartmentController extends Controller
     $queryApartments= $queryApartments->get();
 
     foreach ($queryApartments as $queryApartment) {
-      $howManyVisuals= $queryApartment->visuals->count();
-      $queryApartment->visualized = $howManyVisuals;
+      $queryApartment->visuals->count();
     }
 
     if ($advancedSearch) {
@@ -205,7 +207,6 @@ class ApartmentController extends Controller
       return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','numberOfRooms','bedrooms','queryServices','sponsoredApartments'));
     } else {
       return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','sponsoredApartments'));
-
     }
   }
 
@@ -243,7 +244,7 @@ class ApartmentController extends Controller
     ];
 
     $url='https://api.mapbox.com' . '/geocoding/v5/mapbox.places/' . $inputAddress . '.json';
-    $positionData = $this->callTomTomApi($url,$apiData,$inputAddress);
+    $positionData = $this->callGeolocalizationApi($url,$apiData,$inputAddress);
 
     if (!$positionData) {
       return redirect()->back()->withErrors(['Inserisci un indirizzo valido! Puoi utilizzare il menu di scorrimento per aiutarti']);
@@ -267,7 +268,7 @@ class ApartmentController extends Controller
     }
   }
 
-  private function callTomTomAPI($url, $data, $inputAddress){
+  private function callGeolocalizationApi($url, $data, $inputAddress){
     $client = new \GuzzleHttp\Client();
     $response = $client->get($url, ["query" => $data]);
 

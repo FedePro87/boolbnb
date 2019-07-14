@@ -5,7 +5,7 @@
   @include('layouts.header')
 
   <div id="advanced-search-component-wrapper">
-    <advanced-search :services={{$services}} address="{{$address}}" rooms="@php
+    <advanced-search :services={{$services}} searched-address="{{$address}}" rooms="@php
     if (isset($numberOfRooms)){
       echo $numberOfRooms;
     } else {

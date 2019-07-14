@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import apartmentComponent from './apartment-component';
-
 export default {
   mounted(){
     this.eventHub.$on('updateSearchResults', data => {
@@ -17,7 +15,7 @@ export default {
     });
   },
   components: {
-    'apartment-component':apartmentComponent
+
   },
   computed: {
 

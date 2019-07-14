@@ -20,7 +20,7 @@
         <form action="{{route('apartment-search')}}" method="get">
           <div class="form-group">
             <div id="address-search-component-wrapper">
-              <address-search-component></address-search-component>
+              <address-search-component :home-search=true></address-search-component>
             </div>
           </div>
           <input class="boolbnb-btn" type="submit" name="" value="SEARCH">
