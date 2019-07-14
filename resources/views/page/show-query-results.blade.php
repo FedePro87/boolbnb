@@ -4,10 +4,8 @@
 
   @include('layouts.header')
 
-  @include ('components.advanced-search')
-
-  <div id="component-vue">
-    <advanced-search address="{{$address}}" rooms="@php
+  <div id="advanced-search-component-wrapper">
+    <advanced-search :services={{$services}} address="{{$address}}" rooms="@php
     if (isset($numberOfRooms)){
       echo $numberOfRooms;
     } else {
@@ -25,41 +23,23 @@
 @endsection
 
 @section('content')
-  @include ('components.apartment-component')
 
+  <h3 class="ml-5">Appartamenti in evidenza:</h3>
 
-  {{-- <h3 class="ml-5">Appartamenti in evidenza:</h3> --}}
-
-  <div class="sponsored-container">
-
-    <div id="sponsored-component-wrapper" class="d-flex flex-wrap justify-content-center">
-
-      @if (count($sponsoredApartments)==0)
-        <h1>Non ci sono appartamenti sponsorizzati</h1>
-      @endif
-       <div class="sponsor-title">
-         <small>Sponsored</small>
-       </div>
-      @foreach ($sponsoredApartments as $key => $sponsoredApartment)
-        <apartment-component description="{{$sponsoredApartment->title}}" image={{$sponsoredApartment->image}} alt-image="{{asset('images/' . $sponsoredApartment->image)}}" address="{{$sponsoredApartment->address}}" v-bind:visuals="{{$sponsoredApartment->visuals->count()}}" show-index="{{route('show',$sponsoredApartment->id)}}"></apartment-component>
+    <div id="apartment-component-wrapper" class="d-flex flex-wrap justify-content-center">
+      @foreach ($sponsoredApartments as $sponsoredApartment)
+        <div class="apartment col-lg-4">
+          <apartment-component v-if="{{count($sponsoredApartments)}}>0" :apartment="{{$sponsoredApartment}}"></apartment-component>
+        </div>
+        <h1 v-else>Non ci sono appartamenti sponsorizzati!</h1>
       @endforeach
     </div>
+
+  <div class="result-box ml-5">
+    <h3>Risultati:</h3>
+
+    <div id="apartments-component-wrapper">
+      <apartments-component v-bind:apartments-prop="{{$queryApartments}}"></apartments-component>
+    </div>
   </div>
-   <div class="result-box">
-
-
-     <h5>Risultati:</h5>
-
-
-      <div id="apartment-component-wrapper" class="d-flex flex-wrap justify-content-center">
-
-        @if ($queryApartments->count()==0)
-          <h1 class="text-center p-5">Non ci sono risultati!</h1>
-        @endif
-
-        @foreach ($queryApartments as $apartment)
-          <apartment-component description="{{$apartment->title}}" image={{$apartment->image}} alt-image="{{asset('images/' . $apartment->image)}}" address="{{$apartment->address}}" v-bind:visuals="{{$apartment->visuals->count()}}" show-index="{{route('show',$apartment->id)}}"></apartment-component>
-        @endforeach
-      </div>
-   </div>
 @stop

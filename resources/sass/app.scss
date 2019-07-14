@@ -63,6 +63,7 @@ body{
     color: white;
   }
 }
+
 .address-search-wrapper{
   position: relative;
   .query-results{
@@ -110,20 +111,16 @@ body{
     width: 500px;
   }
 
-
 .apartment{
-  background: white;
-  box-shadow:10px 10px 17px -8px rgba(0, 0, 0, 0.10);
-  margin: 50px 35px;
-  padding-right: 0;
-  padding-left: 0;
-  border-radius: 5px;
-  transition: all .2s ease-in-out;
+  .apartment-wrapper{
+    cursor: pointer;
+    background: white;
+    box-shadow:10px 10px 17px -8px rgba(0, 0, 0, 0.10);
+    border-radius: 5px;
+    transition: all .2s ease-in-out;
     &:hover {
      transform: scale(1.1);
     }
-  .apartment-wrapper{
-    cursor: pointer;
     a{
       text-decoration: none;
       color: black;

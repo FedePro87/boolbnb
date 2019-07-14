@@ -18,7 +18,8 @@
         <h1>Ciao {{ Auth::user()->firstname }}, dove vorresti andare?</h1>
 
       @endif
-      <form class="address-search-wrapper" action="{{route('apartment-search')}}" method="get">
+
+      <form class="address-search-component-wrapper" action="{{route('apartment-search')}}" method="get">
         <div class="form-group">
           <input type="hidden" name="lat">
           <input type="hidden" name="lon">
@@ -29,7 +30,6 @@
           <div class="query-results"></div>
         </div>
 
-
         <input class="boolbnb-btn" type="submit" name="" value="SEARCH">
       </form>
     </div>
@@ -39,10 +39,9 @@
 @stop
 
 @section('content')
-  @include ('components.apartment-component')
 
   <div class="container-fluid mt-5">
-    <div id="apartment-component-wrapper" class="d-flex flex-wrap justify-content-center">
+    <div id="apartments-component-wrapper" class="d-flex flex-wrap justify-content-center">
       @foreach ($sponsoreds as $sponsored)
         <apartment-component description="{{$sponsored->title}}" image={{$sponsored->image}} alt-image="{{asset('images/' . $sponsored->image)}}" address="{{$sponsored->address}}" v-bind:visuals="{{$sponsored->visuals->count()}}" show-index="{{route('show',$sponsored->id)}}"></apartment-component>
       @endforeach

@@ -1,82 +1,35 @@
 require('./bootstrap');
 var Chart = require('chart.js');
 window.Vue = require('vue');
+Vue.component('advanced-search', require('./components/advanced-search').default);
+Vue.component('apartments-component', require('./components/apartments-component').default);
+Vue.component('apartment-component', require('./components/apartment-component').default);
 
-//Logica che riguarda tutto il pannello di ricerca in tempo reale.
-function addAdvancedSearchComponent() {
-  Vue.component('advanced-search', {
-    template:"#advanced-search",
-    props: {
-      address: String,
-      lat: String,
-      lon: String,
-      rooms: String,
-      bedrooms: String,
-      radius: String
-    },
-    data:function(){
-      return {
-        latComp: this.lat,
-        lonComp: this.lon,
-        realTimeAddress: this.address
-      };
-    },
-    computed: {
+const eventHub = new Vue() // Single event hub
 
-    },
-    methods: {
-      pageRealTimeRefresh(){
-        search("spa");
-      },
-      optionSelected() {
-        querySelected("spa", $('.address-search-spa').val());
-      }
+// Distribute to components using global mixin
+Vue.mixin({
+  data: function () {
+    return {
+      eventHub: eventHub
     }
-  });
+  }
+});
 
-  new Vue({
-    el:"#component-vue"
+function addAdvancedSearchComponent() {
+  const advancedSearchComponent = new Vue({
+    el: '#advanced-search-component-wrapper'
   });
 }
 
-//Logica che riguarda il componente appartamento.
-function addApartmentComponent() {
-  Vue.component('apartment-component', {
-    template:"#apartment-component",
-    props: {
-      description: String,
-      image: String,
-      altImage: String,
-      address: String,
-      visuals: Number,
-      showIndex: String
-    },
-    data:function(){
-      return {
-
-      };
-    },
-    computed: {
-
-    },
-    methods: {
-      changeSrc(event) {
-        event.target.src = this.altImage;
-      }
-    }
+function addApartmentsComponent() {
+  const apartmentsComponent = new Vue({
+    el: '#apartments-component-wrapper'
   });
 
-  if ($('#apartment-component-wrapper').length) {
-    new Vue({
-      el:"#apartment-component-wrapper"
-    });
-  }
-
-  if ($('#sponsored-component-wrapper').length) {
-    new Vue({
-      el:"#sponsored-component-wrapper"
-    });
-  }
+  const apartmentComponent = new Vue({
+    el: '#apartment-component-wrapper'
+  });
 }
 
 function addMap() {
@@ -181,6 +134,7 @@ function getCoordinates(query,searching,index) {
           var resultObject = resultsArray[i];
           var newP = document.createElement("p");
           $(newP).text(resultObject['place_name']);
+          // console.log(resultObject['place_name']);
 
           if (searching=="spa") {
             $(newP).addClass('query-selector-spa');
@@ -289,29 +243,6 @@ function addressRealTimeSearch() {
     search(true);
     $('.fa-times').removeClass('d-none');
   });
-
-  $('.address-search-spa').click(function() {
-    search('spa');
-    $('.fa-times').removeClass('d-none');
-  });
-
-  $('.address-search').keyup(function() {
-    if ($('.address-search').val()=="") {
-      $('.fa-times').addClass('d-none');
-    } else {
-      $('.fa-times').removeClass('d-none');
-    }
-    search(true);
-  });
-
-  $('.address-search-spa').keyup(function() {
-    if ($('.address-search-spa').val()=="") {
-      $('.fa-times').addClass('d-none');
-    } else {
-      $('.fa-times').removeClass('d-none');
-    }
-    search(true);
-  });
 }
 
 //Viene chiamata quando si schiacciano i risultati, sia nella home che nella ricerca in tempo reale.
@@ -349,14 +280,14 @@ function init() {
   }
 
   //Se siamo nella pagina di ricerca avanzata questo sarà vero.
-  if ($('#advanced-search').length) {
+  if ($('#advanced-search-component-wrapper').length) {
     addAdvancedSearchComponent();
     addressRealTimeSearch();
   }
 
   //Tutte le volte che avremo un wrapper degli appartamenti questo sarà vero.
-  if ($('#apartment-component-wrapper').length) {
-    addApartmentComponent();
+  if ($('#apartments-component-wrapper').length) {
+    addApartmentsComponent();
   }
 
   //Il pulsante base per l'immissione del file è una cosa orrida, quindi l'ho nascosto con un pulsante un tantino più bello.
@@ -388,33 +319,12 @@ function init() {
     querySelected(false,queryName);
   });
 
-  //Analogamente,se clicco nella ricerca in tempo reale passo alla funzione 'true'.
-  $(document).on('click','.query-selector-spa', function(){
-    var queryName = $(this).text();
-    querySelected('true',queryName);
-  });
-
   //Quando si clicca sulla x all'interno dell'input dell'indirizzo, pialla il testo.
   $(document).on('click','.fa-times', function(){
     $('.address-search').val("");
-    $('.address-search-spa').val("");
   });
 
-  //Quando si clicca all'esterno dell'input di ricerca (tranne che sulla x), scompaiono i risultati di ricerca.
-  $(document).click(function(event) {
-    var target = $(event.target);
-    if(!target.closest('.address-search').length &&
-    $('.address-search').is(":visible") && $(event.target).attr('class')!="fas fa-times") {
-      $('.query-results').empty();
-      $('.fa-times').addClass('d-none');
-    }
-    if(!target.closest('.address-search-spa').length &&
-    $('.address-search-spa').is(":visible") && $(event.target).attr('class')!="fas fa-times") {
-      $('.query-results').empty();
-      $('.fa-times').addClass('d-none');
-    }
-  });
-
+  //Fa in modo che la navbar vari tra invisibile e visibile nella home.
   $(function(e) {
     $(window).scroll(function(e) {
       if ($(".navbar").offset().top>=600) {
@@ -426,6 +336,7 @@ function init() {
     });
   });
 
+  //Specifica cosa avviene quando viene cliccato l'indirizzo mail all'interno della lista dei messaggi.
   $('.emailLink').on('click', function (event) {
     event.preventDefault();
     url = 'mailto:' + $(this).data('mail') + '?subject=Risposta al messaggio su BoolBnB per appartamento ' + "'" + $(this).data('title') + "'";

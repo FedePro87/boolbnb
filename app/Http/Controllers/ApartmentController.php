@@ -49,6 +49,7 @@ class ApartmentController extends Controller
         }
       }
     }
+
     //Se non ho l'array degli appartamenti visualizzati, procedo alla sua creazione aggiungendo l'id del corrente appartamento.
     // Dopo faccio il solito controllo sull'id dell'utente (se è loggato) per non contare come visualizzazione quella del proprietario.
     else{
@@ -142,13 +143,14 @@ class ApartmentController extends Controller
   }
 
   public function apartmentSearch(Request $request){
-    $max=4;
-    $sponsoreds= $this->showSponsored()->sponsoreds;
-    $randIndex = array_rand($sponsoreds, $max);
-
-    for ($i=0; $i < $max; $i++) {
-      $sponsoredApartments[]= $sponsoreds[$randIndex[$i]];
-    }
+    //Per ora è uno perché ho solo uno sponsorizzato.
+    $max=1;
+    $sponsoredApartments= $this->showSponsored()->sponsoreds;
+    // $randIndex = array_rand($sponsoreds, $max);
+    //
+    // for ($i=0; $i < $max; $i++) {
+    //   $sponsoredApartments[]= $sponsoreds[$randIndex[$i]];
+    // }
 
     $services=Service::all();
     $advancedSearch=$request['advancedSearch'];
@@ -174,11 +176,11 @@ class ApartmentController extends Controller
     ->havingRaw("distance < ?", [$maxDistance])
     ->orderBy('distance','ASC');
 
-    if ($numberOfRooms!=null && $numberOfRooms!="*") {
+    if ($numberOfRooms!=null && $numberOfRooms!=0) {
       $queryApartments= $queryApartments->where('number_of_rooms',$numberOfRooms);
     }
 
-    if ($bedrooms!=null && $bedrooms!="*") {
+    if ($bedrooms!=null && $bedrooms!=0) {
       $queryApartments= $queryApartments->where('bedrooms',$bedrooms);
     }
 
@@ -193,11 +195,12 @@ class ApartmentController extends Controller
     $queryApartments= $queryApartments->get();
     // dd($queryApartments);
 
+    foreach ($queryApartments as $queryApartment) {
+      $howManyVisuals= $queryApartment->visuals->count();
+      $queryApartment->visualized = $howManyVisuals;
+    }
+
     if ($advancedSearch) {
-      foreach ($queryApartments as $queryApartment) {
-        $howMany= $queryApartment->visuals->count();
-        $queryApartment->visualized = $howMany;
-      }
       return json_encode($queryApartments);
     } else if ($bedrooms!==null&&$numberOfRooms!==null) {
       return view('page.show-query-results', compact('queryApartments','services','address','lat','lon','maxDistance','numberOfRooms','bedrooms','queryServices','sponsoredApartments'));
@@ -236,7 +239,7 @@ class ApartmentController extends Controller
     [
       "access_token"=>"pk.eyJ1IjoiYm9vbGVhbmdydXBwbzQiLCJhIjoiY2p4YnN5N3ltMDdkbjNzcGVsdW54eXFodCJ9.BP8Cf-t-evfHO22_kDFzbg",
       "types"=>"place,address",
-      "autocomplete"=>true,
+      // "autocomplete"=>true,
       "limit"=>6
     ];
 
@@ -285,6 +288,9 @@ class ApartmentController extends Controller
   private function compareInputAddress($results,$inputAddress){
     $index= -1;
     foreach ($results as $key => $result) {
+      echo($result->place_name); echo "<br>";
+      echo($inputAddress);
+      dd($result);
       if ($result->place_name===$inputAddress) {
         return $key;
       }
